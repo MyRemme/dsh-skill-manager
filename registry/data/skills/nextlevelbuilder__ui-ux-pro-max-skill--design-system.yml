@@ -1,0 +1,10 @@
+repo: nextlevelbuilder/ui-ux-pro-max-skill
+name: design-system
+path: .claude/skills/design-system/SKILL.md
+ref: main
+category: ui
+tags: [design-tokens]
+license: MIT
+description:
+  en: "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations."
+

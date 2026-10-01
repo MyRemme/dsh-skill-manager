@@ -1,0 +1,9 @@
+repo: vercel-labs/agent-skills
+name: writing-guidelines
+path: skills/writing-guidelines/SKILL.md
+ref: main
+category: docs
+tags: [writing, review]
+description:
+  en: "Review docs/prose for Writing Guidelines compliance. Use when asked to \"review my docs\", \"check writing style\", \"audit prose\", \"review docs voice and tone\", or \"check this page against the writing handbook\"."
+

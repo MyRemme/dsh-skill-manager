@@ -1,0 +1,9 @@
+repo: vercel-labs/agent-skills
+name: deploy-to-vercel
+path: skills/deploy-to-vercel/SKILL.md
+ref: main
+category: dev
+tags: [vercel, deploy]
+description:
+  en: "Deploy applications and websites to Vercel. Use when the user requests deployment actions like \"deploy my app\", \"deploy and give me the link\", \"push this live\", or \"create a preview deployment\"."
+

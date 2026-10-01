@@ -1,0 +1,10 @@
+# Normalise line endings so a Windows checkout and a CI checkout produce the same
+# bytes. The plugin and the registry are pure text and ship as LF.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.webp binary
+*.zip binary
+*.tgz binary

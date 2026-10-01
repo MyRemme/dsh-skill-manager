@@ -1,0 +1,6 @@
+# Bundle patch for dsh-skill-manager: inserts the plugin row into the web profile
+# roster. Install with
+#   dsh plugin --profile web add github:MyRemme/dsh-skill-manager
+- insert:
+    - id: skill-manager
+      name: dsh-skill-manager

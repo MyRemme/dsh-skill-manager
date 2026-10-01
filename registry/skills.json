@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "skills": [
+    {
+      "id": "anthropics/skills#skills/algorithmic-art/SKILL.md",
+      "name": "algorithmic-art",
+      "repo": "anthropics/skills",
+      "path": "skills/algorithmic-art/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations."
+      },
+      "category": "fun",
+      "tags": [
+        "art",
+        "p5js"
+      ],
+      "author": "anthropics"
+    },
+    {
+      "id": "anthropics/skills#skills/brand-guidelines/SKILL.md",
+      "name": "brand-guidelines",
+      "repo": "anthropics/skills",
+      "path": "skills/brand-guidelines/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply."
+      },
+      "category": "ui",
+      "tags": [
+        "brand",
+        "design"
+      ],
+      "author": "anthropics"
+    },
+    {
+      "id": "anthropics/skills#skills/canvas-design/SKILL.md",
+      "name": "canvas-design",
+      "repo": "anthropics/skills",
+      "path": "skills/canvas-design/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations."
+      },
+      "category": "ui",
+      "tags": [
+        "design",
+        "poster"
+      ],
+      "author": "anthropics"
+    },
+    {
+      "id": "vercel-labs/agent-skills#skills/deploy-to-vercel/SKILL.md",
+      "name": "deploy-to-vercel",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/deploy-to-vercel/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Deploy applications and websites to Vercel. Use when the user requests deployment actions like \"deploy my app\", \"deploy and give me the link\", \"push this live\", or \"create a preview deployment\"."
+      },
+      "category": "dev",
+      "tags": [
+        "vercel",
+        "deploy"
+      ],
+      "author": "vercel-labs"
+    },
+    {
+      "id": "nextlevelbuilder/ui-ux-pro-max-skill#.claude/skills/design-system/SKILL.md",
+      "name": "design-system",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "path": ".claude/skills/design-system/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations."
+      },
+      "category": "ui",
+      "tags": [
+        "design-tokens"
+      ],
+      "license": "MIT",
+      "author": "nextlevelbuilder"
+    },
+    {
+      "id": "nextlevelbuilder/ui-ux-pro-max-skill#.claude/skills/ui-styling/SKILL.md",
+      "name": "ui-styling",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "path": ".claude/skills/ui-styling/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling, and canvas-based visual designs. Use when building user interfaces, implementing design systems, creating responsive layouts, adding accessible components (dialogs, dropdowns, forms, tables), customizing themes and colors, implementing dark mode, generating visual designs and posters, or establishing consistent styling patterns across applications."
+      },
+      "category": "ui",
+      "tags": [
+        "tailwind",
+        "shadcn"
+      ],
+      "license": "MIT",
+      "author": "nextlevelbuilder"
+    },
+    {
+      "id": "nextlevelbuilder/ui-ux-pro-max-skill#.claude/skills/ui-ux-pro-max/SKILL.md",
+      "name": "ui-ux-pro-max",
+      "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "path": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "UI/UX design intelligence for web, mobile, and desktop. This skill should be used when designing, building, reviewing, or fixing interfaces, including pages, components, design systems, accessibility, interaction, responsive layout, typography, color, charts, and stack-specific UI implementation. Searchable local data: 79 searchable styles (50 active), 192 product palettes and reasoning profiles, 74 font pairings, 119 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks."
+      },
+      "category": "ui",
+      "tags": [
+        "ui",
+        "ux",
+        "design"
+      ],
+      "license": "MIT",
+      "author": "nextlevelbuilder"
+    },
+    {
+      "id": "vercel-labs/agent-skills#skills/vercel-optimize/SKILL.md",
+      "name": "vercel-optimize",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/vercel-optimize/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Use for Vercel cost and performance optimization on deployed projects, especially Next.js, SvelteKit, Nuxt, and limited Astro apps. Collect Vercel metrics, usage, project config, and code scan results first; investigate only metric-backed candidates; produce ranked recommendations grounded in verified files and version-aware Vercel/framework docs. Trigger for Vercel bill reduction, slow or expensive routes, caching opportunities, Function Invocations, Build Minutes, Fast Data Transfer, Core Web Vitals, Bot Management, Fluid compute, or cost breakdown requests."
+      },
+      "category": "dev",
+      "tags": [
+        "vercel",
+        "performance"
+      ],
+      "author": "vercel-labs"
+    },
+    {
+      "id": "vercel-labs/agent-skills#skills/react-best-practices/SKILL.md",
+      "name": "vercel-react-best-practices",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/react-best-practices/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "React and Next.js performance optimization guidelines from Vercel Engineering. This skill should be used when writing, reviewing, or refactoring React/Next.js code to ensure optimal performance patterns. Triggers on tasks involving React components, Next.js pages, data fetching, bundle optimization, or performance improvements."
+      },
+      "category": "dev",
+      "tags": [
+        "react",
+        "performance"
+      ],
+      "author": "vercel-labs"
+    },
+    {
+      "id": "vercel-labs/agent-skills#skills/react-view-transitions/SKILL.md",
+      "name": "vercel-react-view-transitions",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/react-view-transitions/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Guide for implementing smooth, native-feeling animations using React's View Transition API (`<ViewTransition>` component, `addTransitionType`, and CSS view transition pseudo-elements). Use this skill whenever the user wants to add page transitions, animate route changes, create shared element animations, animate enter/exit of components, animate list reorder, implement directional (forward/back) navigation animations, or integrate view transitions in Next.js. Also use when the user mentions view transitions, `startViewTransition`, `ViewTransition`, transition types, or asks about animating between UI states in React without third-party animation libraries."
+      },
+      "category": "ui",
+      "tags": [
+        "react",
+        "animation"
+      ],
+      "author": "vercel-labs"
+    },
+    {
+      "id": "vercel-labs/agent-skills#skills/web-design-guidelines/SKILL.md",
+      "name": "web-design-guidelines",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/web-design-guidelines/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Review UI code for Web Interface Guidelines compliance. Use when asked to \"review my UI\", \"check accessibility\", \"audit design\", \"review UX\", or \"check my site against best practices\"."
+      },
+      "category": "ui",
+      "tags": [
+        "design",
+        "accessibility"
+      ],
+      "author": "vercel-labs"
+    },
+    {
+      "id": "vercel-labs/agent-skills#skills/writing-guidelines/SKILL.md",
+      "name": "writing-guidelines",
+      "repo": "vercel-labs/agent-skills",
+      "path": "skills/writing-guidelines/SKILL.md",
+      "ref": "main",
+      "description": {
+        "en": "Review docs/prose for Writing Guidelines compliance. Use when asked to \"review my docs\", \"check writing style\", \"audit prose\", \"review docs voice and tone\", or \"check this page against the writing handbook\"."
+      },
+      "category": "docs",
+      "tags": [
+        "writing",
+        "review"
+      ],
+      "author": "vercel-labs"
+    }
+  ],
+  "generatedAt": "2026-10-01T18:47:05.649Z"
+}

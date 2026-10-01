@@ -1,0 +1,9 @@
+repo: anthropics/skills
+name: algorithmic-art
+path: skills/algorithmic-art/SKILL.md
+ref: main
+category: fun
+tags: [art, p5js]
+description:
+  en: "Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations."
+

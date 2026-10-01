@@ -1,0 +1,63 @@
+{
+  "name": "dsh-skill-manager",
+  "version": "0.1.0",
+  "description": "Skill manager for DeepSeek Harness: batch and per-skill enable/disable, folder and archive import, authoring, and a PR-fed skill market you can browse and install from.",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "icon": "icon.svg",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.0-rc.1"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ],
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib",
+    "registry",
+    "cordis.patch.yml",
+    "contributing.md",
+    "README.md",
+    "README.zh.md",
+    "icon.svg",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "registry:build": "node registry/scripts/build-registry.mjs",
+    "registry:check": "node registry/scripts/build-registry.mjs --check --verify"
+  },
+  "keywords": [
+    "deepseek",
+    "harness",
+    "dsh",
+    "dsh-plugin",
+    "skill",
+    "skill-manager",
+    "skills"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyRemme/dsh-skill-manager.git"
+  }
+}
