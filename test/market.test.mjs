@@ -6,7 +6,7 @@ import { join } from "node:path";
 import test from "node:test";
 import { readTarGz } from "../lib/archive.js";
 import { planSkills } from "../lib/install.js";
-import { MarketError, assertRegistryUrl, assertRepo } from "../lib/market.js";
+import { MarketError, apiFallbackUrl, assertRegistryUrl, assertRepo, fetchCatalog } from "../lib/market.js";
 import { writeSkillFile } from "../lib/roots.js";
 import { makeTarGz, skill } from "./helpers.mjs";
 
@@ -66,6 +66,62 @@ test("a GNU long name is applied to the file that follows it", () => {
   const entries = readTarGz(archive);
   assert.equal(entries.length, 1);
   assert.equal(entries[0].path, long);
+});
+
+test("apiFallbackUrl rewrites a raw file URL to the contents API", () => {
+  assert.equal(
+    apiFallbackUrl("https://raw.githubusercontent.com/MyRemme/dsh-skill-manager/main/registry/skills.json"),
+    "https://api.github.com/repos/MyRemme/dsh-skill-manager/contents/registry/skills.json?ref=main",
+  );
+  assert.equal(apiFallbackUrl("https://example.com/skills.json"), undefined);
+  assert.equal(apiFallbackUrl("https://raw.githubusercontent.com/owner/repo"), undefined);
+});
+
+test("the catalog falls back to the API when the raw host is unreachable", async () => {
+  const original = globalThis.fetch;
+  const seen = [];
+  globalThis.fetch = async (url) => {
+    seen.push(String(url));
+    if (String(url).startsWith("https://raw.githubusercontent.com/")) throw new Error("read ECONNRESET");
+    const body = JSON.stringify({ version: 1, skills: [{ id: "a/b#s", name: "demo", repo: "a/b", path: "s", description: { en: "D." } }] });
+    return new Response(JSON.stringify({ content: Buffer.from(body, "utf8").toString("base64") }), { status: 200 });
+  };
+  try {
+    const result = await fetchCatalog({ url: "https://raw.githubusercontent.com/a/b/main/skills.json" });
+    assert.equal(result.catalog.skills.length, 1);
+    assert.equal(result.catalog.skills[0].name, "demo");
+    assert.equal(seen.length, 2, "the raw host is tried first, then the API");
+    assert.ok(seen[1].startsWith("https://api.github.com/repos/a/b/contents/skills.json"));
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("a genuine 404 from the catalog is not masked by the fallback", async () => {
+  const original = globalThis.fetch;
+  const seen = [];
+  globalThis.fetch = async (url) => {
+    seen.push(String(url));
+    return new Response("nope", { status: 404 });
+  };
+  try {
+    await assert.rejects(() => fetchCatalog({ url: "https://raw.githubusercontent.com/a/b/main/skills.json" }), /HTTP 404/u);
+    assert.equal(seen.length, 1, "no second request for a missing file");
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("an unreachable catalog with no API equivalent reports the failure", async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new Error("read ECONNRESET");
+  };
+  try {
+    await assert.rejects(() => fetchCatalog({ url: "https://example.com/skills.json" }), MarketError);
+  } finally {
+    globalThis.fetch = original;
+  }
 });
 
 test("writeSkillFile leaves no temporary file behind", async () => {

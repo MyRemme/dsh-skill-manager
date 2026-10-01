@@ -110,6 +110,9 @@ desktop profile 由 Electron 应用独占管理；请装进 `web` 或其他 prof
 文件。
 
 - 默认来源：本仓库的 [`registry/skills.json`](registry/skills.json)——写这份文档时有 12 条。
+- 如果 `raw.githubusercontent.com` 不通（有些网络会重置与它的连接，而 `api.github.com`
+  照常工作），拉取会自动回退到 GitHub contents 接口并解码同一个文件。给该路径设置
+  `GITHUB_TOKEN` 可以解除未认证的限流。
 - 安装一条会下载 `https://codeload.github.com/<仓库>/tar.gz/<ref>`，只解出持有该技能的
   目录，写进你选的根。
 - `registryUrl` 可以指向任何同构的目录。
@@ -150,7 +153,7 @@ desktop profile 由 Electron 应用独占管理；请装进 `web` 或其他 prof
 node --test "test/**/*.test.mjs"
 ```
 
-105 个测试，不联网、不需要 `npm install`。覆盖 frontmatter 改写器（含 CRLF 保持与 YAML
+109 个测试，不联网、不需要 `npm install`。覆盖 frontmatter 改写器（含 CRLF 保持与 YAML
 引号往返）、ZIP 与 TAR 读取器、压缩包路径安全、安装规划、根发现与同名遮蔽、回收站与
 恢复、访问围栏、registry 解析与校验，以及浏览器半区——用一套最小渲染器驱动真实组件跑
 真实载荷。

@@ -125,6 +125,10 @@ contributors never touch the same file.
 
 - Default source: this repository's
   [`registry/skills.json`](registry/skills.json) — 12 entries at the time of writing.
+- If `raw.githubusercontent.com` is unreachable (some networks reset connections
+  to it while `api.github.com` keeps working), the fetch falls back to the GitHub
+  contents API and decodes the same file. Set `GITHUB_TOKEN` to lift the
+  unauthenticated rate limit on that route.
 - Installing an entry downloads `https://codeload.github.com/<repo>/tar.gz/<ref>`,
   extracts only the directory holding the skill, and writes it into your chosen
   root.
@@ -167,7 +171,7 @@ invented is never acted on.
 node --test "test/**/*.test.mjs"
 ```
 
-105 tests, no network and no `npm install`. They cover the frontmatter rewriter
+109 tests, no network and no `npm install`. They cover the frontmatter rewriter
 (including CRLF preservation and YAML quoting round-trips), the ZIP and TAR
 readers, archive path safety, install planning, root discovery and shadowing,
 trash and restore, the access fence, the registry parser and validator, and the
