@@ -267,6 +267,55 @@ function keysOf(blockName) {
   return new Set([...match[1].matchAll(/^\s*"([^"]+)":/gmu)].map((entry) => entry[1]));
 }
 
+test("the stylesheet is injected while the factory materializes", () => {
+  // The module system claims <style> tags that appear during materialization and
+  // tags them for its HMR bookkeeping, so the injection cannot be deferred to
+  // apply(). A second materialization must not add a duplicate.
+  const appended = [];
+  let created;
+  const original = globalThis.document;
+  globalThis.document = {
+    getElementById: () => created ?? null,
+    createElement: () => {
+      created = { id: undefined, textContent: "" };
+      return created;
+    },
+    head: { appendChild: (node) => appended.push(node) },
+  };
+  try {
+    evaluate(createHarness().React);
+    assert.equal(appended.length, 1, "materialization injects exactly one stylesheet");
+    assert.equal(appended[0].id, "dsh-skill-manager-style");
+    assert.ok(appended[0].textContent.includes(".skm-panel"), "the stylesheet carries the panel rules");
+    evaluate(createHarness().React);
+    assert.equal(appended.length, 1, "a re-materialized bundle does not add a second copy");
+  } finally {
+    if (original === undefined) delete globalThis.document;
+    else globalThis.document = original;
+  }
+});
+
+test("apply tolerates a context without a locale service", () => {
+  const { exports } = evaluate(createHarness().React);
+  const registrations = [];
+  assert.doesNotThrow(() =>
+    exports.apply({
+      slots: {
+        inject: (_name, callback) => {
+          callback();
+          return () => {};
+        },
+        register: (seat, component) => {
+          registrations.push({ seat, component });
+          return () => {};
+        },
+      },
+      effect: () => () => {},
+    }),
+  );
+  assert.equal(registrations.length, 2);
+});
+
 test("both dictionaries carry exactly the same keys", () => {
   const zh = keysOf("zh");
   const en = keysOf("en");

@@ -171,12 +171,22 @@ invented is never acted on.
 node --test "test/**/*.test.mjs"
 ```
 
-109 tests, no network and no `npm install`. They cover the frontmatter rewriter
-(including CRLF preservation and YAML quoting round-trips), the ZIP and TAR
-readers, archive path safety, install planning, root discovery and shadowing,
-trash and restore, the access fence, the registry parser and validator, and the
-browser half — driven through a minimal renderer that exercises the real
-components against real payloads.
+131 tests, no network and no `npm install`.
+
+- **Integration** boots the plugin itself: `apply()` is called with a fake cordis
+  context, the routes it registers are served over a real `node:http` server, and
+  they are driven with real HTTP requests against real files — list, single and
+  batch toggles, read/write, create, trash and restore, ZIP / upload / host-path
+  import, the market (catalog, tarball install, bad registry), every status code,
+  and the access fence including a spoofed LAN `Host`.
+- **Unit** covers the frontmatter rewriter (CRLF preservation, YAML quoting
+  round-trips), the ZIP and TAR readers, archive path safety, install planning,
+  root discovery and shadowing, trash and restore, the access fence, and the
+  registry parser and validator.
+- **Browser** runs the client bundle against a minimal renderer that implements
+  the hooks the panel uses, and asserts the loader contract, the slot
+  registrations, real render output for a payload, request bodies, and that the
+  dictionaries, the `API` map and the host's `ROUTES` stay in step.
 
 ## License
 

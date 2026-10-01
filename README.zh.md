@@ -153,10 +153,17 @@ desktop profile 由 Electron 应用独占管理；请装进 `web` 或其他 prof
 node --test "test/**/*.test.mjs"
 ```
 
-109 个测试，不联网、不需要 `npm install`。覆盖 frontmatter 改写器（含 CRLF 保持与 YAML
-引号往返）、ZIP 与 TAR 读取器、压缩包路径安全、安装规划、根发现与同名遮蔽、回收站与
-恢复、访问围栏、registry 解析与校验，以及浏览器半区——用一套最小渲染器驱动真实组件跑
-真实载荷。
+131 个测试，不联网、不需要 `npm install`。
+
+- **集成**把插件本体跑起来：用假的 cordis 上下文调 `apply()`，把它注册的路由挂在真实的
+  `node:http` 服务器上，用真实 HTTP 请求打真实文件——列表、单项与批量启停、读写、创建、
+  回收站与恢复、ZIP／上传／主机路径三种导入、市场（目录、tarball 安装、坏 registry）、
+  各类状态码，以及访问围栏（含伪造的局域网 `Host`）。
+- **单元**覆盖 frontmatter 改写器（CRLF 保持、YAML 引号往返）、ZIP 与 TAR 读取器、压缩包
+  路径安全、安装规划、根发现与同名遮蔽、回收站与恢复、访问围栏、registry 解析与校验。
+- **浏览器半区**用一套最小渲染器（实现了面板用到的那几个 hook）跑真实组件，断言 loader
+  契约、slot 注册、真实载荷的渲染输出、请求体，以及字典、`API` 表与宿主 `ROUTES` 三者
+  保持一致。
 
 ## 许可
 
