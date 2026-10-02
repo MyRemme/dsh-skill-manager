@@ -909,6 +909,55 @@ test("the submit control sits in the toolbar and starts collapsed", async () => 
   assert.equal(text.includes("repo: owner/name"), false, "it starts collapsed so it does not push results off screen");
 });
 
+test("the submission panel is anchored, not an inline row expander", async () => {
+  // It used to render inside the flex toolbar, so opening it stretched the whole
+  // row to fit a code block and the layout came apart. It has to sit in an
+  // absolutely positioned wrapper so the toolbar keeps its height.
+  const { harness } = await openMarket();
+  const wrap = harness.hosts("div").find((node) => node.props.className === "skm-submitWrap");
+  assert.ok(wrap !== undefined, "the trigger lives in its own positioning context");
+
+  dropdownTrigger(harness, "申请收录 skill").props.onClick();
+  await harness.repaint();
+
+  const panel = harness.hosts("div").find((node) => node.props.className?.split(" ").includes("skm-submit"));
+  assert.ok(panel !== undefined, "the panel is open");
+  assert.ok(
+    String(panel.props.className).includes("skm-card"),
+    "it is still a card, so it keeps the panel's own visual language",
+  );
+
+  // The stylesheet is what actually removes it from the flow, so assert the real
+  // rule rather than the class: a class with no rule would satisfy a class-only
+  // check and still render inline. Captured from the injected <style>, not read
+  // out of the source, so what is checked is what the panel actually uses.
+  const appended = [];
+  let created;
+  const originalDoc = globalThis.document;
+  globalThis.document = {
+    getElementById: () => created ?? null,
+    createElement: () => {
+      created = { id: undefined, textContent: "" };
+      return created;
+    },
+    head: { appendChild: (node) => appended.push(node) },
+  };
+  let rule;
+  try {
+    evaluate(createHarness().React);
+    const css = appended[0]?.textContent ?? "";
+    const match = /\.skm-submitWrap \.skm-submit\{([^}]*)\}/u.exec(css);
+    assert.ok(match !== null, "the anchored panel has a positioning rule");
+    rule = match[1];
+  } finally {
+    if (originalDoc === undefined) delete globalThis.document;
+    else globalThis.document = originalDoc;
+  }
+  assert.match(rule, /position:\s*absolute/u, "the panel is taken out of the toolbar's flow");
+  assert.match(rule, /z-index/u, "and it stacks above the list it opens over");
+  assert.match(source, /aria-expanded/u, "the trigger reports its state to assistive technology");
+});
+
 test("opening the panel reveals the template and a real submission link", async () => {
   const { harness } = await openMarket();
   dropdownTrigger(harness, "申请收录 skill").props.onClick();

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, readdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -95,6 +96,56 @@ test("the catalog falls back to the API when the raw host is unreachable", async
   } finally {
     globalThis.fetch = original;
   }
+});
+
+/**
+ * A TLS middlebox whose certificate chains to a system authority Node does not
+ * trust makes every GitHub request fail with "unable to verify the first
+ * certificate" — while the same URL opens fine in a browser. Both documented
+ * routes die identically, so without recovery the market simply reports that it
+ * cannot reach its registry and no fallback is left.
+ *
+ * The recovery adds the operating system's authorities to Node's trust store and
+ * retries once. It must not fall back to disabling verification: that would trade
+ * the whole process's TLS safety for one request.
+ */
+test("a certificate trust failure is retried with the system authorities", async () => {
+  const original = globalThis.fetch;
+  const seen = [];
+  // The first attempt fails on certificate verification; the retry, which runs
+  // after the trust store has been extended, succeeds. That is the whole shape
+  // of the recovery: one failure, one retry, same URL.
+  let attempts = 0;
+  globalThis.fetch = async (url) => {
+    seen.push(String(url));
+    attempts += 1;
+    if (attempts === 1) {
+      const error = new TypeError("fetch failed");
+      error.cause = new Error("unable to verify the first certificate; if the root CA is installed locally, try running Node.js with --use-system-ca");
+      throw error;
+    }
+    return new Response(JSON.stringify({ version: 1, skills: [] }), { status: 200 });
+  };
+  try {
+    const result = await fetchCatalog({ url: "https://raw.githubusercontent.com/a/b/main/skills.json" });
+    assert.equal(result.catalog.skills.length, 0, "the catalog is read after the retry");
+    assert.equal(seen.length, 2, "the same URL is retried rather than switching routes");
+    assert.equal(seen[0], seen[1]);
+  } finally {
+    globalThis.fetch = original;
+  }
+
+  // The recovery must not reach for the insecure switch. Matched as an assignment
+  // or a read, not as the word appearing in the comment that explains why it is
+  // not used — otherwise the explanation would trip the very check it argues for.
+  const source = readFileSync(new URL("../lib/market.js", import.meta.url), "utf8");
+  const stripped = source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/gu, "");
+  assert.equal(
+    /NODE_TLS_REJECT_UNAUTHORIZED/u.test(stripped),
+    false,
+    "the module must never disable certificate verification, even as a fallback",
+  );
+  assert.match(stripped, /getCACertificates\("system"\)/u, "it adds the system roots instead");
 });
 
 test("a genuine 404 from the catalog is not masked by the fallback", async () => {
