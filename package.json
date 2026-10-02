@@ -11,7 +11,10 @@
       "types": "./lib/types/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./client": "./lib/client.js",
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
@@ -34,8 +37,10 @@
   "files": [
     "lib",
     "registry",
+    "scripts",
     "cordis.patch.yml",
     "contributing.md",
+    "contributing.zh.md",
     "README.md",
     "README.zh.md",
     "icon.svg",
