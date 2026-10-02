@@ -1,0 +1,10 @@
+repo: nexu-io/html-anything
+name: article-magazine
+path: next/src/lib/templates/skills/article-magazine/SKILL.md
+ref: main
+category: other
+license: Apache-2.0
+added: 2026-10-02
+description:
+  en: "Premium Substack / Medium style long-form article layout, ready to publish as a WeChat post or a blog entry."
+  zh: "Substack / Medium 风格的高级感长文排版，适合公众号与博客发布。"

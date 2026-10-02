@@ -1,0 +1,10 @@
+repo: alchaincyf/huashu-design
+name: huashu-design
+path: SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: "Design directly in HTML from inside Claude Code: high-fidelity prototypes, slide decks and animations, with 20 design philosophies and a five-dimension review built in, and MP4 export. Not tied to a particular agent — coding tools other than Claude Code can use it too."
+  zh: "在 Claude Code 内直接用 HTML 做设计：高保真原型、幻灯片、动画，内置 20 条设计哲学与五维评审，可导出 MP4。不绑定特定智能体，Claude Code 之外的编码工具同样可用。"

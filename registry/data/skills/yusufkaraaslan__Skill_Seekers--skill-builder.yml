@@ -1,0 +1,10 @@
+repo: yusufkaraaslan/Skill_Seekers
+name: skill-builder
+path: skills/skill-seekers/SKILL.md
+ref: main
+category: agent
+license: MIT
+added: 2026-10-02
+description:
+  en: Automatically detect source types and build AI skills using Skill Seekers. Use when the user wants to create skills from documentation, repos, PDFs, videos, or other knowledge sources.
+  zh: "用 Skill Seekers 自动识别来源类型并构建 AI 技能。想从文档、代码仓库、PDF、视频或其他知识来源创建技能时使用。"

@@ -1,0 +1,10 @@
+repo: K-Dense-AI/scientific-agent-skills
+name: adaptyv
+path: skills/adaptyv/SKILL.md
+ref: main
+category: research
+license: MIT
+added: 2026-10-02
+description:
+  en: Uses the Adaptyv Bio Foundry API and Python SDK to design protein characterization experiments, estimate costs, submit sequences, monitor laboratory progress, and retrieve results. Applies to Adaptyv Foundry, its target catalog, binding screening and affinity assays, thermostability, expression, fluorescence, epitope binning, and enzyme activity workflows, including code using adaptyv or FoundryClient.
+  zh: "通过 Adaptyv Bio Foundry 的 API 与 Python SDK 设计蛋白表征实验、估算费用、提交序列、跟踪实验室进度并取回结果。适用于 Adaptyv Foundry 及其靶点目录、结合筛选与亲和力测定、热稳定性、表达量、荧光、表位分组与酶活流程，也适用于使用 adaptyv 或 FoundryClient 的代码。"

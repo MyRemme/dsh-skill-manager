@@ -1,0 +1,10 @@
+repo: coreyhaines31/marketingskills
+name: ab-testing
+path: skills/ab-testing/SKILL.md
+ref: main
+category: writing
+license: MIT
+added: 2026-10-02
+description:
+  en: When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program. Also use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "hypothesis," "should I test this," "which version is better," "test two versions," "statistical significance," "how long should I run this test," "growth experiments," "experiment velocity," "experiment backlog," "ICE score," "experimentation program," or "experiment playbook." Use this whenever someone is comparing two approaches and wants to measure which performs better, or when they want to build a systematic experimentation practice. For tracking implementation, see analytics. For page-level conversion optimization, see cro.
+  zh: "规划、设计并落地 A/B 测试，或从零搭建一套增长实验体系。涉及分流测试、多变量测试、假设、变体对比、统计显著性、试验时长、ICE 评分、实验排期与实验手册时使用。凡是需要比较两种方案优劣并量化结果，或想把实验沉淀为固定流程的场合都适用；埋点实现见 analytics，页面级转化优化见 cro。"

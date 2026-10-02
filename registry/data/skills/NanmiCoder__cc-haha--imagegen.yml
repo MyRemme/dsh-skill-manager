@@ -1,0 +1,10 @@
+repo: NanmiCoder/cc-haha
+name: imagegen
+path: src/skills/bundled/imagegen/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Generate original images, artwork, product visuals, diagrams, or other raster assets with the desktop's configured image provider. Use whenever the user asks to create or generate an image.
+  zh: "用桌面端已配置的图像服务商生成原创图片、插画、产品图、示意图等位图素材。用户提出生成或创作图片的需求时使用。"

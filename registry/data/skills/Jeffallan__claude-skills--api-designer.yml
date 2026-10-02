@@ -1,0 +1,10 @@
+repo: Jeffallan/claude-skills
+name: api-designer
+path: skills/api-designer/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Use when designing REST or GraphQL APIs, creating OpenAPI specifications, or planning API architecture. Invoke for resource modeling, versioning strategies, pagination patterns, error handling standards.
+  zh: "设计 REST 或 GraphQL API、编写 OpenAPI 规范或规划 API 架构时使用。适用于资源建模、版本策略、分页模式与错误处理规范的制定。"

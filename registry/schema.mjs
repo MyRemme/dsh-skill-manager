@@ -22,6 +22,10 @@ export const CATEGORIES = {
   writing: { zh: "内容与文案", en: "Content" },
   agent: { zh: "智能体与编排", en: "Agents & orchestration" },
   fun: { zh: "趣味", en: "Fun" },
+  // A deliberate catch-all. Without it, an entry whose category a maintainer has
+  // not settled on would have to be guessed into a bucket it does not belong to,
+  // which corrupts the filter for everything else in that bucket.
+  other: { zh: "其他", en: "Other" },
 };
 
 /** Every accepted category key. */

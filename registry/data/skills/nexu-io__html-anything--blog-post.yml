@@ -1,0 +1,10 @@
+repo: nexu-io/html-anything
+name: blog-post
+path: next/src/lib/templates/skills/blog-post/SKILL.md
+ref: main
+category: other
+license: Apache-2.0
+added: 2026-10-02
+description:
+  en: "Magazine-style long-form article layout with a masthead, hero image, figures, a pull quote and a byline."
+  zh: "杂志感长文排版，含报头、主视觉、插图、引言放大与作者署名。"

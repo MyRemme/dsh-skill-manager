@@ -1,0 +1,10 @@
+repo: NanmiCoder/cc-haha
+name: release-announcement
+path: .agents/skills/release-announcement/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: "Turn the project's latest release-notes Markdown into a short announcement for a WeChat group plus a vertical feature image, verifying each contributor's GitHub ID and embedding their real avatar. Use for release publicity; it does not create or publish the GitHub release itself."
+  zh: "根据项目最新的 release-notes Markdown 制作微信群发布短文案与竖版长图，核验贡献者 GitHub ID 并嵌入真实头像。用于版本发布宣传，不负责创建或发布 GitHub Release。"

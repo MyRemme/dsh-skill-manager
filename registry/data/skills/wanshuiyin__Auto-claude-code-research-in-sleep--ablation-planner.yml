@@ -1,0 +1,10 @@
+repo: wanshuiyin/Auto-claude-code-research-in-sleep
+name: ablation-planner
+path: skills/ablation-planner/SKILL.md
+ref: main
+category: research
+license: MIT
+added: 2026-10-02
+description:
+  en: Use when main results pass result-to-claim (claim_supported=yes or partial) and ablation studies are needed for paper submission.
+  zh: "当主要实验结果已通过 result-to-claim 检验（claim_supported 为 yes 或 partial），且论文投稿前需要补做消融实验时使用。"

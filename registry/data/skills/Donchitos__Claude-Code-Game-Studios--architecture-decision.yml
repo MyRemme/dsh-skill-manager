@@ -1,0 +1,10 @@
+repo: Donchitos/Claude-Code-Game-Studios
+name: architecture-decision
+path: .claude/skills/architecture-decision/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: "Create an ADR documenting a technical decision: context, alternatives considered, consequences."
+  zh: "撰写架构决策记录（ADR），把一个技术选型讲清楚：背景、考虑过的其他方案、带来的后果。"

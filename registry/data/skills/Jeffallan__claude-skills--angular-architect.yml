@@ -1,0 +1,10 @@
+repo: Jeffallan/claude-skills
+name: angular-architect
+path: skills/angular-architect/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Generates Angular 17+ standalone components, configures advanced routing with lazy loading and guards, implements NgRx state management, applies RxJS patterns, and optimizes bundle performance. Use when building Angular 17+ applications with standalone components or signals, setting up NgRx stores, establishing RxJS reactive patterns, performance tuning, or writing Angular tests for enterprise apps.
+  zh: "生成 Angular 17+ 独立组件，配置带懒加载与路由守卫的进阶路由，实现 NgRx 状态管理，应用 RxJS 模式并优化打包体积。构建 Angular 17+ 应用、搭建 NgRx store、建立 RxJS 响应式规范或进行企业级应用的性能调优与测试时使用。"

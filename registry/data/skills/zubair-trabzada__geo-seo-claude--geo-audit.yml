@@ -1,0 +1,10 @@
+repo: zubair-trabzada/geo-seo-claude
+name: geo-audit
+path: skills/geo-audit/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Full website GEO+SEO audit with parallel subagent delegation. Orchestrates a comprehensive Generative Engine Optimization audit across AI citability, platform analysis, technical infrastructure, content quality, and schema markup. Produces a composite GEO Score (0-100) with prioritized action plan.
+  zh: "全站 GEO + SEO 审计，通过并行子智能体分头执行：覆盖 AI 可引用性、平台表现、技术基建、内容质量与结构化标记，最终给出 0–100 的综合 GEO 评分和按优先级排好的改进清单。"

@@ -1,0 +1,10 @@
+repo: Donchitos/Claude-Code-Game-Studios
+name: adopt
+path: .claude/skills/adopt/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Brownfield audit — do existing artifacts actually work? Numbered migration plan. Unlike /project-stage-detect, checks compliance not existence.
+  zh: "接手已有项目时的合规审计：现存的设计文档与产出物是否真的可用？与 project-stage-detect 不同，这里查的是内容是否达标，而不是文件是否存在。输出带编号的迁移计划。"

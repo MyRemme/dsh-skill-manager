@@ -9,4 +9,5 @@ tags: [design-tokens]
 license: MIT
 description:
   en: "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations."
+  zh: "设计令牌体系、组件规范与幻灯片生成。三层令牌（基础→语义→组件）、CSS 变量、间距与字号阶梯、组件规格，以及成套的演示稿生成。适用于设计令牌、体系化设计与品牌规范的演示材料。"
 

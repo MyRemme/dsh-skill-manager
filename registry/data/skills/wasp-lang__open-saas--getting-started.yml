@@ -1,0 +1,10 @@
+repo: wasp-lang/open-saas
+name: getting-started
+path: template/app/.agents/skills/getting-started/SKILL.md
+ref: main
+category: dev
+license: MIT
+added: 2026-10-02
+description:
+  en: Get started with your Open SaaS project — fetches docs, checks Wasp installation, and helps you start your database and app.
+  zh: "开始使用 Open SaaS 项目：拉取文档、检查 Wasp 安装情况，并帮你启动数据库和应用。"

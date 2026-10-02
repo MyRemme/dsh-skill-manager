@@ -1,0 +1,10 @@
+repo: AgriciDaniel/claude-ads
+name: ads-apple
+path: skills/ads-apple/SKILL.md
+ref: main
+category: writing
+license: MIT
+added: 2026-10-02
+description:
+  en: Audit Apple Ads measurement, AdServices and AdAttributionKit, campaign and keyword structure, Search Match, App Store placements, custom product pages, bidding, budgets, MMP reconciliation, and policy. Use for Apple Ads, Apple Search Ads, App Store ads, Search Match, custom product pages, AdServices, or Apple app-install campaigns.
+  zh: "审计 Apple Ads 的成效衡量、AdServices 与 AdAttributionKit 归因、广告系列与关键词结构、Search Match、App Store 展示位、自定义产品页、出价、预算、MMP 对账及合规策略。适用于 Apple Search Ads 与 App 安装类投放。"

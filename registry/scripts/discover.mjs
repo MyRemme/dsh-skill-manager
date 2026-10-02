@@ -26,23 +26,34 @@ import { LICENSE_ALLOW, normalizeLicense } from "../schema.mjs";
 const API = "https://api.github.com";
 const USER_AGENT = "dsh-skill-manager/discover";
 
-/** Parse `--flag value` and bare `--flag` pairs. */
-function parseArgs(argv) {
-  const args = { query: "claude skills", pages: 1, minStars: 0, json: false, sleep: true };
+/**
+ * Parse `--flag value` and bare `--flag` pairs.
+ *
+ * `--query` may be repeated; each one is a separate sweep.
+ */
+export function parseArgs(argv) {
+  const args = { queries: [], pages: 1, minStars: 0, json: false, sleep: true, out: null };
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === "--json") args.json = true;
     else if (token === "--no-sleep") args.sleep = false;
+    else if (token === "--all") args.queries.push("__default__");
     else if (token.startsWith("--") && index + 1 < argv.length) {
       const key = token.slice(2);
       const value = argv[index + 1];
       index += 1;
-      if (key === "query") args.query = value;
-      else if (key === "pages") args.pages = Math.max(1, Math.min(10, Number.parseInt(value, 10) || 1));
+      if (key === "query") args.queries.push(value);
+      else if (key === "queries") {
+        for (const part of value.split(",")) {
+          if (part.trim() !== "") args.queries.push(part.trim());
+        }
+      } else if (key === "pages") args.pages = Math.max(1, Math.min(10, Number.parseInt(value, 10) || 1));
       else if (key === "min-stars") args.minStars = Number.parseInt(value, 10) || 0;
+      else if (key === "out") args.out = value;
       else throw new Error(`unknown flag: ${token}`);
     }
   }
+  if (args.queries.length === 0) args.queries.push("claude skills");
   return args;
 }
 
@@ -54,6 +65,28 @@ function readToken() {
   }
   return { token: null, source: null };
 }
+
+/**
+ * Queries worth running.
+ *
+ * These are shapes of query, not a crawl list. Every one of them is a normal
+ * search a person could type, so this is a wider net rather than a way around
+ * the rate limit.
+ */
+export const DEFAULT_QUERIES = [
+  "claude skills",
+  "claude code skills",
+  "agent skills",
+  "claude code plugin",
+  "mcp server skills",
+  "ai coding agent rules",
+  "claude subagents",
+  "cursor rules",
+  "codex skills",
+  "llm prompt skills",
+  "skill marketplace",
+  "awesome claude",
+];
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -118,6 +151,56 @@ function judge(repo) {
   };
 }
 
+/**
+ * Sweep one query.
+ *
+ * @returns the verdicts plus whether a rate limit stopped the sweep early.
+ */
+async function sweep(query, args, token) {
+  const stem = `${query} in:name,description`;
+  const qualifiers = args.minStars > 0 ? ` stars:>=${args.minStars}` : "";
+  const encoded = encodeURIComponent(stem + qualifiers);
+  const kept = [];
+  const dropped = [];
+  let total = 0;
+  let limited = false;
+
+  const first = await api(`/search/repositories?q=${encoded}&per_page=1&sort=stars&order=desc`, token);
+  if (!first.ok) {
+    process.stdout.write(`  ${query}: HTTP ${first.status}, skipped\n`);
+    return { kept, dropped, total, limited: first.status === 403 || first.status === 429 };
+  }
+  total = first.body.total_count ?? 0;
+
+  // The search endpoint never returns past the first 1000 hits, so pages beyond
+  // that would be an empty result, not a deeper one.
+  const pages = Math.min(args.pages, Math.ceil(Math.min(total, 1000) / 100));
+  process.stdout.write(`  ${query} — ${total} candidates, ${pages} page(s)\n`);
+
+  for (let page = 1; page <= pages; page += 1) {
+    const response = await api(`/search/repositories?q=${encoded}&per_page=100&sort=stars&order=desc&page=${page}`, token);
+    if (!response.ok) {
+      // A rate limit is a stop signal, not a retry signal. Retrying into it is
+      // how an account gets flagged.
+      limited = response.status === 403 || response.status === 429;
+      process.stdout.write(`    page ${page}: HTTP ${response.status}${limited ? " — search budget exhausted" : ""}\n`);
+      break;
+    }
+    const items = response.body.items ?? [];
+    for (const repo of items) {
+      const verdict = judge(repo);
+      if (verdict.allowed) kept.push(verdict);
+      else dropped.push(verdict);
+    }
+    process.stdout.write(`    page ${page}: ${items.length} repositories, ${response.remaining ?? "?"} search requests left\n`);
+    // The search endpoint allows 30 requests/minute authenticated and 10
+    // unauthenticated. Wait rather than discover the limit by hitting it.
+    if (page < pages && args.sleep) await sleep(token === null ? 6500 : 2200);
+  }
+
+  return { kept, dropped, total, limited };
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const { token, source } = readToken();
@@ -128,49 +211,30 @@ async function main() {
     return 1;
   }
 
-  const stem = `${args.query} in:name,description`;
-  const qualifiers = args.minStars > 0 ? ` stars:>=${args.minStars}` : "";
-  const searchPath = `/search/repositories?q=${encodeURIComponent(stem + qualifiers)}&per_page=100&sort=stars&order=desc`;
-
-  // One search request tells us how many pages exist and consumes one unit.
-  const first = await api(`/search/repositories?q=${encodeURIComponent(stem + qualifiers)}&per_page=1&sort=stars&order=desc`, token);
-  if (!first.ok) {
-    process.stderr.write(`search failed: HTTP ${first.status}\n`);
-    if (first.status === 403) {
-      process.stderr.write(
-        token === null
-          ? "  the anonymous budget is exhausted or the search rate limit was hit; set GITHUB_TOKEN to raise it\n"
-          : "  the token's budget is exhausted or it lacks access; check the token's scopes\n",
-      );
-    }
-    return 1;
-  }
-
-  const total = first.body.total_count ?? 0;
-  process.stdout.write(`query      : ${args.query}\n`);
+  const queries = args.queries.length === 1 && args.queries[0] === "__default__" ? DEFAULT_QUERIES : args.queries;
   process.stdout.write(`token      : ${token === null ? "none (anonymous)" : `from $${source}`}\n`);
   process.stdout.write(`budget     : core ${budget.core?.remaining ?? "?"}/${budget.core?.limit ?? "?"}, search ${budget.search?.remaining ?? "?"}/${budget.search?.limit ?? "?"}\n`);
-  process.stdout.write(`candidates : ${total}\n`);
+  process.stdout.write(`queries    : ${queries.length}\n\n`);
 
-  const pages = Math.min(args.pages, Math.ceil(Math.min(total, 1000) / 100));
+  const seen = new Map();
   const kept = [];
   const dropped = [];
-  for (let page = 1; page <= pages; page += 1) {
-    const path = `${searchPath}&page=${page}`;
-    const response = await api(path, token);
-    if (!response.ok) {
-      process.stderr.write(`page ${page} failed: HTTP ${response.status}\n`);
-      break;
+
+  for (const query of queries) {
+    const result = await sweep(query, args, token);
+    for (const repo of result.kept) {
+      if (seen.has(repo.fullName)) continue;
+      seen.set(repo.fullName, true);
+      kept.push(repo);
     }
-    const items = response.body.items ?? [];
-    for (const repo of items) {
-      const verdict = judge(repo);
-      if (verdict.allowed) kept.push(verdict);
-      else dropped.push(verdict);
+    for (const repo of result.dropped) {
+      const key = `#${repo.fullName}`;
+      if (seen.has(key)) continue;
+      seen.set(key, true);
+      dropped.push(repo);
     }
-    process.stdout.write(`  page ${page}: ${items.length} repositories, ${response.remaining ?? "?"} search requests left\n`);
-    // The search endpoint allows 10 requests/minute authenticated, 10 unauthenticated.
-    if (page < pages && args.sleep) await sleep(6500);
+    // Spread the sweeps out rather than spending the whole minute's budget at once.
+    if (args.sleep) await sleep(token === null ? 6500 : 2200);
   }
 
   process.stdout.write(`\n--- pass the license gate: ${kept.length} ---\n`);
@@ -185,14 +249,18 @@ async function main() {
     process.stdout.write(`  ${String(count).padStart(4)}  ${reason}\n`);
   }
 
-  if (args.json) {
-    process.stdout.write(`\n${JSON.stringify({ query: args.query, kept, dropped }, null, 2)}\n`);
+  if (args.out !== null) {
+    const { writeFile } = await import("node:fs/promises");
+    await writeFile(args.out, `${JSON.stringify({ generatedAt: new Date().toISOString(), queries, kept, dropped }, null, 2)}\n`, "utf8");
+    process.stdout.write(`\nwrote ${args.out}\n`);
+  } else if (args.json) {
+    process.stdout.write(`\n${JSON.stringify({ queries, kept, dropped }, null, 2)}\n`);
   }
 
   process.stdout.write(
-    `\nNothing was written. A repository-level license does not cover the skill file\n` +
-      `itself, so each candidate still needs its path and license checked before it\n` +
-      `becomes an entry in registry/data/skills/.\n`,
+    `\nCandidates only. A repository-level license does not cover the skill file\n` +
+      `itself, so each one still needs its path and license checked before it becomes\n` +
+      `an entry in registry/data/skills/.\n`,
   );
   return 0;
 }

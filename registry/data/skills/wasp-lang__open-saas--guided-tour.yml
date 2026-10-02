@@ -1,0 +1,10 @@
+repo: wasp-lang/open-saas
+name: guided-tour
+path: template/app/.agents/skills/guided-tour/SKILL.md
+ref: main
+category: dev
+license: MIT
+added: 2026-10-02
+description:
+  en: Take a guided tour of Open SaaS — walks you through step-by-step through the project structure, features, and customization checklist.
+  zh: "Open SaaS 引导式导览，逐步讲解项目结构、功能与定制清单。"

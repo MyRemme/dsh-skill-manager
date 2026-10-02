@@ -1,0 +1,10 @@
+repo: diet103/claude-code-infrastructure-showcase
+name: backend-dev-guidelines
+path: .claude/skills/backend-dev-guidelines/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Comprehensive backend development guide for Node.js/Express/TypeScript microservices. Use when creating routes, controllers, services, repositories, middleware, or working with Express APIs, Prisma database access, Sentry error tracking, Zod validation, unifiedConfig, dependency injection, or async patterns. Covers layered architecture (routes → controllers → services → repositories), BaseController pattern, error handling, performance monitoring, testing strategies, and migration from legacy patterns.
+  zh: "Node.js / Express / TypeScript 微服务的后端开发规范。编写路由、控制器、服务、仓储、中间件，或处理 Express API、Prisma 数据访问、Sentry 错误追踪、Zod 校验、依赖注入与异步模式时使用。覆盖 routes → controllers → services → repositories 分层架构、BaseController 模式、错误处理、性能监控、测试策略及旧代码迁移。"

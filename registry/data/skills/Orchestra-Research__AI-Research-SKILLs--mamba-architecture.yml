@@ -1,0 +1,10 @@
+repo: Orchestra-Research/AI-Research-SKILLs
+name: mamba-architecture
+path: 01-model-architecture/mamba/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: State-space model with O(n) complexity vs Transformers' O(n²). 5× faster inference, million-token sequences, no KV cache. Selective SSM with hardware-aware design. Mamba-1 (d_state=16) and Mamba-2 (d_state=128, multi-head). Models 130M-2.8B on HuggingFace.
+  zh: "状态空间模型，复杂度为 O(n)，而 Transformer 是 O(n²)：推理快 5 倍，可处理百万级 token 序列，且不需要 KV cache。采用硬件感知设计的选择性 SSM，含 Mamba-1（d_state=16）与 Mamba-2（d_state=128，多头），HuggingFace 上有 130M–2.8B 的权重。"

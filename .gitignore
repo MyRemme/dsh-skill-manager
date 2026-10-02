@@ -3,3 +3,10 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Discovery scratch files. `candidates.json` is one run's search results and
+# `_verified.json` is the inspection report for the same run; both are inputs to
+# writing entries, not entries themselves, and they go stale the moment the
+# search queries change. The entries they produce are what gets committed.
+candidates.json
+_verified.json

@@ -1,0 +1,10 @@
+repo: affaan-m/ECC
+name: agent-architecture-audit
+path: skills/agent-architecture-audit/SKILL.md
+ref: main
+category: agent
+license: MIT
+added: 2026-10-02
+description:
+  en: Full-stack diagnostic for agent and LLM applications. Audits the 12-layer agent stack for wrapper regression, memory pollution, tool discipline failures, hidden repair loops, and rendering corruption. Produces severity-ranked findings with code-first fixes. Essential for developers building agent applications, autonomous loops, or any LLM-powered feature. Use when an agent or LLM feature misbehaves and the failing layer is unknown, or before shipping an agent stack.
+  zh: "面向智能体与 LLM 应用的全栈诊断工具。按 12 层智能体栈逐层审计：包装层退化、记忆污染、工具调用失范、隐藏的修复循环、渲染错乱，并输出按严重度排序的结论和改代码优先的修复方案。智能体行为异常但定位不到故障层，或上线前做整体检查时使用。"

@@ -1,0 +1,10 @@
+repo: wanshuiyin/Auto-claude-code-research-in-sleep
+name: alphaxiv
+path: skills/alphaxiv/SKILL.md
+ref: main
+category: research
+license: MIT
+added: 2026-10-02
+description:
+  en: Quick single-paper lookup via AlphaXiv LLM-optimized summaries with tiered source fallback. Use when user says "explain this paper", "summarize paper", pastes an arXiv/AlphaXiv URL, or provides a bare arXiv ID for quick understanding - not for broad literature search.
+  zh: "通过 AlphaXiv 的大模型优化摘要快速查阅单篇论文，并在数据源之间分级回退。用户说「解释这篇论文」「总结论文」、粘贴 arXiv / AlphaXiv 链接，或只给一个 arXiv 编号想快速理解时使用；不适用于大范围文献调研。"

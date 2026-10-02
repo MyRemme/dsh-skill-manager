@@ -1,0 +1,10 @@
+repo: zubair-trabzada/geo-seo-claude
+name: geo-citability
+path: skills/geo-citability/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: AI citability scoring and optimization. Analyzes web page content to determine how likely AI systems (ChatGPT, Claude, Perplexity, Gemini) are to cite or quote passages from the page. Provides a citability score (0-100) with specific rewrite suggestions.
+  zh: "AI 可引用性评分与优化：分析网页内容被 ChatGPT、Claude、Perplexity、Gemini 等系统引用或摘录的可能性，给出 0–100 的评分和具体的改写建议。"

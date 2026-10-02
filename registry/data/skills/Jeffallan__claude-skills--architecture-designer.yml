@@ -1,0 +1,10 @@
+repo: Jeffallan/claude-skills
+name: architecture-designer
+path: skills/architecture-designer/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Use when designing new high-level system architecture, reviewing existing designs, or making architectural decisions. Invoke to create architecture diagrams, write Architecture Decision Records (ADRs), evaluate technology trade-offs, design component interactions, and plan for scalability. Use for system design, architecture review, microservices structuring, ADR authoring, scalability planning, and infrastructure pattern selection — distinct from code-level design patterns or database-only design tasks.
+  zh: "设计新的高层系统架构、评审现有设计或做架构决策时使用。可绘制架构图、撰写架构决策记录（ADR）、评估技术取舍、设计组件交互并规划扩展性。适用于系统设计、架构评审、微服务拆分、ADR 编写与基础设施选型，区别于代码级设计模式或纯数据库设计任务。"

@@ -1,0 +1,10 @@
+repo: zhaoxuya520/reverse-skill
+name: attack-chain
+path: skills/attack-chain/SKILL.md
+ref: main
+category: security
+license: MIT
+added: 2026-10-02
+description:
+  en: Use for authorized multi-stage attack-path planning and orchestration when a task spans reconnaissance, initial access, privilege escalation, lateral movement, or impact assessment. Route single-stage tasks directly to their specialist skill.
+  zh: "在授权范围内做多阶段攻击路径规划与编排，适用于横跨信息收集、初始访问、提权、横向移动和影响评估的任务。单一阶段的工作直接交给对应的专项技能。"

@@ -2,6 +2,531 @@
   "version": 2,
   "skills": [
     {
+      "id": "K-Dense-AI/scientific-agent-skills#skills/13c-metabolic-flux/SKILL.md",
+      "name": "13c-metabolic-flux",
+      "repo": "K-Dense-AI/scientific-agent-skills",
+      "path": "skills/13c-metabolic-flux/SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "Estimates intracellular metabolic fluxes from steady-state carbon-13 isotope-tracing measurements using validated atom maps, mfapy isotope simulation, constrained multistart fitting, and flux-profile diagnostics. Use for 13C-MFA, carbon tracing, mass isotopomer distributions (MDVs/MIDs), positional isotopomers, parallel tracer experiments, and determining whether labeling data constrain a pathway flux. Distinguishes measured-label inference from COBRA flux balance analysis and flags experiments requiring nonstationary MFA.",
+        "zh": "由稳态碳-13 同位素示踪数据估算胞内代谢通量：使用经校验的原子映射、mfapy 同位素模拟、带约束的多起点拟合与通量谱诊断。适用于 13C-MFA、碳示踪、质量同位素分布（MDV/MID）、位置异构体与平行示踪实验，也可判断标记数据是否足以约束某条通路通量。会区分实测标记推断与 COBRA 通量平衡分析，并提示哪些实验必须改用非稳态 MFA。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "K-Dense-AI"
+    },
+    {
+      "id": "alirezarezvani/claude-skills#.gemini/skills/a11y-audit/SKILL.md",
+      "name": "a11y-audit",
+      "repo": "alirezarezvani/claude-skills",
+      "path": ".gemini/skills/a11y-audit/SKILL.md",
+      "ref": "main",
+      "category": "testing",
+      "description": {
+        "en": "Accessibility audit skill for scanning, fixing, and verifying WCAG 2.2 Level A and AA compliance across React, Next.js, Vue, Angular, Svelte, and plain HTML codebases. Use when auditing accessibility, fixing a11y violations, checking color contrast, generating compliance reports, or integrating accessibility checks into CI/CD pipelines.",
+        "zh": "无障碍审计技能：扫描、修复并验证 React、Next.js、Vue、Angular、Svelte 及原生 HTML 项目的 WCAG 2.2 A/AA 合规性，可检查颜色对比度、生成合规报告，并接入 CI/CD 流水线。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "alirezarezvani"
+    },
+    {
+      "id": "alirezarezvani/claude-skills#.gemini/skills/ab-test-setup/SKILL.md",
+      "name": "ab-test-setup",
+      "repo": "alirezarezvani/claude-skills",
+      "path": ".gemini/skills/ab-test-setup/SKILL.md",
+      "ref": "main",
+      "category": "testing",
+      "description": {
+        "en": "When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions \"A/B test,\" \"split test,\" \"experiment,\" \"test this change,\" \"variant copy,\" \"multivariate test,\" \"hypothesis,\" \"conversion experiment,\" \"statistical significance,\" or \"test this.\" For tracking implementation, see analytics-tracking.",
+        "zh": "规划、设计并落地 A/B 测试或实验方案。涉及分流测试、多变量测试、假设制定、变体文案、统计显著性与试验时长推算时使用；埋点实现部分见 analytics-tracking。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "alirezarezvani"
+    },
+    {
+      "id": "coreyhaines31/marketingskills#skills/ab-testing/SKILL.md",
+      "name": "ab-testing",
+      "repo": "coreyhaines31/marketingskills",
+      "path": "skills/ab-testing/SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program. Also use when the user mentions \"A/B test,\" \"split test,\" \"experiment,\" \"test this change,\" \"variant copy,\" \"multivariate test,\" \"hypothesis,\" \"should I test this,\" \"which version is better,\" \"test two versions,\" \"statistical significance,\" \"how long should I run this test,\" \"growth experiments,\" \"experiment velocity,\" \"experiment backlog,\" \"ICE score,\" \"experimentation program,\" or \"experiment playbook.\" Use this whenever someone is comparing two approaches and wants to measure which performs better, or when they want to build a systematic experimentation practice. For tracking implementation, see analytics. For page-level conversion optimization, see cro.",
+        "zh": "规划、设计并落地 A/B 测试，或从零搭建一套增长实验体系。涉及分流测试、多变量测试、假设、变体对比、统计显著性、试验时长、ICE 评分、实验排期与实验手册时使用。凡是需要比较两种方案优劣并量化结果，或想把实验沉淀为固定流程的场合都适用；埋点实现见 analytics，页面级转化优化见 cro。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "coreyhaines31"
+    },
+    {
+      "id": "wanshuiyin/Auto-claude-code-research-in-sleep#skills/ablation-planner/SKILL.md",
+      "name": "ablation-planner",
+      "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+      "path": "skills/ablation-planner/SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "Use when main results pass result-to-claim (claim_supported=yes or partial) and ablation studies are needed for paper submission.",
+        "zh": "当主要实验结果已通过 result-to-claim 检验（claim_supported 为 yes 或 partial），且论文投稿前需要补做消融实验时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "wanshuiyin"
+    },
+    {
+      "id": "affaan-m/ECC#skills/accessibility/SKILL.md",
+      "name": "accessibility",
+      "repo": "affaan-m/ECC",
+      "path": "skills/accessibility/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Design, implement, and audit accessible UI to WCAG 2.2 Level AA across Web, iOS, and Android — semantic ARIA roles and labels, accessibility traits and hints, focus management, contrast, target size, and screen-reader support. Use when building or auditing UI for accessibility compliance, keyboard navigation, or screen-reader support.",
+        "zh": "按 WCAG 2.2 AA 标准设计、实现并审计无障碍界面，覆盖 Web、iOS 和 Android：语义化 ARIA 角色与标签、无障碍特征与提示、焦点管理、对比度、可点面积、屏幕阅读器支持。构建或排查无障碍合规、键盘导航、屏幕阅读器兼容时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "affaan-m"
+    },
+    {
+      "id": "coreyhaines31/marketingskills#skills/ad-creative/SKILL.md",
+      "name": "ad-creative",
+      "repo": "coreyhaines31/marketingskills",
+      "path": "skills/ad-creative/SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "When the user wants to generate, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising platform. Also use when the user mentions 'ad copy variations,' 'ad creative,' 'generate headlines,' 'RSA headlines,' 'bulk ad copy,' 'ad iterations,' 'creative testing,' 'write me some ads,' 'Facebook ad copy,' 'Google ad headlines,' 'LinkedIn ad text,' 'static ads,' 'ad templates,' 'iMessage ad,' 'chat reveal ad,' 'ChatGPT ad,' 'Apple Notes ad,' 'AirDrop ad,' 'creative strategy,' 'creative roadmap,' 'creative retro,' 'hook writing,' 'creative review page,' 'present ad creative for approval,' 'motion video ad,' 'faceless video ad,' 'UGC ad,' 'greenscreen ad,' 'TikTok/Reels ad format,' 'which ad format to make,' 'Meta ad format tier lis...",
+        "zh": "批量生成、迭代并规模化产出广告素材：标题、描述、正文文案乃至整组广告变体，适配各家付费广告平台。适用于广告文案变体、RSA 标题、批量文案、素材迭代与测试、Meta / Google / LinkedIn 广告文案，以及静态图、视频与 UGC 等素材形式的选择与制作。需要用规模出量或对现有广告持续迭代时使用；投放策略与定向见 ads，落地页文案见 copywriting。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "coreyhaines31"
+    },
+    {
+      "id": "K-Dense-AI/scientific-agent-skills#skills/adaptyv/SKILL.md",
+      "name": "adaptyv",
+      "repo": "K-Dense-AI/scientific-agent-skills",
+      "path": "skills/adaptyv/SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "Uses the Adaptyv Bio Foundry API and Python SDK to design protein characterization experiments, estimate costs, submit sequences, monitor laboratory progress, and retrieve results. Applies to Adaptyv Foundry, its target catalog, binding screening and affinity assays, thermostability, expression, fluorescence, epitope binning, and enzyme activity workflows, including code using adaptyv or FoundryClient.",
+        "zh": "通过 Adaptyv Bio Foundry 的 API 与 Python SDK 设计蛋白表征实验、估算费用、提交序列、跟踪实验室进度并取回结果。适用于 Adaptyv Foundry 及其靶点目录、结合筛选与亲和力测定、热稳定性、表达量、荧光、表位分组与酶活流程，也适用于使用 adaptyv 或 FoundryClient 的代码。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "K-Dense-AI"
+    },
+    {
+      "id": "wasp-lang/open-saas#template/app/.agents/skills/add-wasp-skills/SKILL.md",
+      "name": "add-wasp-skills",
+      "repo": "wasp-lang/open-saas",
+      "path": "template/app/.agents/skills/add-wasp-skills/SKILL.md",
+      "ref": "main",
+      "category": "dev",
+      "description": {
+        "en": "Install Wasp agent skills (plugins) that add Wasp knowledge and best practices to your AI coding tools.",
+        "zh": "安装 Wasp 智能体技能（插件），为你的 AI 编码工具补充 Wasp 知识与最佳实践。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "wasp-lang"
+    },
+    {
+      "id": "Donchitos/Claude-Code-Game-Studios#.claude/skills/adopt/SKILL.md",
+      "name": "adopt",
+      "repo": "Donchitos/Claude-Code-Game-Studios",
+      "path": ".claude/skills/adopt/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Brownfield audit — do existing artifacts actually work? Numbered migration plan. Unlike /project-stage-detect, checks compliance not existence.",
+        "zh": "接手已有项目时的合规审计：现存的设计文档与产出物是否真的可用？与 project-stage-detect 不同，这里查的是内容是否达标，而不是文件是否存在。输出带编号的迁移计划。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Donchitos"
+    },
+    {
+      "id": "coreyhaines31/marketingskills#skills/ads/SKILL.md",
+      "name": "ads",
+      "repo": "coreyhaines31/marketingskills",
+      "path": "skills/ads/SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also use when the user mentions 'PPC,' 'paid media,' 'ROAS,' 'CPA,' 'ad campaign,' 'retargeting,' 'audience targeting,' 'Google Ads,' 'Facebook ads,' 'LinkedIn ads,' 'ad budget,' 'cost per click,' 'ad spend,' 'should I run ads,' 'ABM,' 'account-based marketing,' 'B2B ads,' 'lead quality,' 'negative keywords,' 'Performance Max,' 'thought leader ads,' 'when should I kill an ad,' 'search terms report,' 'wasted spend,' or 'is this campaign working.' Use this for campaign strategy, audience targeting, bidding, and optimization. For bulk ad creative generation and iteration, see ad-creative. For landing page optimization, see cro.",
+        "zh": "Google Ads、Meta（Facebook / Instagram）、LinkedIn、X 等平台的付费广告投放。涉及 PPC、付费媒体、ROAS、CPA、重定向、人群定向、预算与出价、否定关键词、Performance Max、搜索词报告、浪费支出排查以及 ABM 时使用。负责投放策略、受众与出价优化；批量素材产出见 ad-creative，落地页优化见 cro。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "coreyhaines31"
+    },
+    {
+      "id": "AgriciDaniel/claude-ads#skills/ads-amazon/SKILL.md",
+      "name": "ads-amazon",
+      "repo": "AgriciDaniel/claude-ads",
+      "path": "skills/ads-amazon/SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "Audit Amazon Ads profiles, regions, Sponsored Products, Sponsored Brands, Sponsored Display, DSP, portfolios, targeting, search terms, retail readiness, creative, budgets, ACOS, TACOS, reporting, and policy. Use for Amazon Ads, sponsored ads, Amazon PPC, ACOS, TACOS, ASIN advertising, Amazon DSP, or retail-media optimization.",
+        "zh": "审计亚马逊广告账户：站点与区域、商品推广／品牌推广／展示型推广、DSP、广告组合、定向、搜索词、商品就绪度、素材、预算、ACOS、TACOS、报表与合规策略。适用于亚马逊 PPC、ASIN 投放、Amazon DSP 及零售媒体优化。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "AgriciDaniel"
+    },
+    {
+      "id": "AgriciDaniel/claude-ads#skills/ads-apple/SKILL.md",
+      "name": "ads-apple",
+      "repo": "AgriciDaniel/claude-ads",
+      "path": "skills/ads-apple/SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "Audit Apple Ads measurement, AdServices and AdAttributionKit, campaign and keyword structure, Search Match, App Store placements, custom product pages, bidding, budgets, MMP reconciliation, and policy. Use for Apple Ads, Apple Search Ads, App Store ads, Search Match, custom product pages, AdServices, or Apple app-install campaigns.",
+        "zh": "审计 Apple Ads 的成效衡量、AdServices 与 AdAttributionKit 归因、广告系列与关键词结构、Search Match、App Store 展示位、自定义产品页、出价、预算、MMP 对账及合规策略。适用于 Apple Search Ads 与 App 安装类投放。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "AgriciDaniel"
+    },
+    {
+      "id": "AgriciDaniel/claude-ads#skills/ads-attribution/SKILL.md",
+      "name": "ads-attribution",
+      "repo": "AgriciDaniel/claude-ads",
+      "path": "skills/ads-attribution/SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "Audit cross-platform attribution, conversion definitions, reporting windows, GA4, AdServices and AdAttributionKit, MMPs, browser and server events, offline conversions, and platform reconciliation. Use for attribution audit, attribution models, conversion windows, requests to add or total Meta and Google conversions, incompatible reporting-window aggregation, GA4 attribution, MMP review, AppsFlyer, Adjust, Branch, Singular, or cross-platform discrepancies.",
+        "zh": "审计跨平台归因：转化定义、归因窗口、GA4、AdServices 与 AdAttributionKit、MMP、浏览器与服务器事件、线下转化以及各平台之间的对账。适用于归因模型梳理、转化窗口设定、GA4 归因、AppsFlyer / Adjust / Branch / Singular 等 MMP 复核，以及跨平台数据对不上的排查。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "AgriciDaniel"
+    },
+    {
+      "id": "K-Dense-AI/scientific-agent-skills#skills/aeon/SKILL.md",
+      "name": "aeon",
+      "repo": "K-Dense-AI/scientific-agent-skills",
+      "path": "skills/aeon/SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "This skill should be used for time series machine learning tasks including classification, regression, clustering, forecasting, anomaly detection, segmentation, and similarity search. Use when working with temporal data, sequential patterns, or time-indexed observations requiring specialized algorithms beyond standard ML approaches. Particularly suited for univariate and multivariate time series analysis with scikit-learn compatible APIs.",
+        "zh": "时间序列机器学习任务：分类、回归、聚类、预测、异常检测、分割与相似性检索。处理时序数据、序列模式或按时间索引的观测数据、需要标准 ML 之外的专用算法时使用。尤其适合单变量与多变量时间序列分析，API 与 scikit-learn 兼容。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "K-Dense-AI"
+    },
+    {
+      "id": "affaan-m/ECC#skills/agent-architecture-audit/SKILL.md",
+      "name": "agent-architecture-audit",
+      "repo": "affaan-m/ECC",
+      "path": "skills/agent-architecture-audit/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Full-stack diagnostic for agent and LLM applications. Audits the 12-layer agent stack for wrapper regression, memory pollution, tool discipline failures, hidden repair loops, and rendering corruption. Produces severity-ranked findings with code-first fixes. Essential for developers building agent applications, autonomous loops, or any LLM-powered feature. Use when an agent or LLM feature misbehaves and the failing layer is unknown, or before shipping an agent stack.",
+        "zh": "面向智能体与 LLM 应用的全栈诊断工具。按 12 层智能体栈逐层审计：包装层退化、记忆污染、工具调用失范、隐藏的修复循环、渲染错乱，并输出按严重度排序的结论和改代码优先的修复方案。智能体行为异常但定位不到故障层，或上线前做整体检查时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "affaan-m"
+    },
+    {
+      "id": "affaan-m/ECC#skills/agent-eval/SKILL.md",
+      "name": "agent-eval",
+      "repo": "affaan-m/ECC",
+      "path": "skills/agent-eval/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Head-to-head comparison of coding agents (Claude Code, Aider, Codex, etc.) on custom tasks with pass rate, cost, time, and consistency metrics. Use when choosing between coding agents, or when a change to an agent setup needs measured pass rate, cost, and time rather than an impression.",
+        "zh": "让多个编码智能体（Claude Code、Aider、Codex 等）在同一批自定义任务上正面比拼，输出通过率、成本、耗时和稳定性四项指标。在几个编码智能体之间做选择，或需要用量化数据而非印象判断某次配置改动的效果时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "affaan-m"
+    },
+    {
+      "id": "wanshuiyin/Auto-claude-code-research-in-sleep#skills/alphaxiv/SKILL.md",
+      "name": "alphaxiv",
+      "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+      "path": "skills/alphaxiv/SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "Quick single-paper lookup via AlphaXiv LLM-optimized summaries with tiered source fallback. Use when user says \"explain this paper\", \"summarize paper\", pastes an arXiv/AlphaXiv URL, or provides a bare arXiv ID for quick understanding - not for broad literature search.",
+        "zh": "通过 AlphaXiv 的大模型优化摘要快速查阅单篇论文，并在数据源之间分级回退。用户说「解释这篇论文」「总结论文」、粘贴 arXiv / AlphaXiv 链接，或只给一个 arXiv 编号想快速理解时使用；不适用于大范围文献调研。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "wanshuiyin"
+    },
+    {
+      "id": "wanshuiyin/Auto-claude-code-research-in-sleep#skills/analyze-results/SKILL.md",
+      "name": "analyze-results",
+      "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+      "path": "skills/analyze-results/SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "Analyze ML experiment results, compute statistics, generate comparison tables and insights. Use when user says \"analyze results\", \"compare\", or needs to interpret experimental data.",
+        "zh": "分析机器学习实验结果：计算统计量、生成对比表格并提炼结论。用户说「分析结果」「对比一下」，或需要解读实验数据时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "wanshuiyin"
+    },
+    {
+      "id": "Jeffallan/claude-skills#skills/angular-architect/SKILL.md",
+      "name": "angular-architect",
+      "repo": "Jeffallan/claude-skills",
+      "path": "skills/angular-architect/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Generates Angular 17+ standalone components, configures advanced routing with lazy loading and guards, implements NgRx state management, applies RxJS patterns, and optimizes bundle performance. Use when building Angular 17+ applications with standalone components or signals, setting up NgRx stores, establishing RxJS reactive patterns, performance tuning, or writing Angular tests for enterprise apps.",
+        "zh": "生成 Angular 17+ 独立组件，配置带懒加载与路由守卫的进阶路由，实现 NgRx 状态管理，应用 RxJS 模式并优化打包体积。构建 Angular 17+ 应用、搭建 NgRx store、建立 RxJS 响应式规范或进行企业级应用的性能调优与测试时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Jeffallan"
+    },
+    {
+      "id": "Jeffallan/claude-skills#skills/api-designer/SKILL.md",
+      "name": "api-designer",
+      "repo": "Jeffallan/claude-skills",
+      "path": "skills/api-designer/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Use when designing REST or GraphQL APIs, creating OpenAPI specifications, or planning API architecture. Invoke for resource modeling, versioning strategies, pagination patterns, error handling standards.",
+        "zh": "设计 REST 或 GraphQL API、编写 OpenAPI 规范或规划 API 架构时使用。适用于资源建模、版本策略、分页模式与错误处理规范的制定。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Jeffallan"
+    },
+    {
+      "id": "zhaoxuya520/reverse-skill#skills/api-security/SKILL.md",
+      "name": "api-security",
+      "repo": "zhaoxuya520/reverse-skill",
+      "path": "skills/api-security/SKILL.md",
+      "ref": "main",
+      "category": "security",
+      "description": {
+        "en": "Use for authorized security assessment of REST, GraphQL, WebSocket, or SOAP APIs, including discovery, authentication, authorization, rate-limit, and CI/CD testing.",
+        "zh": "对 REST、GraphQL、WebSocket 或 SOAP 接口做授权范围内的安全评估，包括接口发现、认证、授权、速率限制以及 CI/CD 环节的测试。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "zhaoxuya520"
+    },
+    {
+      "id": "zhaoxuya520/reverse-skill#skills/apk-reverse/SKILL.md",
+      "name": "apk-reverse",
+      "repo": "zhaoxuya520/reverse-skill",
+      "path": "skills/apk-reverse/SKILL.md",
+      "ref": "main",
+      "category": "security",
+      "description": {
+        "en": "Reverse engineer Android APKs from the command line: unpack an APK, decompile the Java, edit smali, repackage, and attach a Frida hook for dynamic analysis, switching to so/native work when the task calls for it. Prefers the jadx, apktool, frida, adb, ida-reverse and radare2 tools already installed on the machine.",
+        "zh": "在命令行环境下做 Android APK 逆向时使用。适用于 APK 解包、Java 反编译、smali 修改、重打包、Frida 动态 Hook，以及按需切换到 so／native 分析。优先调用本机已装的 jadx、apktool、frida、adb、ida-reverse、radare2。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "zhaoxuya520"
+    },
+    {
+      "id": "Donchitos/Claude-Code-Game-Studios#.claude/skills/architecture-decision/SKILL.md",
+      "name": "architecture-decision",
+      "repo": "Donchitos/Claude-Code-Game-Studios",
+      "path": ".claude/skills/architecture-decision/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Create an ADR documenting a technical decision: context, alternatives considered, consequences.",
+        "zh": "撰写架构决策记录（ADR），把一个技术选型讲清楚：背景、考虑过的其他方案、带来的后果。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Donchitos"
+    },
+    {
+      "id": "Jeffallan/claude-skills#skills/architecture-designer/SKILL.md",
+      "name": "architecture-designer",
+      "repo": "Jeffallan/claude-skills",
+      "path": "skills/architecture-designer/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Use when designing new high-level system architecture, reviewing existing designs, or making architectural decisions. Invoke to create architecture diagrams, write Architecture Decision Records (ADRs), evaluate technology trade-offs, design component interactions, and plan for scalability. Use for system design, architecture review, microservices structuring, ADR authoring, scalability planning, and infrastructure pattern selection — distinct from code-level design patterns or database-only design tasks.",
+        "zh": "设计新的高层系统架构、评审现有设计或做架构决策时使用。可绘制架构图、撰写架构决策记录（ADR）、评估技术取舍、设计组件交互并规划扩展性。适用于系统设计、架构评审、微服务拆分、ADR 编写与基础设施选型，区别于代码级设计模式或纯数据库设计任务。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Jeffallan"
+    },
+    {
+      "id": "Donchitos/Claude-Code-Game-Studios#.claude/skills/architecture-review/SKILL.md",
+      "name": "architecture-review",
+      "repo": "Donchitos/Claude-Code-Game-Studios",
+      "path": ".claude/skills/architecture-review/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Traceability matrix mapping GDD requirements to ADRs. Finds gaps, cross-ADR conflicts, engine compatibility. PASS/CONCERNS/NOT ASSESSED/FAIL.",
+        "zh": "生成设计文档（GDD）需求到架构决策（ADR）的可追溯矩阵，找出遗漏、ADR 之间的冲突以及引擎兼容性问题，结论分为通过／有隐患／未评估／不通过。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Donchitos"
+    },
+    {
+      "id": "nexu-io/html-anything#next/src/lib/templates/skills/article-magazine/SKILL.md",
+      "name": "article-magazine",
+      "repo": "nexu-io/html-anything",
+      "path": "next/src/lib/templates/skills/article-magazine/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Premium Substack / Medium style long-form article layout, ready to publish as a WeChat post or a blog entry.",
+        "zh": "Substack / Medium 风格的高级感长文排版，适合公众号与博客发布。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "nexu-io"
+    },
+    {
+      "id": "nexu-io/html-anything#next/src/lib/templates/skills/article-sketchnote-editorial/SKILL.md",
+      "name": "article-sketchnote-editorial",
+      "repo": "nexu-io/html-anything",
+      "path": "next/src/lib/templates/skills/article-sketchnote-editorial/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Forge a concept into a magazine feature dossier — real problem, failure, turn, insight, name — with six layout moulds, a four-way typeface comparison, and case-file detail.",
+        "zh": "把一个概念铸成杂志专题档案：真问题→失败→转折→顿悟→命名，配 6 个版式模具、4 组字族对比与探案档案式细节。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "nexu-io"
+    },
+    {
+      "id": "zhaoxuya520/reverse-skill#skills/attack-chain/SKILL.md",
+      "name": "attack-chain",
+      "repo": "zhaoxuya520/reverse-skill",
+      "path": "skills/attack-chain/SKILL.md",
+      "ref": "main",
+      "category": "security",
+      "description": {
+        "en": "Use for authorized multi-stage attack-path planning and orchestration when a task spans reconnaissance, initial access, privilege escalation, lateral movement, or impact assessment. Route single-stage tasks directly to their specialist skill.",
+        "zh": "在授权范围内做多阶段攻击路径规划与编排，适用于横跨信息收集、初始访问、提权、横向移动和影响评估的任务。单一阶段的工作直接交给对应的专项技能。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "zhaoxuya520"
+    },
+    {
+      "id": "Orchestra-Research/AI-Research-SKILLs#0-autoresearch-skill/SKILL.md",
+      "name": "autoresearch",
+      "repo": "Orchestra-Research/AI-Research-SKILLs",
+      "path": "0-autoresearch-skill/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Orchestrates end-to-end autonomous AI research projects using a two-loop architecture. The inner loop runs rapid experiment iterations with clear optimization targets. The outer loop synthesizes results, identifies patterns, and steers research direction. Routes to domain-specific skills for execution, supports continuous agent operation via Claude Code /loop and OpenClaw heartbeat, and produces research presentations and papers. Use when starting a research project, running autonomous experiments, or managing a multi-hypothesis research effort.",
+        "zh": "用双层循环架构编排端到端的自主 AI 研究项目：内层按明确的优化目标快速迭代实验，外层汇总结果、识别规律并决定研究方向。可路由到各领域专用技能执行，支持通过 Claude Code 的 /loop 与 OpenClaw 心跳让智能体持续运行，并产出研究报告与论文。启动研究项目、跑自主实验或管理多假设研究时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Orchestra-Research"
+    },
+    {
+      "id": "diet103/claude-code-infrastructure-showcase#.claude/skills/backend-dev-guidelines/SKILL.md",
+      "name": "backend-dev-guidelines",
+      "repo": "diet103/claude-code-infrastructure-showcase",
+      "path": ".claude/skills/backend-dev-guidelines/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Comprehensive backend development guide for Node.js/Express/TypeScript microservices. Use when creating routes, controllers, services, repositories, middleware, or working with Express APIs, Prisma database access, Sentry error tracking, Zod validation, unifiedConfig, dependency injection, or async patterns. Covers layered architecture (routes → controllers → services → repositories), BaseController pattern, error handling, performance monitoring, testing strategies, and migration from legacy patterns.",
+        "zh": "Node.js / Express / TypeScript 微服务的后端开发规范。编写路由、控制器、服务、仓储、中间件，或处理 Express API、Prisma 数据访问、Sentry 错误追踪、Zod 校验、依赖注入与异步模式时使用。覆盖 routes → controllers → services → repositories 分层架构、BaseController 模式、错误处理、性能监控、测试策略及旧代码迁移。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "diet103"
+    },
+    {
+      "id": "nexu-io/html-anything#next/src/lib/templates/skills/blog-post/SKILL.md",
+      "name": "blog-post",
+      "repo": "nexu-io/html-anything",
+      "path": "next/src/lib/templates/skills/blog-post/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Magazine-style long-form article layout with a masthead, hero image, figures, a pull quote and a byline.",
+        "zh": "杂志感长文排版，含报头、主视觉、插图、引言放大与作者署名。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "nexu-io"
+    },
+    {
+      "id": "virgiliojr94/book-to-skill#SKILL.md",
+      "name": "book-to-skill",
+      "repo": "virgiliojr94/book-to-skill",
+      "path": "SKILL.md",
+      "ref": "main",
+      "category": "writing",
+      "description": {
+        "en": "Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.",
+        "zh": "把任意技术书籍 PDF 转换成 Claude Code 技能，方便边工作边查阅和学习。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "virgiliojr94"
+    },
+    {
+      "id": "NVIDIA/SkillSpector#tests/fixtures/malicious_skill/SKILL.md",
+      "name": "chef-assistant",
+      "repo": "NVIDIA/SkillSpector",
+      "path": "tests/fixtures/malicious_skill/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Use when cooking or planning meals, troubleshooting recipes, learning culinary techniques",
+        "zh": "烹饪与备餐规划、排查菜谱问题、学习烹饪技巧时使用。属于该仓库的演示用技能。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "NVIDIA"
+    },
+    {
+      "id": "NanmiCoder/cc-haha#src/skills/bundled/claude-api/SKILL.md",
+      "name": "claude-api",
+      "repo": "NanmiCoder/cc-haha",
+      "path": "src/skills/bundled/claude-api/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Local-first cross-platform desktop workspace for Claude Code / agents: multi-agent, Git worktrees, code diffs, skill marketplace, multi-model, Computer Use, task-aware desktop pets, with WeChat, Feishu, DingTalk, Telegram, WhatsApp and H5 access.",
+        "zh": "本地优先的跨平台桌面工作台，面向 Claude Code 与各类智能体：多智能体协同、Git worktree、代码差异对比、技能市场、多模型切换、Computer Use、随任务变化的桌面宠物，并可通过微信、飞书、钉钉、Telegram、WhatsApp 及 H5 接入。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "NanmiCoder"
+    },
+    {
       "id": "nextlevelbuilder/ui-ux-pro-max-skill#.claude/skills/design-system/SKILL.md",
       "name": "design-system",
       "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
@@ -9,7 +534,8 @@
       "ref": "main",
       "category": "ui",
       "description": {
-        "en": "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations."
+        "en": "Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations.",
+        "zh": "设计令牌体系、组件规范与幻灯片生成。三层令牌（基础→语义→组件）、CSS 变量、间距与字号阶梯、组件规格，以及成套的演示稿生成。适用于设计令牌、体系化设计与品牌规范的演示材料。"
       },
       "tags": [
         "design-tokens"
@@ -20,6 +546,336 @@
       "author": "nextlevelbuilder"
     },
     {
+      "id": "diet103/claude-code-infrastructure-showcase#.claude/skills/error-tracking/SKILL.md",
+      "name": "error-tracking",
+      "repo": "diet103/claude-code-infrastructure-showcase",
+      "path": ".claude/skills/error-tracking/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Add Sentry v8 error tracking and performance monitoring to your services. Use this skill when adding error handling, creating new controllers, instrumenting cron jobs, or tracking database performance. ALL ERRORS MUST BE CAPTURED TO SENTRY - no exceptions.",
+        "zh": "为服务接入 Sentry v8 错误追踪与性能监控。新增错误处理、编写控制器、给定时任务埋点或追踪数据库性能时使用。要求所有错误一律上报 Sentry，不做例外。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "diet103"
+    },
+    {
+      "id": "NVIDIA/SkillSpector#tests/fixtures/as3_self_reference/SKILL.md",
+      "name": "example-skill",
+      "repo": "NVIDIA/SkillSpector",
+      "path": "tests/fixtures/as3_self_reference/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Documents manifest locations for an example skill.",
+        "zh": "示例技能，用于说明技能清单文件应放在哪些位置。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "NVIDIA"
+    },
+    {
+      "id": "yusufkaraaslan/Skill_Seekers#docs/features/BOOTSTRAP_SKILL.md",
+      "name": "features",
+      "repo": "yusufkaraaslan/Skill_Seekers",
+      "path": "docs/features/BOOTSTRAP_SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Convert documentation websites, GitHub repositories, and PDFs into Claude AI skills with automatic conflict detection",
+        "zh": "把文档网站、GitHub 仓库和 PDF 转成 Claude 技能，并自动检测内容冲突。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "yusufkaraaslan"
+    },
+    {
+      "id": "diet103/claude-code-infrastructure-showcase#.claude/skills/frontend-dev-guidelines/SKILL.md",
+      "name": "frontend-dev-guidelines",
+      "repo": "diet103/claude-code-infrastructure-showcase",
+      "path": ".claude/skills/frontend-dev-guidelines/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Frontend development guidelines for React/TypeScript applications. Modern patterns including Suspense, lazy loading, useSuspenseQuery, file organization with features directory, MUI v7 styling, TanStack Router, performance optimization, and TypeScript best practices. Use when creating components, pages, features, fetching data, styling, routing, or working with frontend code.",
+        "zh": "React / TypeScript 前端开发规范。涵盖 Suspense、懒加载、useSuspenseQuery、按 features 目录组织文件、MUI v7 样式、TanStack Router、性能优化与 TypeScript 最佳实践。编写组件、页面、功能模块或处理数据请求、样式、路由时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "diet103"
+    },
+    {
+      "id": "zubair-trabzada/geo-seo-claude#skills/geo-audit/SKILL.md",
+      "name": "geo-audit",
+      "repo": "zubair-trabzada/geo-seo-claude",
+      "path": "skills/geo-audit/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Full website GEO+SEO audit with parallel subagent delegation. Orchestrates a comprehensive Generative Engine Optimization audit across AI citability, platform analysis, technical infrastructure, content quality, and schema markup. Produces a composite GEO Score (0-100) with prioritized action plan.",
+        "zh": "全站 GEO + SEO 审计，通过并行子智能体分头执行：覆盖 AI 可引用性、平台表现、技术基建、内容质量与结构化标记，最终给出 0–100 的综合 GEO 评分和按优先级排好的改进清单。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "zubair-trabzada"
+    },
+    {
+      "id": "zubair-trabzada/geo-seo-claude#skills/geo-brand-mentions/SKILL.md",
+      "name": "geo-brand-mentions",
+      "repo": "zubair-trabzada/geo-seo-claude",
+      "path": "skills/geo-brand-mentions/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Brand mention and authority scanner for AI visibility. Analyzes brand presence across platforms that AI models rely on for entity recognition and citation decisions. Produces a Brand Authority Score (0-100) with platform-specific recommendations.",
+        "zh": "面向 AI 可见度的品牌提及与权威度扫描：分析品牌在各大模型赖以做实体识别与引用决策的平台上的表现，给出 0–100 的品牌权威度评分及分平台建议。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "zubair-trabzada"
+    },
+    {
+      "id": "zubair-trabzada/geo-seo-claude#skills/geo-citability/SKILL.md",
+      "name": "geo-citability",
+      "repo": "zubair-trabzada/geo-seo-claude",
+      "path": "skills/geo-citability/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "AI citability scoring and optimization. Analyzes web page content to determine how likely AI systems (ChatGPT, Claude, Perplexity, Gemini) are to cite or quote passages from the page. Provides a citability score (0-100) with specific rewrite suggestions.",
+        "zh": "AI 可引用性评分与优化：分析网页内容被 ChatGPT、Claude、Perplexity、Gemini 等系统引用或摘录的可能性，给出 0–100 的评分和具体的改写建议。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "zubair-trabzada"
+    },
+    {
+      "id": "wasp-lang/open-saas#template/app/.agents/skills/getting-started/SKILL.md",
+      "name": "getting-started",
+      "repo": "wasp-lang/open-saas",
+      "path": "template/app/.agents/skills/getting-started/SKILL.md",
+      "ref": "main",
+      "category": "dev",
+      "description": {
+        "en": "Get started with your Open SaaS project — fetches docs, checks Wasp installation, and helps you start your database and app.",
+        "zh": "开始使用 Open SaaS 项目：拉取文档、检查 Wasp 安装情况，并帮你启动数据库和应用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "wasp-lang"
+    },
+    {
+      "id": "wasp-lang/open-saas#template/app/.agents/skills/guided-tour/SKILL.md",
+      "name": "guided-tour",
+      "repo": "wasp-lang/open-saas",
+      "path": "template/app/.agents/skills/guided-tour/SKILL.md",
+      "ref": "main",
+      "category": "dev",
+      "description": {
+        "en": "Take a guided tour of Open SaaS — walks you through step-by-step through the project structure, features, and customization checklist.",
+        "zh": "Open SaaS 引导式导览，逐步讲解项目结构、功能与定制清单。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "wasp-lang"
+    },
+    {
+      "id": "Nutlope/hallmark#skills/hallmark/SKILL.md",
+      "name": "hallmark",
+      "repo": "Nutlope/hallmark",
+      "path": "skills/hallmark/SKILL.md",
+      "ref": "main",
+      "category": "design",
+      "description": {
+        "en": "Anti-AI-slop design skill for greenfield pages, audits, redesigns, and design extraction from URLs or screenshots. Use when the user asks to build a new app or landing page, wants to redesign something, invokes Hallmark by name, or uses audit/redesign/study.",
+        "zh": "反 AI 味的设计技能，适用于从零建站、设计审计、改版，以及从链接或截图反向提取设计。用户要求做新应用或落地页、想改版、点名 Hallmark，或使用 audit / redesign / study 指令时启用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Nutlope"
+    },
+    {
+      "id": "alchaincyf/huashu-design#SKILL.md",
+      "name": "huashu-design",
+      "repo": "alchaincyf/huashu-design",
+      "path": "SKILL.md",
+      "ref": "main",
+      "category": "design",
+      "description": {
+        "en": "Design directly in HTML from inside Claude Code: high-fidelity prototypes, slide decks and animations, with 20 design philosophies and a five-dimension review built in, and MP4 export. Not tied to a particular agent — coding tools other than Claude Code can use it too.",
+        "zh": "在 Claude Code 内直接用 HTML 做设计：高保真原型、幻灯片、动画，内置 20 条设计哲学与五维评审，可导出 MP4。不绑定特定智能体，Claude Code 之外的编码工具同样可用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "alchaincyf"
+    },
+    {
+      "id": "op7418/Humanizer-zh#SKILL.md",
+      "name": "humanizer-zh",
+      "repo": "op7418/Humanizer-zh",
+      "path": "SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Edit the filler, repetition and template phrasing out of Chinese articles, comments and documents so the text reads naturally, while preserving the facts, the degree of certainty and the author's own voice. Use to polish existing text; it does not identify authors and does not guarantee that a detector will pass the result.",
+        "zh": "编辑中文文章、评论与文档中的空话、重复和模板化表达，让文字更自然，同时保留事实、确定程度与作者原本的语气。适用于润色已有文本，不用于判断作者身份，也不保证能通过 AI 检测器。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "op7418"
+    },
+    {
+      "id": "KKKKhazix/khazix-skills#hv-analysis/SKILL.md",
+      "name": "hv-analysis",
+      "repo": "KKKKhazix/khazix-skills",
+      "path": "hv-analysis/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "One of the AI skills open-sourced by the creator 数字生命卡兹克, in a collection that also includes leader (helps you define a goal), neat-freak, and khazix-writer. Usable from Claude Code, Codex and 40-plus other agents.",
+        "zh": "数字生命卡兹克开源的 AI Skills 合集之一（合集另含 leader 目标定义、neat-freak 洁癖、khazix-writer 等），可用于 Claude Code、Codex 及 40 多个智能体。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "KKKKhazix"
+    },
+    {
+      "id": "NanmiCoder/cc-haha#src/skills/bundled/imagegen/SKILL.md",
+      "name": "imagegen",
+      "repo": "NanmiCoder/cc-haha",
+      "path": "src/skills/bundled/imagegen/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Generate original images, artwork, product visuals, diagrams, or other raster assets with the desktop's configured image provider. Use whenever the user asks to create or generate an image.",
+        "zh": "用桌面端已配置的图像服务商生成原创图片、插画、产品图、示意图等位图素材。用户提出生成或创作图片的需求时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "NanmiCoder"
+    },
+    {
+      "id": "Orchestra-Research/AI-Research-SKILLs#01-model-architecture/litgpt/SKILL.md",
+      "name": "implementing-llms-litgpt",
+      "repo": "Orchestra-Research/AI-Research-SKILLs",
+      "path": "01-model-architecture/litgpt/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Implements and trains LLMs using Lightning AI's LitGPT with 20+ pretrained architectures (Llama, Gemma, Phi, Qwen, Mistral). Use when need clean model implementations, educational understanding of architectures, or production fine-tuning with LoRA/QLoRA. Single-file implementations, no abstraction layers.",
+        "zh": "基于 Lightning AI 的 LitGPT 实现并训练 LLM，覆盖 Llama、Gemma、Phi、Qwen、Mistral 等 20 多种预训练架构。需要干净的模型实现、想通过阅读代码理解架构，或用 LoRA / QLoRA 做生产级微调时使用。单文件实现，没有多余的抽象层。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Orchestra-Research"
+    },
+    {
+      "id": "KKKKhazix/khazix-skills#khazix-writer/SKILL.md",
+      "name": "khazix-writer",
+      "repo": "KKKKhazix/khazix-skills",
+      "path": "khazix-writer/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "A writing skill from the collection open-sourced by 数字生命卡兹克, which also includes leader (helps you define a goal), neat-freak and hv-analysis. Usable from Claude Code, Codex and 40-plus other agents.",
+        "zh": "数字生命卡兹克开源的写作类 Skill，同合集还有 leader（帮你定义目标）、neat-freak（洁癖）、hv-analysis 等，可用于 Claude Code、Codex 及 40 多个智能体。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "KKKKhazix"
+    },
+    {
+      "id": "Orchestra-Research/AI-Research-SKILLs#01-model-architecture/mamba/SKILL.md",
+      "name": "mamba-architecture",
+      "repo": "Orchestra-Research/AI-Research-SKILLs",
+      "path": "01-model-architecture/mamba/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "State-space model with O(n) complexity vs Transformers' O(n²). 5× faster inference, million-token sequences, no KV cache. Selective SSM with hardware-aware design. Mamba-1 (d_state=16) and Mamba-2 (d_state=128, multi-head). Models 130M-2.8B on HuggingFace.",
+        "zh": "状态空间模型，复杂度为 O(n)，而 Transformer 是 O(n²)：推理快 5 倍，可处理百万级 token 序列，且不需要 KV cache。采用硬件感知设计的选择性 SSM，含 Mamba-1（d_state=16）与 Mamba-2（d_state=128，多头），HuggingFace 上有 130M–2.8B 的权重。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "Orchestra-Research"
+    },
+    {
+      "id": "teng-lin/notebooklm-py#SKILL.md",
+      "name": "notebooklm",
+      "repo": "teng-lin/notebooklm-py",
+      "path": "SKILL.md",
+      "ref": "main",
+      "category": "research",
+      "description": {
+        "en": "Install, authenticate, troubleshoot, and operate Gemini Notebook through the notebooklm-py CLI or typed async Python API. Use for notebook and source management, grounded chat and research, and artifact generation or download when the user mentions Gemini Notebook, notebooklm-py, the notebooklm CLI, or its Python API. Do not use for the generic Gemini API or unrelated content creation.",
+        "zh": "通过 notebooklm-py 命令行或带类型的异步 Python API 安装、登录、排障并操作 Gemini Notebook。适用于笔记本与来源管理、基于资料的对谈与研究、以及产物生成或下载。用户提到 Gemini Notebook、notebooklm-py、notebooklm CLI 或其 Python API 时使用；不适用于通用 Gemini API 或无关的内容创作。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "teng-lin"
+    },
+    {
+      "id": "nidhinjs/prompt-master#SKILL.md",
+      "name": "prompt-master",
+      "repo": "nidhinjs/prompt-master",
+      "path": "SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Generates optimized prompts for AI tools. Activates only when the user explicitly asks to write, fix, improve, or adapt a prompt for a specific AI tool (LLM, Cursor, Midjourney, image AI, video AI, coding agents, etc.). Does not activate for general conversation, coding tasks, document writing, or other non-prompt-engineering work.",
+        "zh": "为各类 AI 工具生成优化后的提示词。仅在用户明确要求为某个 AI 工具（LLM、Cursor、Midjourney、图像／视频 AI、编码智能体等）撰写、修正、改进或改写提示词时启用，不用于日常对话、普通编码、写文档等与提示词工程无关的场合。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "nidhinjs"
+    },
+    {
+      "id": "NanmiCoder/cc-haha#.agents/skills/release-announcement/SKILL.md",
+      "name": "release-announcement",
+      "repo": "NanmiCoder/cc-haha",
+      "path": ".agents/skills/release-announcement/SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Turn the project's latest release-notes Markdown into a short announcement for a WeChat group plus a vertical feature image, verifying each contributor's GitHub ID and embedding their real avatar. Use for release publicity; it does not create or publish the GitHub release itself.",
+        "zh": "根据项目最新的 release-notes Markdown 制作微信群发布短文案与竖版长图，核验贡献者 GitHub ID 并嵌入真实头像。用于版本发布宣传，不负责创建或发布 GitHub Release。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "NanmiCoder"
+    },
+    {
+      "id": "yusufkaraaslan/Skill_Seekers#skills/skill-seekers/SKILL.md",
+      "name": "skill-builder",
+      "repo": "yusufkaraaslan/Skill_Seekers",
+      "path": "skills/skill-seekers/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Automatically detect source types and build AI skills using Skill Seekers. Use when the user wants to create skills from documentation, repos, PDFs, videos, or other knowledge sources.",
+        "zh": "用 Skill Seekers 自动识别来源类型并构建 AI 技能。想从文档、代码仓库、PDF、视频或其他知识来源创建技能时使用。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "yusufkaraaslan"
+    },
+    {
+      "id": "NVIDIA/SkillSpector#skills/skill-inspector/SKILL.md",
+      "name": "skill-inspector",
+      "repo": "NVIDIA/SkillSpector",
+      "path": "skills/skill-inspector/SKILL.md",
+      "ref": "main",
+      "category": "agent",
+      "description": {
+        "en": "Review AI agent skills before installation using NVIDIA SkillSpector and source-aware semantic review. Use when asked whether a skill or downloaded skill folder is safe, trustworthy, installable, over-permissioned, or malicious.",
+        "zh": "安装前先审查 AI 智能体技能：使用 NVIDIA SkillSpector 结合源码感知的语义审查，判断某个技能或下载来的技能目录是否安全、可信、可安装，是否存在权限过大或恶意行为。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "NVIDIA"
+    },
+    {
       "id": "nextlevelbuilder/ui-ux-pro-max-skill#.claude/skills/ui-styling/SKILL.md",
       "name": "ui-styling",
       "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
@@ -27,7 +883,8 @@
       "ref": "main",
       "category": "ui",
       "description": {
-        "en": "Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling, and canvas-based visual designs. Use when building user interfaces, implementing design systems, creating responsive layouts, adding accessible components (dialogs, dropdowns, forms, tables), customizing themes and colors, implementing dark mode, generating visual designs and posters, or establishing consistent styling patterns across applications."
+        "en": "Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling, and canvas-based visual designs. Use when building user interfaces, implementing design systems, creating responsive layouts, adding accessible components (dialogs, dropdowns, forms, tables), customizing themes and colors, implementing dark mode, generating visual designs and posters, or establishing consistent styling patterns across applications.",
+        "zh": "用 shadcn/ui（基于 Radix UI + Tailwind）、Tailwind 工具类与画布式视觉设计，做出好看且无障碍的界面。构建设计体系、响应式布局、对话框／下拉／表单／表格等无障碍组件，定制主题与配色，实现深色模式，生成视觉稿与海报，或在多个应用之间保持统一风格时使用。"
       },
       "tags": [
         "tailwind",
@@ -46,7 +903,8 @@
       "ref": "main",
       "category": "ui",
       "description": {
-        "en": "UI/UX design intelligence for web, mobile, and desktop. This skill should be used when designing, building, reviewing, or fixing interfaces, including pages, components, design systems, accessibility, interaction, responsive layout, typography, color, charts, and stack-specific UI implementation. Searchable local data: 79 searchable styles (50 active), 192 product palettes and reasoning profiles, 74 font pairings, 119 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks."
+        "en": "UI/UX design intelligence for web, mobile, and desktop. This skill should be used when designing, building, reviewing, or fixing interfaces, including pages, components, design systems, accessibility, interaction, responsive layout, typography, color, charts, and stack-specific UI implementation. Searchable local data: 79 searchable styles (50 active), 192 product palettes and reasoning profiles, 74 font pairings, 119 UX guidelines, 105 icons, 17 GSAP presets, 25 chart types, and 22 stacks.",
+        "zh": "面向 Web、移动端和桌面的 UI/UX 设计能力。在设计、构建、评审或修复界面时使用，涵盖页面、组件、设计体系、无障碍、交互、响应式布局、排版、配色、图表以及具体技术栈的界面实现。内置可检索的本地数据：79 种可检索风格（50 种启用）、192 套产品配色与推理配置、74 组字体搭配、119 条 UX 准则、105 个图标、17 套 GSAP 预设、25 种图表类型和 22 个技术栈。"
       },
       "tags": [
         "ui",
@@ -57,7 +915,22 @@
       "version": "2.15.0",
       "added": "2026-10-02",
       "author": "nextlevelbuilder"
+    },
+    {
+      "id": "Vincentwei1021/video-shotcraft#SKILL.md",
+      "name": "video-shotcraft",
+      "repo": "Vincentwei1021/video-shotcraft",
+      "path": "SKILL.md",
+      "ref": "main",
+      "category": "other",
+      "description": {
+        "en": "Create cinematic product videos from shot recipe cards, a validated template, and code/audio assets (Remotion + real page screenshots + 2.5D camera moves + beat-synced cuts + sound design). Use when the user asks to turn a frontend project or webpage into a product video, says \"use video-shotcraft to make a video/promo\", names the Ink Press template or asks to reproduce its effect, or wants a single shot card's motion.",
+        "zh": "用镜头配方卡 + 已验收模板 + 代码／音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。当用户要求把前端项目或网页做成产品视频、说「用 video-shotcraft 做视频／宣传片」、点名 Ink Press 模板或要求复刻其效果，或想用镜头卡做单个动效镜头时使用。"
+      },
+      "license": "Apache-2.0",
+      "added": "2026-10-02",
+      "author": "Vincentwei1021"
     }
   ],
-  "generatedAt": "2026-10-02T07:46:15.866Z"
+  "generatedAt": "2026-10-02T08:41:55.117Z"
 }

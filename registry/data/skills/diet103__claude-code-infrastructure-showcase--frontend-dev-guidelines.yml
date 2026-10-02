@@ -1,0 +1,10 @@
+repo: diet103/claude-code-infrastructure-showcase
+name: frontend-dev-guidelines
+path: .claude/skills/frontend-dev-guidelines/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Frontend development guidelines for React/TypeScript applications. Modern patterns including Suspense, lazy loading, useSuspenseQuery, file organization with features directory, MUI v7 styling, TanStack Router, performance optimization, and TypeScript best practices. Use when creating components, pages, features, fetching data, styling, routing, or working with frontend code.
+  zh: "React / TypeScript 前端开发规范。涵盖 Suspense、懒加载、useSuspenseQuery、按 features 目录组织文件、MUI v7 样式、TanStack Router、性能优化与 TypeScript 最佳实践。编写组件、页面、功能模块或处理数据请求、样式、路由时使用。"

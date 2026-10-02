@@ -1,0 +1,10 @@
+repo: NanmiCoder/cc-haha
+name: claude-api
+path: src/skills/bundled/claude-api/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: "Local-first cross-platform desktop workspace for Claude Code / agents: multi-agent, Git worktrees, code diffs, skill marketplace, multi-model, Computer Use, task-aware desktop pets, with WeChat, Feishu, DingTalk, Telegram, WhatsApp and H5 access."
+  zh: "本地优先的跨平台桌面工作台，面向 Claude Code 与各类智能体：多智能体协同、Git worktree、代码差异对比、技能市场、多模型切换、Computer Use、随任务变化的桌面宠物，并可通过微信、飞书、钉钉、Telegram、WhatsApp 及 H5 接入。"

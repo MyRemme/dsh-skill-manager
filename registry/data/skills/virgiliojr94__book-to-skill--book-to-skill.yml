@@ -1,0 +1,10 @@
+repo: virgiliojr94/book-to-skill
+name: book-to-skill
+path: SKILL.md
+ref: main
+category: writing
+license: MIT
+added: 2026-10-02
+description:
+  en: Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.
+  zh: "把任意技术书籍 PDF 转换成 Claude Code 技能，方便边工作边查阅和学习。"

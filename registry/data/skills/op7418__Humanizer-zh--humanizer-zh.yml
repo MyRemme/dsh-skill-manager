@@ -1,0 +1,10 @@
+repo: op7418/Humanizer-zh
+name: humanizer-zh
+path: SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: "Edit the filler, repetition and template phrasing out of Chinese articles, comments and documents so the text reads naturally, while preserving the facts, the degree of certainty and the author's own voice. Use to polish existing text; it does not identify authors and does not guarantee that a detector will pass the result."
+  zh: "编辑中文文章、评论与文档中的空话、重复和模板化表达，让文字更自然，同时保留事实、确定程度与作者原本的语气。适用于润色已有文本，不用于判断作者身份，也不保证能通过 AI 检测器。"

@@ -1,0 +1,10 @@
+repo: KKKKhazix/khazix-skills
+name: khazix-writer
+path: khazix-writer/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: "A writing skill from the collection open-sourced by 数字生命卡兹克, which also includes leader (helps you define a goal), neat-freak and hv-analysis. Usable from Claude Code, Codex and 40-plus other agents."
+  zh: "数字生命卡兹克开源的写作类 Skill，同合集还有 leader（帮你定义目标）、neat-freak（洁癖）、hv-analysis 等，可用于 Claude Code、Codex 及 40 多个智能体。"

@@ -1,0 +1,10 @@
+repo: Donchitos/Claude-Code-Game-Studios
+name: architecture-review
+path: .claude/skills/architecture-review/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Traceability matrix mapping GDD requirements to ADRs. Finds gaps, cross-ADR conflicts, engine compatibility. PASS/CONCERNS/NOT ASSESSED/FAIL.
+  zh: "生成设计文档（GDD）需求到架构决策（ADR）的可追溯矩阵，找出遗漏、ADR 之间的冲突以及引擎兼容性问题，结论分为通过／有隐患／未评估／不通过。"

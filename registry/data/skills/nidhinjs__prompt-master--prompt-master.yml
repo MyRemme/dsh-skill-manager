@@ -1,0 +1,10 @@
+repo: nidhinjs/prompt-master
+name: prompt-master
+path: SKILL.md
+ref: main
+category: agent
+license: MIT
+added: 2026-10-02
+description:
+  en: Generates optimized prompts for AI tools. Activates only when the user explicitly asks to write, fix, improve, or adapt a prompt for a specific AI tool (LLM, Cursor, Midjourney, image AI, video AI, coding agents, etc.). Does not activate for general conversation, coding tasks, document writing, or other non-prompt-engineering work.
+  zh: "为各类 AI 工具生成优化后的提示词。仅在用户明确要求为某个 AI 工具（LLM、Cursor、Midjourney、图像／视频 AI、编码智能体等）撰写、修正、改进或改写提示词时启用，不用于日常对话、普通编码、写文档等与提示词工程无关的场合。"

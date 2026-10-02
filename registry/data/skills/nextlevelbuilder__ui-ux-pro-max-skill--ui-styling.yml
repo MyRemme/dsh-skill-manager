@@ -9,4 +9,5 @@ tags: [tailwind, shadcn]
 license: MIT
 description:
   en: "Create beautiful, accessible user interfaces with shadcn/ui components (built on Radix UI + Tailwind), Tailwind CSS utility-first styling, and canvas-based visual designs. Use when building user interfaces, implementing design systems, creating responsive layouts, adding accessible components (dialogs, dropdowns, forms, tables), customizing themes and colors, implementing dark mode, generating visual designs and posters, or establishing consistent styling patterns across applications."
+  zh: "用 shadcn/ui（基于 Radix UI + Tailwind）、Tailwind 工具类与画布式视觉设计，做出好看且无障碍的界面。构建设计体系、响应式布局、对话框／下拉／表单／表格等无障碍组件，定制主题与配色，实现深色模式，生成视觉稿与海报，或在多个应用之间保持统一风格时使用。"
 

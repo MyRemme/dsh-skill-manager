@@ -1,0 +1,10 @@
+repo: K-Dense-AI/scientific-agent-skills
+name: 13c-metabolic-flux
+path: skills/13c-metabolic-flux/SKILL.md
+ref: main
+category: research
+license: MIT
+added: 2026-10-02
+description:
+  en: Estimates intracellular metabolic fluxes from steady-state carbon-13 isotope-tracing measurements using validated atom maps, mfapy isotope simulation, constrained multistart fitting, and flux-profile diagnostics. Use for 13C-MFA, carbon tracing, mass isotopomer distributions (MDVs/MIDs), positional isotopomers, parallel tracer experiments, and determining whether labeling data constrain a pathway flux. Distinguishes measured-label inference from COBRA flux balance analysis and flags experiments requiring nonstationary MFA.
+  zh: "由稳态碳-13 同位素示踪数据估算胞内代谢通量：使用经校验的原子映射、mfapy 同位素模拟、带约束的多起点拟合与通量谱诊断。适用于 13C-MFA、碳示踪、质量同位素分布（MDV/MID）、位置异构体与平行示踪实验，也可判断标记数据是否足以约束某条通路通量。会区分实测标记推断与 COBRA 通量平衡分析，并提示哪些实验必须改用非稳态 MFA。"

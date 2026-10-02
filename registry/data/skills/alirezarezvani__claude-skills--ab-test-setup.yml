@@ -1,0 +1,10 @@
+repo: alirezarezvani/claude-skills
+name: ab-test-setup
+path: .gemini/skills/ab-test-setup/SKILL.md
+ref: main
+category: testing
+license: MIT
+added: 2026-10-02
+description:
+  en: When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "hypothesis," "conversion experiment," "statistical significance," or "test this." For tracking implementation, see analytics-tracking.
+  zh: "规划、设计并落地 A/B 测试或实验方案。涉及分流测试、多变量测试、假设制定、变体文案、统计显著性与试验时长推算时使用；埋点实现部分见 analytics-tracking。"

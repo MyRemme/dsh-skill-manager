@@ -1,0 +1,10 @@
+repo: NVIDIA/SkillSpector
+name: example-skill
+path: tests/fixtures/as3_self_reference/SKILL.md
+ref: main
+category: agent
+license: Apache-2.0
+added: 2026-10-02
+description:
+  en: Documents manifest locations for an example skill.
+  zh: "示例技能，用于说明技能清单文件应放在哪些位置。"

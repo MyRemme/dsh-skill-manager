@@ -1,0 +1,10 @@
+repo: AgriciDaniel/claude-ads
+name: ads-amazon
+path: skills/ads-amazon/SKILL.md
+ref: main
+category: writing
+license: MIT
+added: 2026-10-02
+description:
+  en: Audit Amazon Ads profiles, regions, Sponsored Products, Sponsored Brands, Sponsored Display, DSP, portfolios, targeting, search terms, retail readiness, creative, budgets, ACOS, TACOS, reporting, and policy. Use for Amazon Ads, sponsored ads, Amazon PPC, ACOS, TACOS, ASIN advertising, Amazon DSP, or retail-media optimization.
+  zh: "审计亚马逊广告账户：站点与区域、商品推广／品牌推广／展示型推广、DSP、广告组合、定向、搜索词、商品就绪度、素材、预算、ACOS、TACOS、报表与合规策略。适用于亚马逊 PPC、ASIN 投放、Amazon DSP 及零售媒体优化。"

@@ -1,0 +1,10 @@
+repo: alirezarezvani/claude-skills
+name: a11y-audit
+path: .gemini/skills/a11y-audit/SKILL.md
+ref: main
+category: testing
+license: MIT
+added: 2026-10-02
+description:
+  en: Accessibility audit skill for scanning, fixing, and verifying WCAG 2.2 Level A and AA compliance across React, Next.js, Vue, Angular, Svelte, and plain HTML codebases. Use when auditing accessibility, fixing a11y violations, checking color contrast, generating compliance reports, or integrating accessibility checks into CI/CD pipelines.
+  zh: "无障碍审计技能：扫描、修复并验证 React、Next.js、Vue、Angular、Svelte 及原生 HTML 项目的 WCAG 2.2 A/AA 合规性，可检查颜色对比度、生成合规报告，并接入 CI/CD 流水线。"

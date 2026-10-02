@@ -196,3 +196,40 @@ test("every shipped entry parses and validates", async () => {
     assert.deepEqual(validateEntry(parsed.fields, file), [], file);
   }
 });
+
+/**
+ * Judge which language a description is written in.
+ *
+ * `description.en` is what an English reader sees, so Chinese text landing there
+ * is a real defect — it happened once, when four upstream repositories wrote
+ * their summary in Chinese and one concatenated both languages onto one line.
+ *
+ * Counting CJK against Latin letters outright would be too strict in the other
+ * direction: a Chinese sentence about `result-to-claim`, `AdServices` or `jadx`
+ * is still Chinese, and those identifiers dominate the character count. What
+ * separates the two is the share of CJK among all letters.
+ */
+function languageShare(text) {
+  const cjk = (text.match(/[\u4e00-\u9fff]/gu) ?? []).length;
+  const latin = (text.match(/[A-Za-z]/gu) ?? []).length;
+  return cjk / Math.max(1, cjk + latin);
+}
+
+test("the English description is English and the Chinese one is Chinese", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../registry/skills.json", import.meta.url), "utf8"));
+  for (const skill of catalog.skills) {
+    // A translated description is at least a quarter CJK; an English one is
+    // nowhere near it. The widest gap seen in the shipped catalog is 0.28 for a
+    // Chinese entry heavy in product names and 0.00 for an English one.
+    assert.ok(
+      languageShare(skill.description.en) < 0.15,
+      `${skill.name}: description.en is not written in English (${Math.round(languageShare(skill.description.en) * 100)}% CJK)`,
+    );
+    if (skill.description.zh === undefined) continue;
+    assert.ok(
+      languageShare(skill.description.zh) > 0.25,
+      `${skill.name}: description.zh is not written in Chinese (${Math.round(languageShare(skill.description.zh) * 100)}% CJK)`,
+    );
+  }
+});
+
