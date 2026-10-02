@@ -47,6 +47,19 @@ const UI_LABELS = [
   "加载中",
   "出错了",
   "返回会话",
+  "申请收录",
+  "复制条目模板",
+  "排序字段",
+  "排序方向",
+  "发布时间范围",
+  "全部时间",
+  "最近 7 天",
+  "最近 30 天",
+  "最近 90 天",
+  "最近 1 年",
+  "全部分类",
+  "收录时间",
+  "筛选",
 ];
 
 /** Files that must be English, with the reason recorded for the failure message. */

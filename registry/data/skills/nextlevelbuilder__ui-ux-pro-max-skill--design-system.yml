@@ -2,6 +2,8 @@ repo: nextlevelbuilder/ui-ux-pro-max-skill
 name: design-system
 path: .claude/skills/design-system/SKILL.md
 ref: main
+added: 2026-10-02
+version: 2.15.0
 category: ui
 tags: [design-tokens]
 license: MIT

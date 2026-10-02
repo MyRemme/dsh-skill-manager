@@ -21,8 +21,11 @@ registry/
 repo: acme/widget-skills            # 必填——仓库的 owner/name
 name: widget-helper                 # 必填——必须等于 SKILL.md frontmatter 里的 `name`
 path: skills/widget-helper/SKILL.md # 必填——SKILL.md 在该仓库中的位置
+category: writing                   # 必填——从下方列表里选一个
 ref: main                           # 可选——分支、标签或提交；默认 main
-category: docs                      # 可选——一个小写单词，如 ui、docs、dev、security
+version: 2.15.0                     # 可选——仅当上游确实发布 release 时
+commit: 063bee9                     # 可选——条目核验时所处的提交
+added: 2026-10-02                   # 可选——条目进入目录的日期 YYYY-MM-DD
 tags: [writing, markdown]           # 可选——最多 8 个，小写加连字符
 license: MIT                        # 可选——仅当上游仓库声明了许可证时
 description:
@@ -30,7 +33,18 @@ description:
   zh: 按风格指南审阅文案。适用于「审一下文档」「把措辞收紧」这类请求。  # 可选
 ```
 
-`description.en` 必填，其余都可选。缺中文是我们的活，不该成为打回的理由。
+`repo`、`name`、`path`、`category`、`description.en` 必填。缺中文是我们的活，不该成为
+打回的理由。
+
+`category` 是封闭列表——放开成自由文本会让筛选器变成「一个条目一个分类」，比没有筛选
+更糟：
+
+`ui` `dev` `docs` `data` `office` `design` `media` `testing` `security`
+`infra` `research` `writing` `agent` `fun`
+
+市场会把 `category` 渲染成筛选项、把 `version` 或 `commit` 渲染成来源徽标、把 `added`
+当作时间筛选的窗口。**只有上游确实发布 release 时才写 `version`**——编一个版本号比不写
+更糟，核验时所处的修订请写进 `commit`。
 
 文件名必须与条目一致：`owner__repo--skill.yml`。owner 与 repo 保留原大小写，
 技能部分就是 kebab-case 的技能名。
@@ -74,7 +88,7 @@ node registry/scripts/build-registry.mjs --stars            # 刷新 star 数
 
 ```jsonc
 {
-  "version": 1,
+  "version": 2,
   "generatedAt": "2026-10-05T09:00:00.000Z",
   "skills": [
     {
@@ -83,7 +97,9 @@ node registry/scripts/build-registry.mjs --stars            # 刷新 star 数
       "repo": "acme/widget-skills",
       "path": "skills/widget-helper/SKILL.md",
       "ref": "main",
-      "category": "docs",
+      "category": "writing",
+      "version": "2.15.0",          // 或 "commit": "063bee9"
+      "added": "2026-10-02",
       "tags": ["writing"],
       "license": "MIT",
       "author": "acme",
@@ -94,6 +110,7 @@ node registry/scripts/build-registry.mjs --stars            # 刷新 star 数
 }
 ```
 
+`version` 是目录文档自身的 schema 版本。推进它就是告诉旧版插件「形状变了」。
 `id` 就是插件在安装时回传的标识。条目按 `name` 排序，生成文件的 diff 只会出现在真正
 变化的地方。
 

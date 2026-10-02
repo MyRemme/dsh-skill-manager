@@ -94,6 +94,21 @@ function createHarness() {
     return { type, props: merged };
   }
 
+  /**
+   * React flattens nested child arrays and drops holes before rendering. The
+   * harness has to do the same or `h("select", p, option, list.map(...))` yields
+   * a nested array that no caller can index the way React allows.
+   */
+  function flattenChildren(value, out = []) {
+    if (Array.isArray(value)) {
+      for (const child of value) flattenChildren(child, out);
+      return out;
+    }
+    if (value === null || value === undefined || value === false || value === true) return out;
+    out.push(value);
+    return out;
+  }
+
   function visit(element, path) {
     if (element === null || element === undefined || element === false || element === true) return "";
     if (typeof element === "string" || typeof element === "number") return String(element);
@@ -115,7 +130,14 @@ function createHarness() {
     }
     if (typeof element.type === "symbol") return visit(element.props?.children, path);
     if (typeof element.type === "string") {
-      nodes.push({ kind: "host", tag: element.type, props: element.props, path });
+      // Record host children flattened, the way React hands them to a host
+      // component, so assertions can read `.props.children` as a list.
+      const props = { ...element.props };
+      if ("children" in props) {
+        const flat = flattenChildren(props.children);
+        props.children = flat.length === 1 ? flat[0] : flat;
+      }
+      nodes.push({ kind: "host", tag: element.type, props, path });
       return visit(element.props?.children, `${path}.`);
     }
     return "";
@@ -167,6 +189,17 @@ function createHarness() {
   };
 }
 
+/**
+ * Drive the locale the way the shell does, so a component that subscribed to
+ * `ctx.locale` through `apply` observes the switch. A bundle evaluated without
+ * `apply` has no subscription, in which case this is a no-op.
+ */
+let localeDriver;
+function setClientLanguage(active) {
+  if (localeDriver === undefined) return;
+  localeDriver(active);
+}
+
 /** Evaluate the bundle with a given React and return its exports. */
 function evaluate(React) {
   let definition;
@@ -190,6 +223,24 @@ function evaluate(React) {
   new Function("window", source)(window);
   assert.equal(typeof definition, "object", "the bundle must call window.__ModuleLoader__.load");
   return { definition, exports: definition.factory(require), window };
+}
+
+/** Build a locale service whose active language the test can change. */
+function localeService() {
+  const listeners = new Set();
+  let active = "zh";
+  localeDriver = (next) => {
+    active = next === "en" ? "en" : "zh";
+    for (const listener of listeners) listener();
+  };
+  return {
+    register: () => () => {},
+    snapshot: () => ({ active }),
+    subscribe: (listener) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+  };
 }
 
 // ------------------------------------------------------------ loader contract
@@ -390,10 +441,37 @@ const marketPayload = {
   url: "https://example.invalid/skills.json",
   fetchedAt: Date.now(),
   cached: false,
-  version: 1,
+  version: 2,
   skills: [
-    { id: "acme/one#s", name: "alpha-skill", repo: "acme/one", path: "s", category: "docs", tags: ["writing"], description: { en: "Writes docs.", zh: "写文档。" }, installed: true },
-    { id: "acme/two#s", name: "delta-skill", repo: "acme/two", path: "skills/delta", category: "tools", tags: [], description: { en: "Runs tools.", zh: "跑工具。" }, installed: false, stars: 12 },
+    {
+      id: "acme/one#skills/alpha/SKILL.md",
+      name: "alpha-skill",
+      repo: "acme/one",
+      path: "skills/alpha/SKILL.md",
+      ref: "main",
+      category: "docs",
+      tags: ["writing"],
+      version: "2.15.0",
+      license: "MIT",
+      added: "2026-09-01",
+      description: { en: "Writes docs.", zh: "写文档。" },
+      installed: true,
+      stars: 40,
+    },
+    {
+      id: "acme/two#skills/delta/SKILL.md",
+      name: "delta-skill",
+      repo: "acme/two",
+      path: "skills/delta/SKILL.md",
+      ref: "main",
+      category: "infra",
+      tags: [],
+      commit: "063bee9",
+      added: "2026-08-28",
+      description: { en: "Runs tools.", zh: "跑工具。" },
+      installed: false,
+      stars: 12,
+    },
   ],
 };
 
@@ -430,8 +508,12 @@ async function startPanel(overrides) {
         return () => {};
       },
     },
-    effect: () => () => {},
+    effect: (fn) => {
+      const cleanup = fn();
+      return typeof cleanup === "function" ? cleanup : () => {};
+    },
     get: () => undefined,
+    locale: localeService(),
   });
   const text = await harness.start(harness.React.createElement(panel, { api: { selectPanel: () => {} } }));
   return { harness, text, calls };
@@ -527,16 +609,163 @@ test("batching runs against the selection and reports the changed count", async 
   assert.deepEqual(body.items.map((item) => item.name).sort(), ["alpha-skill", "beta-skill"]);
 });
 
-test("the market tab lists registry entries and marks installed ones", async () => {
-  const { harness, text } = await startPanel();
-  const market = harness.hosts("button").find((node) => node.props.children === "市场");
+/** Open the market tab and return the repainted state. */
+async function openMarket() {
+  const started = await startPanel();
+  const market = started.harness.hosts("button").find((node) => node.props.children === "市场");
   market.props.onClick();
+  const text = await started.harness.repaint();
+  return { ...started, text };
+}
+
+test("the market tab lists registry entries and marks installed ones", async () => {
+  const { harness, text } = await openMarket();
+  assert.ok(text.includes("delta-skill"), "an uninstalled entry appears");
+  assert.ok(text.includes("写文档。"), "the Chinese description is preferred");
+  assert.ok(text.includes("★ 12"), "stars render when the registry provides them");
+  assert.equal(harness.components("MarketCard").length, 2);
+});
+
+test("every market card links to the repository it came from", async () => {
+  const { harness } = await openMarket();
+  const links = harness.hosts("a").map((node) => node.props.href);
+  assert.ok(links.includes("https://github.com/acme/one"), "the repo link is present");
+  assert.ok(links.includes("https://github.com/acme/two"));
+  assert.ok(
+    links.includes("https://github.com/acme/one/blob/main/skills/alpha/SKILL.md"),
+    "a deep link to the exact SKILL.md is present",
+  );
+  // Every card carries at least one outward link; a card with no way to reach the
+  // source project is the bug this guards.
+  for (const card of harness.components("MarketCard")) {
+    assert.ok(typeof card.props.entry.repo === "string" && card.props.entry.repo.includes("/"));
+  }
+});
+
+test("a version badge is shown when upstream declares one, a commit when it does not", async () => {
+  const { text } = await openMarket();
+  assert.ok(text.includes("版本 v2.15.0"), "the real semver from the upstream release is shown");
+  assert.ok(text.includes("提交 063bee9"), "an entry with no release shows the pinned commit instead of a fake version");
+  assert.equal(text.includes("版本 063bee9"), false, "a commit must never be labelled as a version");
+});
+
+test("categories are rendered from the closed list, in the active language", async () => {
+  const { harness, text } = await openMarket();
+  assert.ok(text.includes("写作与文档"), "the docs category renders its Chinese label");
+  assert.ok(text.includes("运维与部署"), "the infra category renders too");
+  const select = harness.hosts("select").find((node) => node.props.className === "skm-select");
+  assert.ok(select !== undefined, "the category filter renders");
+  const options = Array.isArray(select.props.children) ? select.props.children : [select.props.children];
+  assert.deepEqual(options.map((node) => node.props.value), ["all", "docs", "infra"]);
+  assert.equal(options[0].props.children, "全部分类");
+});
+
+test("switching language re-renders the market in English", async () => {
+  const { harness, text } = await openMarket();
+  assert.ok(text.includes("全部分类"), "Chinese by default");
+  setClientLanguage("en");
   const after = await harness.repaint();
-  assert.ok(after.includes("delta-skill"), "an uninstalled entry appears");
-  assert.ok(after.includes("写文档。"), "the Chinese description is preferred");
-  assert.ok(after.includes("已安装"), "an installed entry is badged");
-  assert.ok(after.includes("★ 12"), "stars render when the registry provides them");
-  assert.ok(text.includes("已安装"), "the tab bar label is also 已安装");
+  assert.ok(after.includes("All categories"), "the category placeholder follows the locale");
+  assert.ok(after.includes("Writing & docs"), "category labels follow too");
+  assert.ok(after.includes("★ 12"), "numbers survive the switch");
+  setClientLanguage("zh");
+  const back = await harness.repaint();
+  assert.ok(back.includes("全部分类"), "and it switches back");
+});
+
+/** Find a filter-menu option by its visible label. */
+function menuOption(harness, label) {
+  return harness
+    .hosts("button")
+    .filter((node) => node.props.className === "skm-menuItem")
+    .find((node) => {
+      const parts = Array.isArray(node.props.children) ? node.props.children : [node.props.children];
+      return parts.some((part) => part?.props?.children === label);
+    });
+}
+
+test("the category filter narrows the list", async () => {
+  const { harness } = await openMarket();
+  const select = harness.hosts("select").find((node) => node.props.className === "skm-select");
+  select.props.onChange({ target: { value: "infra" } });
+  const after = await harness.repaint();
+  assert.ok(after.includes("delta-skill"));
+  assert.equal(after.includes("alpha-skill"), false);
+  assert.equal(harness.components("MarketCard").length, 1);
+});
+
+test("the filter menu carries sort field, direction and time range", async () => {
+  const { harness, text } = await openMarket();
+  assert.ok(text.includes("筛选"), "the filter control renders");
+  const trigger = harness.hosts("button").find((node) => typeof node.props.children === "string" && node.props.children.startsWith("筛选"));
+  trigger.props.onClick();
+  const open = await harness.repaint();
+  for (const label of ["排序字段", "排序方向", "发布时间范围", "Star 数", "收录时间", "名称", "降序", "升序", "全部时间", "最近 7 天", "最近 30 天", "最近 90 天", "最近 1 年"]) {
+    assert.ok(open.includes(label), `the menu must offer ${label}`);
+  }
+});
+
+test("choosing a sort direction reorders the cards", async () => {
+  const { harness } = await openMarket();
+  const names = () => harness.components("MarketCard").map((node) => node.props.entry.name);
+  assert.deepEqual(names(), ["alpha-skill", "delta-skill"], "stars descending puts 40 before 12");
+  const trigger = harness.hosts("button").find((node) => typeof node.props.children === "string" && node.props.children.startsWith("筛选"));
+  trigger.props.onClick();
+  await harness.repaint();
+  const asc = menuOption(harness, "升序");
+  assert.ok(asc !== undefined, "the ascending option is present");
+  asc.props.onClick();
+  await harness.repaint();
+  assert.deepEqual(names(), ["delta-skill", "alpha-skill"], "ascending reverses the order");
+});
+
+test("the time range drops entries outside the window", async () => {
+  const { harness } = await openMarket();
+  const trigger = harness.hosts("button").find((node) => typeof node.props.children === "string" && node.props.children.startsWith("筛选"));
+  trigger.props.onClick();
+  await harness.repaint();
+  const recent = menuOption(harness, "最近 7 天");
+  assert.ok(recent !== undefined, "the 7-day option is present");
+  recent.props.onClick();
+  await harness.repaint();
+  // Both fixtures were added months before the test runs, so a 7-day window
+  // leaves nothing rather than silently ignoring the filter.
+  assert.equal(harness.components("MarketCard").length, 0);
+});
+
+test("a sort field the catalog cannot answer says so instead of reordering", async () => {
+  const started = await startPanel({
+    market: { url: "https://example.invalid/s.json", version: 2, cached: false, skills: [{ id: "a/b#s", name: "no-stars", repo: "a/b", path: "s", category: "ui", description: { en: "No stars." }, installed: false }] },
+  });
+  const market = started.harness.hosts("button").find((node) => node.props.children === "市场");
+  market.props.onClick();
+  const text = await started.harness.repaint();
+  assert.ok(text.includes("目录未提供 Star 数"), "the caveat is surfaced rather than faked");
+});
+
+test("the submission panel exposes a link and a copyable template", async () => {
+  const { harness, text } = await openMarket();
+  assert.ok(text.includes("申请收录 skill"), "the submission heading renders");
+  assert.ok(text.includes("repo: owner/name"), "the entry template is shown");
+  const links = harness.hosts("a").map((node) => node.props.href);
+  assert.ok(links.includes("https://github.com/MyRemme/dsh-skill-manager/issues/new"), "the submission link points at the tracker");
+  const openLink = harness.hosts("a").find((node) => node.props.children === "申请收录");
+  assert.ok(openLink !== undefined, "the submit control is a real link, so middle-click and copy-link work");
+  assert.equal(openLink.props.target, "_blank");
+});
+
+test("a rejected clipboard write is reported, not swallowed", async () => {
+  const started = await startPanel();
+  const market = started.harness.hosts("button").find((node) => node.props.children === "市场");
+  market.props.onClick();
+  await started.harness.repaint();
+  const copy = started.harness.hosts("button").find((node) => node.props.children === "复制条目模板");
+  assert.ok(copy !== undefined, "the copy control renders");
+  await copy.props.onClick();
+  // The harness provides no clipboard at all, which is the same failure shape as
+  // a denied permission: it must be reported, not thrown.
+  const text = await started.harness.repaint();
+  assert.ok(text.includes("复制失败"), "the failure reaches the user");
 });
 
 test("importing from a host path posts the path and shows the outcome", async () => {

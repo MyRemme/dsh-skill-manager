@@ -44,7 +44,36 @@ test("each pair cross-links to the other", async () => {
 test("the English documents carry no Chinese prose outside the allowed spots", async () => {
   // Re-implements the rule rather than importing it: a bug in the checker must
   // not also silence the test that is supposed to catch it.
-  const UI_LABELS = ["同时禁止 /name 手动调用", "技能管理", "批量启用", "批量禁用", "返回会话", "已安装", "回收站", "新建", "导入", "市场", "删除", "全选", "只读", "被覆盖", "链接"];
+  const UI_LABELS = [
+    "同时禁止 /name 手动调用",
+    "复制条目模板",
+    "申请收录",
+    "发布时间范围",
+    "排序字段",
+    "排序方向",
+    "全部时间",
+    "最近 7 天",
+    "最近 30 天",
+    "最近 90 天",
+    "最近 1 年",
+    "全部分类",
+    "收录时间",
+    "技能管理",
+    "批量启用",
+    "批量禁用",
+    "返回会话",
+    "已安装",
+    "回收站",
+    "新建",
+    "导入",
+    "市场",
+    "删除",
+    "全选",
+    "只读",
+    "被覆盖",
+    "筛选",
+    "链接",
+  ];
   for (const [en] of PAIRS) {
     let text = await read(en);
     text = text.replace(/```[\s\S]*?```/gu, "");

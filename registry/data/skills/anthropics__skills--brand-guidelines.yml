@@ -2,7 +2,9 @@ repo: anthropics/skills
 name: brand-guidelines
 path: skills/brand-guidelines/SKILL.md
 ref: main
-category: ui
+added: 2026-10-02
+commit: 8a1541c
+category: design
 tags: [brand, design]
 description:
   en: "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply."

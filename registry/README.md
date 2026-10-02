@@ -22,8 +22,11 @@ Open a pull request that adds **one file**:
 repo: acme/widget-skills            # required — owner/name of the repository
 name: widget-helper                 # required — must equal the SKILL.md frontmatter `name`
 path: skills/widget-helper/SKILL.md # required — where the SKILL.md sits in that repo
+category: writing                   # required — one key from the list below
 ref: main                           # optional — branch, tag or commit; defaults to main
-category: docs                      # optional — one lowercase word such as ui, docs, dev, security
+version: 2.15.0                     # optional — only if upstream publishes releases
+commit: 063bee9                     # optional — the revision the entry was checked against
+added: 2026-10-02                   # optional — YYYY-MM-DD the entry entered the catalog
 tags: [writing, markdown]           # optional — at most 8, lowercase with hyphens
 license: MIT                        # optional — only if the upstream repository declares one
 description:
@@ -31,8 +34,20 @@ description:
   zh: 按风格指南审阅文案。适用于「审一下文档」「把措辞收紧」这类请求。  # optional
 ```
 
-`description.en` is required and everything else is optional. A missing Chinese
-line is our problem, not a reason to reject the entry.
+`repo`, `name`, `path`, `category` and `description.en` are required. A missing
+Chinese line is our problem, not a reason to reject the entry.
+
+`category` is a closed list, because a free-text category produces a filter with
+one bucket per entry — worse than no filter:
+
+`ui` `dev` `docs` `data` `office` `design` `media` `testing` `security`
+`infra` `research` `writing` `agent` `fun`
+
+The market renders `category` as a filter, `version` or `commit` as a provenance
+badge, and `added` as the window for its time filter. Set `version` only when
+the upstream repository actually publishes releases: a guessed version is worse
+than an absent one, so record the revision you verified against in `commit`
+instead.
 
 The file name must match the entry: `owner__repo--skill.yml`. Repository owners
 and names keep their original case; the skill part is the kebab-case skill name.
@@ -82,7 +97,7 @@ of 60 requests per hour.
 
 ```jsonc
 {
-  "version": 1,
+  "version": 2,
   "generatedAt": "2026-10-05T09:00:00.000Z",
   "skills": [
     {
@@ -91,7 +106,9 @@ of 60 requests per hour.
       "repo": "acme/widget-skills",
       "path": "skills/widget-helper/SKILL.md",
       "ref": "main",
-      "category": "docs",
+      "category": "writing",
+      "version": "2.15.0",          // or "commit": "063bee9"
+      "added": "2026-10-02",
       "tags": ["writing"],
       "license": "MIT",
       "author": "acme",
@@ -101,6 +118,9 @@ of 60 requests per hour.
   ]
 }
 ```
+
+`version` is the catalog document's own schema version. Bumping it is what tells
+an older plugin that the shape changed.
 
 `id` is what the plugin sends back when installing. Entries are sorted by `name`
 so the generated file only diffs where it actually changed.

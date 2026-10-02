@@ -87,24 +87,42 @@ test("validateEntry enforces the file-name convention", () => {
 });
 
 test("validateEntry admits the repo-only file name", () => {
-  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", description: { en: "D." } }, "acme__tools.yml");
+  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", category: "dev", description: { en: "D." } }, "acme__tools.yml");
   assert.deepEqual(problems, []);
+});
+
+/** The name the validator expects for the `a/b` + `demo` fixture below. */
+const FIXTURE_FILE = "a__b--demo.yml";
+
+test("validateEntry requires a category, and one from the closed list", () => {
+  const base = { repo: "a/b", name: "demo", path: "SKILL.md", description: { en: "D." } };
+  assert.ok(validateEntry(base, FIXTURE_FILE).some((problem) => problem.includes("category is required")));
+  assert.ok(validateEntry({ ...base, category: "not-a-category" }, FIXTURE_FILE).some((problem) => problem.includes("is not one of")));
+  assert.deepEqual(validateEntry({ ...base, category: "ui" }, FIXTURE_FILE), []);
+});
+
+test("validateEntry checks version and commit shapes", () => {
+  const base = { repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", description: { en: "D." } };
+  assert.deepEqual(validateEntry({ ...base, version: "2.15.0" }, FIXTURE_FILE), []);
+  assert.ok(validateEntry({ ...base, version: "v2.15" }, FIXTURE_FILE).some((problem) => problem.includes("semver")));
+  assert.deepEqual(validateEntry({ ...base, commit: "063bee9" }, FIXTURE_FILE), []);
+  assert.ok(validateEntry({ ...base, commit: "not-a-sha" }, FIXTURE_FILE).some((problem) => problem.includes("hexadecimal")));
 });
 
 test("validateEntry rejects too many tags and bad tag shapes", () => {
   const many = Array.from({ length: 9 }, (_, index) => `t${index}`);
-  assert.ok(validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", tags: many, description: { en: "D." } }, "f.yml").some((problem) => problem.includes("at most")));
-  assert.ok(validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", tags: ["Bad Tag"], description: { en: "D." } }, "f.yml").some((problem) => problem.includes("must be lowercase")));
+  assert.ok(validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", tags: many, description: { en: "D." } }, "f.yml").some((problem) => problem.includes("at most")));
+  assert.ok(validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", tags: ["Bad Tag"], description: { en: "D." } }, "f.yml").some((problem) => problem.includes("must be lowercase")));
 });
 
 test("validateEntry rejects a non-github tarball", () => {
-  const problems = validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", tarball: "https://example.com/x.tgz", description: { en: "D." } }, "f.yml");
+  const problems = validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", tarball: "https://example.com/x.tgz", description: { en: "D." } }, "f.yml");
   assert.ok(problems.some((problem) => problem.includes("tarball must be")));
 });
 
 test("the committed catalog matches the entry files", async () => {
   const catalog = JSON.parse(await readFile(new URL("../registry/skills.json", import.meta.url), "utf8"));
-  assert.equal(catalog.version, 1);
+  assert.equal(catalog.version, 2);
   assert.ok(catalog.skills.length > 0, "the shipped catalog must not be empty");
   for (const skill of catalog.skills) {
     assert.match(skill.id, /^[\w.-]+\/[\w.-]+#.+$/u);

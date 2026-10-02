@@ -128,6 +128,17 @@ contributors never touch the same file.
 
 - Default source: this repository's
   [`registry/skills.json`](registry/skills.json) — 12 entries at the time of writing.
+- **Filter and sort** the way the plugin market does: sort by stars, date added
+  or name, in either direction, and restrict the list to entries added in the
+  last 7 / 30 / 90 days or year.
+- **Every card links out** to the source repository, and to the exact `SKILL.md`
+  it installs from.
+- **Provenance is shown, not invented.** A card carries `版本 v2.15.0` when the
+  upstream repository publishes releases, and `提交 063bee9` when it does not.
+  When the catalog has no star counts, the stars sort says so rather than
+  silently returning the list in a different order.
+- **Categories are a closed list** (`ui`, `dev`, `docs`, `infra`, `writing`, …),
+  so the filter has a handful of real buckets instead of one per entry.
 - If `raw.githubusercontent.com` is unreachable (some networks reset connections
   to it while `api.github.com` keeps working), the fetch falls back to the GitHub
   contents API and decodes the same file. Set `GITHUB_TOKEN` to lift the
@@ -136,8 +147,10 @@ contributors never touch the same file.
   extracts only the directory holding the skill, and writes it into your chosen
   root.
 - `registryUrl` points it at any other catalog with the same shape.
-- Submissions go through a pull request against `registry/data/skills/`. The
-  format and the requirements are in [`registry/README.md`](registry/README.md).
+
+Submissions go through a pull request against `registry/data/skills/`. The format
+and the requirements are in [`registry/README.md`](registry/README.md); the
+market footer also carries a **申请收录** link and a copyable entry template.
 
 **Being listed is not a security review.** Installing a skill downloads someone
 else's files and puts their text into your model's context. Read what you install.

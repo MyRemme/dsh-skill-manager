@@ -20,6 +20,7 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { CATEGORY_KEYS } from "../schema.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REGISTRY_DIR = join(HERE, "..");
@@ -30,11 +31,11 @@ const SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const REPO = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/u;
 const REF = /^[A-Za-z0-9._/-]+$/u;
 const TAG = /^[a-z0-9][a-z0-9-]*$/u;
-const CATEGORY = /^[a-z][a-z0-9-]*$/u;
+const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/u;
 const MAX_DESCRIPTION = 800;
 const MAX_TAGS = 8;
 
-const SCALAR_KEYS = new Set(["repo", "name", "path", "ref", "category", "license", "author", "stars", "tarball"]);
+const SCALAR_KEYS = new Set(["repo", "name", "path", "ref", "category", "license", "author", "stars", "tarball", "version", "added", "commit"]);
 const FLAGS = new Set(process.argv.slice(2));
 
 /** Strip one layer of matching quotes and undo the escapes we emit. */
@@ -154,7 +155,21 @@ export function validateEntry(fields, file) {
   const ref = fields.ref ?? "main";
   if (typeof ref !== "string" || ref === "" || ref.includes("..") || !REF.test(ref)) fail("ref must be a plain branch, tag or commit");
 
-  if (fields.category !== undefined && !CATEGORY.test(String(fields.category))) fail("category must be lowercase, e.g. `ui` or `docs`");
+  // A closed set: a free-text category produces a filter with one bucket per
+  // entry, which is worse than no filter.
+  if (fields.category === undefined) fail("category is required");
+  else if (!CATEGORY_KEYS.includes(String(fields.category))) {
+    fail(`category ${JSON.stringify(fields.category)} is not one of: ${CATEGORY_KEYS.join(", ")}`);
+  }
+  if (fields.version !== undefined && !SEMVER.test(String(fields.version))) {
+    fail("version must be a semver like 1.2.3 when present");
+  }
+  if (fields.added !== undefined && !/^\d{4}-\d{2}-\d{2}$/u.test(String(fields.added))) {
+    fail("added must be a YYYY-MM-DD date when present");
+  }
+  if (fields.commit !== undefined && !/^[0-9a-f]{7,40}$/u.test(String(fields.commit))) {
+    fail("commit must be a hexadecimal sha when present");
+  }
   if (fields.tags !== undefined) {
     if (!Array.isArray(fields.tags)) fail("tags must be a list");
     else {
@@ -230,7 +245,7 @@ async function loadEntries() {
 /** Build the catalog document from validated entries. */
 function catalogOf(entries) {
   return {
-    version: 1,
+    version: 2,
     skills: entries.map(({ fields }) => {
       const skill = {
         id: `${fields.repo}#${fields.path}`,
@@ -238,11 +253,14 @@ function catalogOf(entries) {
         repo: fields.repo,
         path: fields.path,
         ref: fields.ref ?? "main",
+        category: fields.category,
         description: { en: fields.description.en, ...(fields.description.zh === undefined ? {} : { zh: fields.description.zh }) },
       };
-      if (fields.category !== undefined) skill.category = fields.category;
       if (fields.tags !== undefined) skill.tags = fields.tags;
       if (fields.license !== undefined) skill.license = fields.license;
+      if (fields.version !== undefined) skill.version = fields.version;
+      if (fields.commit !== undefined) skill.commit = fields.commit;
+      if (fields.added !== undefined) skill.added = fields.added;
       if (fields.author !== undefined) skill.author = fields.author;
       else skill.author = fields.repo.split("/")[0];
       if (fields.stars !== undefined) skill.stars = fields.stars;
