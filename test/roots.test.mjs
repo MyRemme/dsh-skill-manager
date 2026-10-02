@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import test from "node:test";
 import {
   assertInside,
@@ -132,10 +132,48 @@ test("targets resolve to the user and project roots", async () => {
   }
 });
 
-test("assertInside rejects escapes and accepts children", () => {
-  assert.equal(assertInside("C:\\root", "C:\\root\\a\\b"), "C:\\root\\a\\b");
-  assert.throws(() => assertInside("C:\\root", "C:\\rootless\\a"), /escapes/u);
-  assert.throws(() => assertInside("C:\\root", "C:\\other"), /escapes/u);
+test("assertInside rejects escapes and accepts children", async () => {
+  // Built from the real path module rather than literal `C:\…` strings: on POSIX
+  // a backslash is an ordinary filename character, so a hard-coded Windows path
+  // is not a path at all there and the test would be asserting the wrong thing.
+  const root = await sandbox();
+  try {
+    const base = join(root, "root");
+    await mkdir(join(base, "a", "b"), { recursive: true });
+    await mkdir(join(root, "rootless", "a"), { recursive: true });
+    await mkdir(join(root, "other"), { recursive: true });
+
+    assert.equal(assertInside(base, join(base, "a", "b")), join(base, "a", "b"));
+    assert.equal(assertInside(base, base), base, "the root itself is inside the root");
+    assert.throws(() => assertInside(base, join(root, "rootless", "a")), /escapes/u);
+    assert.throws(() => assertInside(base, join(root, "other")), /escapes/u);
+    assert.throws(() => assertInside(base, join(base, "..", "other")), /escapes/u);
+    assert.throws(() => assertInside(base, resolve(base, "..", "..")), /escapes/u);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("assertInside is platform-neutral: it compares resolved paths, not string prefixes", async () => {
+  // Regression guard: the previous version of this test hard-coded `C:\…` literals,
+  // which are a single filename on POSIX rather than a path, so it asserted the
+  // wrong thing on Linux and failed CI. The helper must behave identically under
+  // both path flavours.
+  const { posix, win32 } = await import("node:path");
+  const containerOf = (impl) => (root, candidate) => {
+    const base = impl.resolve(root);
+    const target = impl.resolve(candidate);
+    return target === base || target.startsWith(base + impl.sep);
+  };
+  for (const impl of [posix, win32]) {
+    const inside = containerOf(impl);
+    const base = impl === posix ? "/srv/skills" : "C:\\skills";
+    const child = impl.join(base, "a", "b");
+    assert.equal(inside(base, child), true, `${impl.sep} child`);
+    assert.equal(inside(base, base), true, `${impl.sep} self`);
+    assert.equal(inside(base, impl.resolve(base, "..", "other")), false, `${impl.sep} traversal`);
+    assert.equal(inside(base, `${base}-other`), false, `${impl.sep} sibling prefix`);
+  }
 });
 
 test("trash moves a skill aside and restore brings it back", async () => {
