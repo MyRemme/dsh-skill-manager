@@ -571,8 +571,9 @@ test("the search box filters rendered rows", async () => {
 
 test("the source filter narrows the catalog", async () => {
   const { harness, text } = await startPanel();
-  const select = harness.hosts("select").find((node) => node.props.value === "all" && node.props.className === "skm-select");
-  select.props.onChange({ target: { value: "user-dsh" } });
+  const picker = pickerByLabel(harness, "来源");
+  assert.ok(picker !== undefined, "the source picker renders");
+  await selectFromPicker(harness, picker, "user-dsh");
   const after = await harness.repaint();
   assert.ok(after.includes("beta-skill"));
   assert.equal(after.includes("alpha-skill"), false);
@@ -649,15 +650,40 @@ test("a version badge is shown when upstream declares one, a commit when it does
   assert.equal(text.includes("版本 063bee9"), false, "a commit must never be labelled as a version");
 });
 
-test("categories are rendered from the closed list, in the active language", async () => {
+test("the category picker offers exactly the categories the catalog uses", async () => {
   const { harness, text } = await openMarket();
   assert.ok(text.includes("写作与文档"), "the docs category renders its Chinese label");
   assert.ok(text.includes("运维与部署"), "the infra category renders too");
-  const select = harness.hosts("select").find((node) => node.props.className === "skm-select");
-  assert.ok(select !== undefined, "the category filter renders");
-  const options = Array.isArray(select.props.children) ? select.props.children : [select.props.children];
-  assert.deepEqual(options.map((node) => node.props.value), ["all", "docs", "infra"]);
-  assert.equal(options[0].props.children, "全部分类");
+  const picker = pickerByLabel(harness, "分类");
+  assert.ok(picker !== undefined, "the category picker renders");
+  assert.deepEqual(
+    picker.props.options.map((option) => option.value),
+    ["all", "docs", "infra"],
+  );
+  assert.equal(picker.props.options[0].label, "全部分类");
+});
+
+test("no native select survives in the panel", async () => {
+  // Native controls cannot be styled into the harness' language, which is why
+  // every picker is a Dropdown. A regression here would show up as a square,
+  // hard-bordered control in an otherwise rounded toolbar.
+  const { harness } = await openMarket();
+  assert.deepEqual(harness.hosts("select"), []);
+  const started = await startPanel();
+  assert.deepEqual(started.harness.hosts("select"), [], "the installed tab is clean too");
+});
+
+test("only one dropdown is open at a time", async () => {
+  const { harness } = await openMarket();
+  const category = pickerByLabel(harness, "分类");
+  category.props.onToggle();
+  await harness.repaint();
+  assert.equal(pickerByLabel(harness, "分类").props.open, true);
+  const filter = harness.components("FilterMenu")[0];
+  filter.props.onToggle();
+  await harness.repaint();
+  assert.equal(pickerByLabel(harness, "分类").props.open, false, "opening the filter closes the category menu");
+  assert.equal(harness.components("FilterMenu")[0].props.open, true);
 });
 
 test("switching language re-renders the market in English", async () => {
@@ -673,21 +699,77 @@ test("switching language re-renders the market in English", async () => {
   assert.ok(back.includes("全部分类"), "and it switches back");
 });
 
-/** Find a filter-menu option by its visible label. */
+/** The text a menu item shows, whether or not it carries a hint line. */
+function menuItemLabel(node) {
+  const parts = Array.isArray(node.props.children) ? node.props.children : [node.props.children];
+  const text = parts.find((part) => part?.props?.className === "skm-menuText");
+  if (text === undefined) return undefined;
+  const inner = Array.isArray(text.props.children) ? text.props.children : [text.props.children];
+  const first = inner.find((child) => child !== null && child !== undefined && typeof child === "object");
+  return typeof first?.props?.children === "string" ? first.props.children : undefined;
+}
+
+/** Find a menu option by its visible label. */
 function menuOption(harness, label) {
   return harness
     .hosts("button")
     .filter((node) => node.props.className === "skm-menuItem")
-    .find((node) => {
-      const parts = Array.isArray(node.props.children) ? node.props.children : [node.props.children];
-      return parts.some((part) => part?.props?.children === label);
-    });
+    .find((node) => menuItemLabel(node) === label);
+}
+
+/** Find a `Picker` component by the label it renders on its trigger. */
+function pickerByLabel(harness, label) {
+  return harness.components("Picker").find((node) => node.props.label === label);
+}
+
+/**
+ * The visible text of a host element, whether its children are a bare string or
+ * a list containing one (a button with a caret, for instance).
+ */
+function textOf(node) {
+  const children = Array.isArray(node?.props?.children) ? node.props.children : [node?.props?.children];
+  for (const child of children) {
+    if (typeof child === "string") return child;
+    if (child !== null && typeof child === "object" && typeof child.props?.children === "string") return child.props.children;
+  }
+  return undefined;
+}
+
+/** Find a plain `skm-button` by its leading text. */
+function buttonByText(harness, text) {
+  return harness
+    .hosts("button")
+    .filter((node) => node.props.className === "skm-button")
+    .find((node) => textOf(node) === text);
+}
+
+/** Find a `Dropdown` trigger whose label starts with the given text. */
+function dropdownTrigger(harness, prefix) {
+  return harness
+    .hosts("button")
+    .filter((node) => node.props.className === "skm-button")
+    .find((node) => typeof textOf(node) === "string" && textOf(node).startsWith(prefix));
+}
+
+/**
+ * Open a picker and choose one of its values.
+ * @param harness - the render harness.
+ * @param picker - a `Picker` component node.
+ */
+async function selectFromPicker(harness, picker, value) {
+  picker.props.onToggle();
+  await harness.repaint();
+  const match = harness
+    .components("Picker")
+    .find((node) => node.props.label === picker.props.label && node.props.open === true);
+  assert.ok(match !== undefined, `picker ${picker.props.label} did not open`);
+  match.props.onChange(value);
+  await harness.repaint();
 }
 
 test("the category filter narrows the list", async () => {
   const { harness } = await openMarket();
-  const select = harness.hosts("select").find((node) => node.props.className === "skm-select");
-  select.props.onChange({ target: { value: "infra" } });
+  await selectFromPicker(harness, pickerByLabel(harness, "分类"), "infra");
   const after = await harness.repaint();
   assert.ok(after.includes("delta-skill"));
   assert.equal(after.includes("alpha-skill"), false);
@@ -695,9 +777,9 @@ test("the category filter narrows the list", async () => {
 });
 
 test("the filter menu carries sort field, direction and time range", async () => {
-  const { harness, text } = await openMarket();
-  assert.ok(text.includes("筛选"), "the filter control renders");
-  const trigger = harness.hosts("button").find((node) => typeof node.props.children === "string" && node.props.children.startsWith("筛选"));
+  const { harness } = await openMarket();
+  const trigger = dropdownTrigger(harness, "筛选");
+  assert.ok(trigger !== undefined, "the filter control renders");
   trigger.props.onClick();
   const open = await harness.repaint();
   for (const label of ["排序字段", "排序方向", "发布时间范围", "Star 数", "收录时间", "名称", "降序", "升序", "全部时间", "最近 7 天", "最近 30 天", "最近 90 天", "最近 1 年"]) {
@@ -709,8 +791,7 @@ test("choosing a sort direction reorders the cards", async () => {
   const { harness } = await openMarket();
   const names = () => harness.components("MarketCard").map((node) => node.props.entry.name);
   assert.deepEqual(names(), ["alpha-skill", "delta-skill"], "stars descending puts 40 before 12");
-  const trigger = harness.hosts("button").find((node) => typeof node.props.children === "string" && node.props.children.startsWith("筛选"));
-  trigger.props.onClick();
+  dropdownTrigger(harness, "筛选").props.onClick();
   await harness.repaint();
   const asc = menuOption(harness, "升序");
   assert.ok(asc !== undefined, "the ascending option is present");
@@ -721,8 +802,7 @@ test("choosing a sort direction reorders the cards", async () => {
 
 test("the time range drops entries outside the window", async () => {
   const { harness } = await openMarket();
-  const trigger = harness.hosts("button").find((node) => typeof node.props.children === "string" && node.props.children.startsWith("筛选"));
-  trigger.props.onClick();
+  dropdownTrigger(harness, "筛选").props.onClick();
   await harness.repaint();
   const recent = menuOption(harness, "最近 7 天");
   assert.ok(recent !== undefined, "the 7-day option is present");
@@ -743,28 +823,111 @@ test("a sort field the catalog cannot answer says so instead of reordering", asy
   assert.ok(text.includes("目录未提供 Star 数"), "the caveat is surfaced rather than faked");
 });
 
-test("the submission panel exposes a link and a copyable template", async () => {
+test("the submit control sits in the toolbar and starts collapsed", async () => {
   const { harness, text } = await openMarket();
-  assert.ok(text.includes("申请收录 skill"), "the submission heading renders");
-  assert.ok(text.includes("repo: owner/name"), "the entry template is shown");
+  const toggle = dropdownTrigger(harness, "申请收录 skill");
+  assert.ok(toggle !== undefined, "the toggle is in the toolbar, not buried under the list");
+  assert.equal(text.includes("repo: owner/name"), false, "it starts collapsed so it does not push results off screen");
+});
+
+test("opening the panel reveals the template and a real submission link", async () => {
+  const { harness } = await openMarket();
+  dropdownTrigger(harness, "申请收录 skill").props.onClick();
+  const text = await harness.repaint();
+  assert.ok(text.includes("repo: owner/name"), "the entry template is shown once open");
   const links = harness.hosts("a").map((node) => node.props.href);
   assert.ok(links.includes("https://github.com/MyRemme/dsh-skill-manager/issues/new"), "the submission link points at the tracker");
   const openLink = harness.hosts("a").find((node) => node.props.children === "申请收录");
   assert.ok(openLink !== undefined, "the submit control is a real link, so middle-click and copy-link work");
   assert.equal(openLink.props.target, "_blank");
+  const close = buttonByText(harness, "收起");
+  assert.ok(close !== undefined, "the panel closes again");
+  close.props.onClick();
+  assert.equal((await harness.repaint()).includes("repo: owner/name"), false);
+});
+
+const aboutPayload = {
+  name: "skill-manager",
+  version: "0.1.0",
+  repo: "MyRemme/dsh-skill-manager",
+  repoUrl: "https://github.com/MyRemme/dsh-skill-manager",
+  submitUrl: "https://github.com/MyRemme/dsh-skill-manager/issues/new",
+  registryUrl: "https://example.invalid/skills.json",
+  access: "paired",
+  update: { status: "unchecked" },
+};
+
+/**
+ * Open the About tab.
+ *
+ * `stubFetch` matches the first override key found in the URL, and the check
+ * request's URL also contains `about`, so any `check=1` override has to be
+ * considered before the plain one.
+ */
+async function openAbout(overrides = {}) {
+  const aboutOverride = overrides.about ?? aboutPayload;
+  const checkOverride = overrides["check=1"];
+  const ordered = {
+    ...(checkOverride === undefined ? {} : { "check=1": checkOverride }),
+    about: aboutOverride,
+  };
+  const started = await startPanel(ordered);
+  const tab = started.harness.hosts("button").find((node) => node.props.children === "关于");
+  assert.ok(tab !== undefined, "the About tab exists");
+  tab.props.onClick();
+  const text = await started.harness.repaint();
+  return { ...started, text };
+}
+
+test("the about tab shows the installed version and the project repository", async () => {
+  const { harness, text } = await openAbout();
+  assert.ok(text.includes("当前版本"), "the version label renders");
+  assert.ok(text.includes("v0.1.0"), "the version itself is shown");
+  const links = harness.hosts("a").map((node) => node.props.href);
+  assert.ok(links.includes("https://github.com/MyRemme/dsh-skill-manager"), "the repository link is present");
+  assert.ok(links.includes("https://github.com/MyRemme/dsh-skill-manager/releases"), "so is the releases link");
+  assert.ok(text.includes("MyRemme/dsh-skill-manager"), "the repository is named on screen");
+});
+
+test("checking for updates reports all four outcomes", async () => {
+  for (const [update, expected] of [
+    [{ status: "current", current: "0.1.0", latest: "0.1.0" }, "已是最新版本"],
+    [{ status: "behind", current: "0.1.0", latest: "0.2.0" }, "有新版本 0.2.0 可用"],
+    [{ status: "ahead", current: "0.3.0", latest: "0.2.0" }, "本地版本高于发布版本"],
+    [{ status: "unknown", error: "HTTP 403" }, "无法检查更新"],
+  ]) {
+    const { harness } = await openAbout({ "check=1": { ...aboutPayload, update } });
+    const check = buttonByText(harness, "检查更新");
+    assert.ok(check !== undefined, "the check button renders");
+    await check.props.onClick();
+    const text = await harness.repaint();
+    assert.ok(text.includes(expected), `expected ${expected} for ${update.status}`);
+  }
+});
+
+test("the about tab never claims a version it cannot read", async () => {
+  const { text } = await openAbout({ about: { ...aboutPayload, version: null } });
+  assert.ok(text.includes("读不到版本号"), "an unreadable version is reported as such");
+  assert.equal(/\bv0\.0\.0\b/u.test(text), false, "no placeholder version is invented");
+});
+
+test("the about tab offers the update command for a git install", async () => {
+  const { harness, text } = await openAbout();
+  assert.ok(text.includes("dsh plugin --profile desktop add github:MyRemme/dsh-skill-manager"), "the update command is shown");
+  const copy = buttonByText(harness, "复制更新命令");
+  assert.ok(copy !== undefined, "and can be copied");
 });
 
 test("a rejected clipboard write is reported, not swallowed", async () => {
-  const started = await startPanel();
-  const market = started.harness.hosts("button").find((node) => node.props.children === "市场");
-  market.props.onClick();
-  await started.harness.repaint();
-  const copy = started.harness.hosts("button").find((node) => node.props.children === "复制条目模板");
+  const { harness } = await openMarket();
+  dropdownTrigger(harness, "申请收录 skill").props.onClick();
+  await harness.repaint();
+  const copy = buttonByText(harness, "复制条目模板");
   assert.ok(copy !== undefined, "the copy control renders");
   await copy.props.onClick();
   // The harness provides no clipboard at all, which is the same failure shape as
   // a denied permission: it must be reported, not thrown.
-  const text = await started.harness.repaint();
+  const text = await harness.repaint();
   assert.ok(text.includes("复制失败"), "the failure reaches the user");
 });
 

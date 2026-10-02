@@ -58,6 +58,13 @@ test("the English documents carry no Chinese prose outside the allowed spots", a
     "最近 1 年",
     "全部分类",
     "收录时间",
+    "复制更新命令",
+    "当前版本",
+    "检查更新",
+    "项目仓库",
+    "访问范围",
+    "查看发布",
+    "技能目录",
     "技能管理",
     "批量启用",
     "批量禁用",
@@ -72,6 +79,7 @@ test("the English documents carry no Chinese prose outside the allowed spots", a
     "只读",
     "被覆盖",
     "筛选",
+    "关于",
     "链接",
   ];
   for (const [en] of PAIRS) {

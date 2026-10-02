@@ -60,6 +60,14 @@ const UI_LABELS = [
   "全部分类",
   "收录时间",
   "筛选",
+  "关于",
+  "当前版本",
+  "检查更新",
+  "项目仓库",
+  "技能目录",
+  "访问范围",
+  "查看发布",
+  "复制更新命令",
 ];
 
 /** Files that must be English, with the reason recorded for the failure message. */

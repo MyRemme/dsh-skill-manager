@@ -567,6 +567,69 @@ test("a registry URL with a non-http scheme is refused", async () => {
   }
 });
 
+test("about reports the installed version without a network check", async () => {
+  const scene = await scaffold();
+  const server = await boot({ config: scene.config, cwd: scene.project });
+  try {
+    const response = await call(server.base, "about");
+    assert.equal(response.status, 200);
+    assert.equal(response.payload.name, "skill-manager");
+    assert.match(response.payload.version, /^\d+\.\d+\.\d+/u, "the version comes from the shipped manifest");
+    assert.equal(response.payload.repo, "MyRemme/dsh-skill-manager");
+    assert.equal(response.payload.repoUrl, "https://github.com/MyRemme/dsh-skill-manager");
+    assert.equal(response.payload.submitUrl, "https://github.com/MyRemme/dsh-skill-manager/issues/new");
+    assert.equal(response.payload.update.status, "unchecked", "no check is made unless asked");
+  } finally {
+    await server.close();
+    await scene.cleanup();
+  }
+});
+
+test("about reports a newer version when the remote manifest is ahead", async () => {
+  const scene = await scaffold();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    if (String(url).includes("api.github.com/repos/MyRemme/dsh-skill-manager")) {
+      const body = JSON.stringify({ name: "dsh-skill-manager", version: "99.0.0" });
+      return new Response(JSON.stringify({ content: Buffer.from(body, "utf8").toString("base64"), size: body.length }), { status: 200 });
+    }
+    return await originalFetch(url, init);
+  };
+  const server = await boot({ config: scene.config, cwd: scene.project });
+  try {
+    const response = await call(server.base, "about", { query: { check: "1" } });
+    assert.equal(response.status, 200);
+    assert.equal(response.payload.update.status, "behind");
+    assert.equal(response.payload.update.latest, "99.0.0");
+    assert.notEqual(response.payload.update.current, "99.0.0");
+  } finally {
+    await server.close();
+    globalThis.fetch = originalFetch;
+    await scene.cleanup();
+  }
+});
+
+test("about survives an unreachable update source and says so", async () => {
+  const scene = await scaffold();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    if (String(url).includes("api.github.com")) throw new Error("read ECONNRESET");
+    return await originalFetch(url, init);
+  };
+  const server = await boot({ config: scene.config, cwd: scene.project });
+  try {
+    const response = await call(server.base, "about", { query: { check: "1" } });
+    assert.equal(response.status, 200, "a failed check is still a successful read");
+    assert.equal(response.payload.update.status, "unknown");
+    assert.match(String(response.payload.update.error), /cannot reach/u);
+    assert.match(response.payload.version, /^\d+\.\d+\.\d+/u, "the local version is still reported");
+  } finally {
+    await server.close();
+    globalThis.fetch = originalFetch;
+    await scene.cleanup();
+  }
+});
+
 test("health reports the resolved access mode and catalog", async () => {
   const scene = await scaffold();
   const server = await boot({ config: { ...scene.config, access: "loopback", registryUrl: "https://example.invalid/skills.json" }, cwd: scene.project });

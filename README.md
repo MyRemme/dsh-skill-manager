@@ -152,6 +152,25 @@ Submissions go through a pull request against `registry/data/skills/`. The forma
 and the requirements are in [`registry/README.md`](registry/README.md); the
 market footer also carries a **申请收录** link and a copyable entry template.
 
+## About
+
+The **关于** tab reports what is installed and where the project lives.
+
+- **Installed version**, read from this package's own `package.json` at runtime
+  rather than baked in at build time, so it always matches what is on disk. When
+  the manifest cannot be read the panel says so instead of printing a placeholder.
+- **Check for updates** compares that against the version on the default branch
+  and reports one of four outcomes: up to date, a newer version available, ahead
+  of the published version (an unreleased commit), or could not check. It runs
+  only when you press the button — a panel that calls a rate-limited API every
+  time it is opened is a bad citizen.
+- **Project repository**, **releases** and **registry** links.
+- The `dsh plugin --profile desktop add github:…` command, ready to copy.
+
+The check is best-effort. Being offline, rate limited, or pointed at a moved
+repository leaves the version visible and the reason stated; it never invents a
+number. Set `GITHUB_TOKEN` to lift the unauthenticated API limit on the check.
+
 **Being listed is not a security review.** Installing a skill downloads someone
 else's files and puts their text into your model's context. Read what you install.
 
@@ -175,6 +194,7 @@ All routes live under `/api/dsh-skill-manager/` and are same-origin only.
 | `import-path` | POST | Install from a host directory |
 | `market` | GET | The catalog, annotated with what is installed |
 | `market-install` | POST | Install one catalog entry |
+| `about` | GET | Version, repository coordinates, and (with `?check=1`) the update comparison |
 | `health` | GET | Liveness and the resolved access mode |
 
 Writes carry `{ name, path }`; the host re-scans the roots and refuses the write
