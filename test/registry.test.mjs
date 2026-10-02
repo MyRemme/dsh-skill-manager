@@ -8,6 +8,7 @@ const VALID = [
   "name: widget-helper",
   "path: skills/widget-helper/SKILL.md",
   "category: docs",
+  "license: MIT",
   'tags: [writing, "design-tokens"]',
   "description:",
   '  en: "Helps with widgets: sizes and counts."',
@@ -25,6 +26,11 @@ test("parseEntry reads every supported field", () => {
   assert.deepEqual(parsed.fields.tags, ["writing", "design-tokens"]);
   assert.equal(parsed.fields.description.en, "Helps with widgets: sizes and counts.");
   assert.equal(parsed.fields.description.zh, "帮助处理组件。");
+});
+
+test("parseEntry reads the license field", () => {
+  const parsed = parseEntry(VALID, "acme__widget-skills--widget-helper.yml");
+  assert.equal(parsed.fields.license, "MIT");
 });
 
 test("parseEntry accepts comments and blank lines", () => {
@@ -87,22 +93,63 @@ test("validateEntry enforces the file-name convention", () => {
 });
 
 test("validateEntry admits the repo-only file name", () => {
-  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", category: "dev", description: { en: "D." } }, "acme__tools.yml");
+  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", category: "dev", license: "MIT", description: { en: "D." } }, "acme__tools.yml");
   assert.deepEqual(problems, []);
 });
 
 /** The name the validator expects for the `a/b` + `demo` fixture below. */
 const FIXTURE_FILE = "a__b--demo.yml";
 
+/** A fixture that satisfies every rule, so each test can vary exactly one field. */
+const OK = { repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", license: "MIT", description: { en: "D." } };
+
 test("validateEntry requires a category, and one from the closed list", () => {
   const base = { repo: "a/b", name: "demo", path: "SKILL.md", description: { en: "D." } };
   assert.ok(validateEntry(base, FIXTURE_FILE).some((problem) => problem.includes("category is required")));
   assert.ok(validateEntry({ ...base, category: "not-a-category" }, FIXTURE_FILE).some((problem) => problem.includes("is not one of")));
-  assert.deepEqual(validateEntry({ ...base, category: "ui" }, FIXTURE_FILE), []);
+  assert.deepEqual(validateEntry({ ...base, category: "ui", license: "MIT" }, FIXTURE_FILE), []);
+});
+
+test("validateEntry requires a license that permits redistribution", () => {
+  const { license, ...noLicense } = OK;
+  assert.ok(
+    validateEntry(noLicense, FIXTURE_FILE).some((problem) => problem.includes("license is required")),
+    "an entry with no license is rejected",
+  );
+  assert.ok(
+    validateEntry({ ...OK, license: "" }, FIXTURE_FILE).some((problem) => problem.includes("license is required")),
+    "a blank license is rejected",
+  );
+
+  // The two values that look like a pass but are not.
+  assert.ok(
+    validateEntry({ ...OK, license: "NOASSERTION" }, FIXTURE_FILE).some((problem) => problem.includes("does not permit redistribution")),
+    "NOASSERTION means the license could not be identified, which is not permission",
+  );
+  assert.ok(
+    validateEntry({ ...OK, license: "CC-BY-NC-4.0" }, FIXTURE_FILE).some((problem) => problem.includes("does not permit redistribution")),
+    "non-commercial is not a redistribution right",
+  );
+  assert.ok(
+    validateEntry({ ...OK, license: "GPL-3.0" }, FIXTURE_FILE).some((problem) => problem.includes("does not permit redistribution")),
+    "copyleft is not on the allow list",
+  );
+});
+
+test("validateEntry accepts every allowed license and normalises it", () => {
+  for (const license of ["MIT", "Apache-2.0", "BSD-3-Clause", "ISC", "MPL-2.0", "CC0-1.0", "Unlicense", "MIT-0", "0BSD", "BSD-2-Clause", "CC-BY-4.0"]) {
+    assert.deepEqual(validateEntry({ ...OK, license }, FIXTURE_FILE), [], `${license} should be accepted`);
+  }
+  // GitHub reports SPDX, a human writes prose. Both should land on one value.
+  for (const [written, canonical] of [["mit", "MIT"], ["Apache 2.0", "Apache-2.0"], ["bsd-3", "BSD-3-Clause"], ["unlicense", "Unlicense"]]) {
+    const fields = { ...OK, license: written };
+    assert.deepEqual(validateEntry(fields, FIXTURE_FILE), [], `${written} should be accepted`);
+    assert.equal(fields.license, canonical, `${written} should normalise to ${canonical}`);
+  }
 });
 
 test("validateEntry checks version and commit shapes", () => {
-  const base = { repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", description: { en: "D." } };
+  const base = OK;
   assert.deepEqual(validateEntry({ ...base, version: "2.15.0" }, FIXTURE_FILE), []);
   assert.ok(validateEntry({ ...base, version: "v2.15" }, FIXTURE_FILE).some((problem) => problem.includes("semver")));
   assert.deepEqual(validateEntry({ ...base, commit: "063bee9" }, FIXTURE_FILE), []);
@@ -111,12 +158,12 @@ test("validateEntry checks version and commit shapes", () => {
 
 test("validateEntry rejects too many tags and bad tag shapes", () => {
   const many = Array.from({ length: 9 }, (_, index) => `t${index}`);
-  assert.ok(validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", tags: many, description: { en: "D." } }, "f.yml").some((problem) => problem.includes("at most")));
-  assert.ok(validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", tags: ["Bad Tag"], description: { en: "D." } }, "f.yml").some((problem) => problem.includes("must be lowercase")));
+  assert.ok(validateEntry({ ...OK, tags: many }, "f.yml").some((problem) => problem.includes("at most")));
+  assert.ok(validateEntry({ ...OK, tags: ["Bad Tag"] }, "f.yml").some((problem) => problem.includes("must be lowercase")));
 });
 
 test("validateEntry rejects a non-github tarball", () => {
-  const problems = validateEntry({ repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", tarball: "https://example.com/x.tgz", description: { en: "D." } }, "f.yml");
+  const problems = validateEntry({ ...OK, tarball: "https://example.com/x.tgz" }, "f.yml");
   assert.ok(problems.some((problem) => problem.includes("tarball must be")));
 });
 

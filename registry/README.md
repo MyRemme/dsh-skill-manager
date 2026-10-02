@@ -8,9 +8,11 @@ never touch the same file.
 
 ```
 registry/
-├── skills.json                 generated — do not edit by hand
-├── data/skills/*.yml           one entry per skill
-└── scripts/build-registry.mjs  validate + build + verify
+├── skills.json                     generated — do not edit by hand
+├── data/skills/*.yml               one entry per skill
+└── scripts/
+    ├── build-registry.mjs          validate + build + verify
+    └── discover.mjs                find candidates on GitHub and apply the license gate
 ```
 
 ## Submit a skill
@@ -28,14 +30,66 @@ version: 2.15.0                     # optional — only if upstream publishes re
 commit: 063bee9                     # optional — the revision the entry was checked against
 added: 2026-10-02                   # optional — YYYY-MM-DD the entry entered the catalog
 tags: [writing, markdown]           # optional — at most 8, lowercase with hyphens
-license: MIT                        # optional — only if the upstream repository declares one
+license: MIT                        # required — must be a license that permits redistribution
 description:
   en: Reviews prose for the style guide. Use when asked to audit docs or tighten wording.
   zh: 按风格指南审阅文案。适用于「审一下文档」「把措辞收紧」这类请求。  # optional
 ```
 
-`repo`, `name`, `path`, `category` and `description.en` are required. A missing
-Chinese line is our problem, not a reason to reject the entry.
+`repo`, `name`, `path`, `category`, `license` and `description.en` are required. A
+missing Chinese line is our problem, not a reason to reject the entry.
+
+## The license gate
+
+Listing an entry republishes a repository's coordinates and lets the market
+install its files, so an entry carries a license or it does not ship. A missing
+license is **not** permission — a repository with no `LICENSE` file is "all rights
+reserved" by default — and `NOASSERTION` is **not** a permissive one, it is GitHub
+saying the license file exists but could not be identified.
+
+Allowed, and nothing else:
+
+`0BSD` `Apache-2.0` `BSD-2-Clause` `BSD-3-Clause` `CC-BY-4.0` `CC0-1.0` `ISC`
+`MIT` `MIT-0` `MPL-2.0` `Unlicense`
+
+Spelling is normalised, so `mit` and `Apache 2.0` are accepted and rewritten to
+`MIT` and `Apache-2.0`. Deliberately excluded: `CC-BY-NC-*` and `CC-BY-ND-*`
+(non-commercial and no-derivatives are not redistribution rights), and `GPL-*` /
+`AGPL-*` (copyleft obligations a catalog cannot track). Changing that list is a
+one-line edit in `schema.mjs` — do it in the open, with the reasoning, not as a
+quiet exception.
+
+**The gate checks the repository, not the skill file.** A permissive license at a
+repository root normally covers what is beneath it, but a skill directory that
+carries its own `LICENSE` overrides that. Check before submitting; the build
+cannot see it.
+
+Run the build after editing entries:
+
+```
+node registry/scripts/build-registry.mjs          # rewrite skills.json
+node registry/scripts/build-registry.mjs --check  # fail if it is stale
+```
+
+## Finding candidates
+
+`discover.mjs` asks the GitHub search API for repositories matching a query,
+reads the `license.spdx_id` GitHub already computed, and reports what passes the
+gate. One request returns 100 repositories, so a run costs a handful of requests
+rather than one per repository.
+
+```
+node registry/scripts/discover.mjs --query "claude skills" --pages 2 --min-stars 100
+node registry/scripts/discover.mjs --query "agent skills" --json
+```
+
+It reads `GITHUB_TOKEN` (or `GH_TOKEN`) from the environment to raise the rate
+limit, and works without one on the anonymous budget. The token is never printed
+and never written anywhere. Requests are paced to the search endpoint's limit of
+10 per minute — the script waits rather than retrying into a block.
+
+**It writes nothing.** A candidate still has to be turned into an entry by hand,
+because a repository-level license does not prove the skill file is covered.
 
 `category` is a closed list, because a free-text category produces a filter with
 one bucket per entry — worse than no filter:

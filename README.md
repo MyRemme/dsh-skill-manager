@@ -127,7 +127,11 @@ The catalog is a JSON document built from one YAML file per skill, so two
 contributors never touch the same file.
 
 - Default source: this repository's
-  [`registry/skills.json`](registry/skills.json) — 12 entries at the time of writing.
+  [`registry/skills.json`](registry/skills.json) — 3 entries at the time of
+  writing. The catalog only accepts entries carrying a license that permits
+  redistribution, so entries with no declared license, `NOASSERTION`, a
+  non-commercial term or a copyleft term are turned away; see
+  [`registry/README.md`](registry/README.md).
 - **Filter and sort** the way the plugin market does: sort by stars, date added
   or name, in either direction, and restrict the list to entries added in the
   last 7 / 30 / 90 days or year.

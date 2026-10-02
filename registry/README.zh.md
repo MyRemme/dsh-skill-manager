@@ -7,9 +7,11 @@
 
 ```
 registry/
-├── skills.json                 生成物，勿手改
-├── data/skills/*.yml           一个技能一个条目
-└── scripts/build-registry.mjs  校验 + 构建 + 核验
+├── skills.json                     生成物，勿手改
+├── data/skills/*.yml               一个技能一个条目
+└── scripts/
+    ├── build-registry.mjs          校验 + 构建 + 核验
+    └── discover.mjs                在 GitHub 上找候选，并套用许可证闸门
 ```
 
 ## 提交一个技能
@@ -27,14 +29,59 @@ version: 2.15.0                     # 可选——仅当上游确实发布 relea
 commit: 063bee9                     # 可选——条目核验时所处的提交
 added: 2026-10-02                   # 可选——条目进入目录的日期 YYYY-MM-DD
 tags: [writing, markdown]           # 可选——最多 8 个，小写加连字符
-license: MIT                        # 可选——仅当上游仓库声明了许可证时
+license: MIT                        # 必填——必须是允许再分发的许可证
 description:
   en: Reviews prose for the style guide. Use when asked to audit docs or tighten wording.
   zh: 按风格指南审阅文案。适用于「审一下文档」「把措辞收紧」这类请求。  # 可选
 ```
 
-`repo`、`name`、`path`、`category`、`description.en` 必填。缺中文是我们的活，不该成为
-打回的理由。
+`repo`、`name`、`path`、`category`、`license`、`description.en` 必填。缺中文是我们的活，
+不该成为打回的理由。
+
+## 许可证闸门
+
+收录一个条目，等于复述了它的仓库坐标、并让市场去装它的文件。所以：**没有许可证就不进目录。**
+
+没有许可证**不等于**获得许可——仓库里没有 `LICENSE` 文件，默认状态是「保留所有权利」；
+`NOASSERTION` **也不等于**宽松许可证，那是 GitHub 在说「有许可证文件，但认不出是什么」。
+「认不出」和「允许用」是两回事。
+
+白名单，此外一律不放行：
+
+`0BSD` `Apache-2.0` `BSD-2-Clause` `BSD-3-Clause` `CC-BY-4.0` `CC0-1.0` `ISC`
+`MIT` `MIT-0` `MPL-2.0` `Unlicense`
+
+写法会归一化，所以 `mit`、`Apache 2.0` 能被接受，并回写成 `MIT`、`Apache-2.0`。故意排除：
+`CC-BY-NC-*`、`CC-BY-ND-*`（非商业、禁止演绎都不是再分发授权），以及 `GPL-*` / `AGPL-*`
+（copyleft 义务不是一个目录能追踪的）。要改这个名单，就在 `schema.mjs` 里改一行——**公开
+改，把理由写出来，不要开暗门例外**。
+
+**闸门查的是仓库，不是 skill 文件本身。** 仓库根目录的宽松许可证通常覆盖它下面的一切，但
+skill 目录若自带 `LICENSE`，则以那个为准。提交前请自己确认——构建脚本看不到这一层。
+
+改完条目跑构建：
+
+```
+node registry/scripts/build-registry.mjs          # 重写 skills.json
+node registry/scripts/build-registry.mjs --check  # 过期则失败
+```
+
+## 找候选
+
+`discover.mjs` 向 GitHub 搜索接口要匹配的仓库，读 GitHub 已经算好的 `license.spdx_id`，
+只报告过了闸门的那些。一次请求返回 100 个仓库，所以跑一轮只花几次请求，而不是每个仓库
+一次。
+
+```
+node registry/scripts/discover.mjs --query "claude skills" --pages 2 --min-stars 100
+node registry/scripts/discover.mjs --query "agent skills" --json
+```
+
+它从环境变量读 `GITHUB_TOKEN`（或 `GH_TOKEN`）来提高额度，**没有也能跑**，走匿名额度。
+这个 token 不会被打印，也不会被写进任何地方。请求按搜索接口 10 次/分钟的限速**主动等待**，
+而不是撞上限流再重试。
+
+**它什么都不写。** 候选仍要人工变成条目，因为仓库级的许可证不能证明那个 skill 文件也被覆盖。
 
 `category` 是封闭列表——放开成自由文本会让筛选器变成「一个条目一个分类」，比没有筛选
 更糟：

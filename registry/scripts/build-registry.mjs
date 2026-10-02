@@ -20,7 +20,7 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { CATEGORY_KEYS } from "../schema.mjs";
+import { CATEGORY_KEYS, LICENSE_ALLOW, normalizeLicense } from "../schema.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REGISTRY_DIR = join(HERE, "..");
@@ -160,6 +160,23 @@ export function validateEntry(fields, file) {
   if (fields.category === undefined) fail("category is required");
   else if (!CATEGORY_KEYS.includes(String(fields.category))) {
     fail(`category ${JSON.stringify(fields.category)} is not one of: ${CATEGORY_KEYS.join(", ")}`);
+  }
+  // Listing an entry republishes its coordinates and lets the market install its
+  // files, so a license is required and it has to be one that permits
+  // redistribution. "No LICENSE file" and `NOASSERTION` are both rejections:
+  // absent permission is not permission, and an unidentified license is not a
+  // permissive one.
+  if (fields.license === undefined || String(fields.license).trim() === "") {
+    fail(`license is required; allowed values: ${LICENSE_ALLOW.join(", ")}`);
+  } else {
+    const normalized = normalizeLicense(String(fields.license));
+    if (!LICENSE_ALLOW.includes(normalized)) {
+      fail(
+        `license ${JSON.stringify(fields.license)} does not permit redistribution; allowed values: ${LICENSE_ALLOW.join(", ")}`,
+      );
+    } else {
+      fields.license = normalized;
+    }
   }
   if (fields.version !== undefined && !SEMVER.test(String(fields.version))) {
     fail("version must be a semver like 1.2.3 when present");
