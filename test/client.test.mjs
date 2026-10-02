@@ -137,6 +137,18 @@ function createHarness() {
         const flat = flattenChildren(props.children);
         props.children = flat.length === 1 ? flat[0] : flat;
       }
+      // React assigns a `ref` prop on a host element to the node it created. The
+      // harness has no real nodes, so the recorded prop bag stands in for one and
+      // the ref is pointed at it. Without this every `ref.current` reads null and
+      // any handler that guards on it silently does nothing.
+      //
+      // A real DOM node also answers `contains`, which the panel's outside-click
+      // check calls. The bag gets a default that reports "outside"; a test that
+      // cares about the distinction replaces it on the node it looked up.
+      if (props.ref !== undefined && typeof props.ref === "object" && props.ref !== null) {
+        props.contains = () => false;
+        props.ref.current = props;
+      }
       nodes.push({ kind: "host", tag: element.type, props, path });
       return visit(element.props?.children, `${path}.`);
     }
@@ -956,6 +968,188 @@ test("the submission panel is anchored, not an inline row expander", async () =>
   assert.match(rule, /position:\s*absolute/u, "the panel is taken out of the toolbar's flow");
   assert.match(rule, /z-index/u, "and it stacks above the list it opens over");
   assert.match(source, /aria-expanded/u, "the trigger reports its state to assistive technology");
+});
+
+/**
+ * A stub `document` that records what the panel subscribes to.
+ *
+ * The bundle's own tests run without a DOM, so the dismiss effect returns early
+ * everywhere else in this file and its behaviour was never exercised. Installing
+ * a stub is what turns that code back on. It also has to satisfy the stylesheet
+ * helper the bundle calls at factory time, which is why the element and head
+ * stubs are here and not only the listener bookkeeping.
+ */
+function fakeDocument() {
+  const listeners = new Map();
+  const created = [];
+  return {
+    added: 0,
+    removed: 0,
+    // `ensureStyles` looks its own <style> up by id; nothing is registered yet, so
+    // returning null makes it append one through head.appendChild below.
+    getElementById: () => null,
+    createElement: () => {
+      const node = { id: undefined, textContent: "" };
+      created.push(node);
+      return node;
+    },
+    head: { appendChild: () => {} },
+    // `rootRef.current` resolves to the wrapper host node, whose `contains` decides
+    // whether a click counts as inside. The harness records host elements as plain
+    // prop bags rather than live nodes, so the behaviour is supplied here and
+    // swapped by the test to distinguish an inside click from an outside one.
+    contains: () => false,
+    setContains(fn) {
+      this.contains = fn;
+    },
+    addEventListener(type, fn) {
+      this.added += 1;
+      if (!listeners.has(type)) listeners.set(type, new Set());
+      listeners.get(type).add(fn);
+    },
+    removeEventListener(type, fn) {
+      this.removed += 1;
+      listeners.get(type)?.delete(fn);
+    },
+    dispatch(type, event = {}) {
+      for (const fn of [...(listeners.get(type) ?? [])]) fn({ type, ...event });
+    },
+    count(type) {
+      return listeners.get(type)?.size ?? 0;
+    },
+  };
+}
+
+/**
+ * The dismiss listeners must not be re-subscribed on every render.
+ *
+ * The caller passes an inline arrow as `onToggle`, so its identity changes on
+ * every render. With `onToggle` in the effect's dependency array the effect tears
+ * down and re-adds both listeners each time the market re-renders — and it does
+ * re-render while the panel is open, on every keystroke in the search box. The
+ * subscription has to key off `open` alone.
+ */
+test("the dismiss listeners are subscribed once, not once per render", async () => {
+  const { harness } = await openMarket();
+  const doc = fakeDocument();
+  const original = globalThis.document;
+  globalThis.document = doc;
+  try {
+    dropdownTrigger(harness, "申请收录 skill").props.onClick();
+    await harness.repaint();
+    const afterOpen = doc.added;
+    assert.equal(afterOpen, 2, "opening subscribes mousedown and keydown exactly once");
+
+    // Re-render repeatedly, the way an open panel does while the query changes.
+    // Each pass rebuilds the element tree, so an effect that depended on the
+    // inline callback would re-run on every one of them.
+    for (let pass = 0; pass < 5; pass += 1) await harness.repaint();
+    assert.equal(doc.added, afterOpen, "re-rendering must not re-subscribe");
+    assert.equal(doc.count("mousedown"), 1, "exactly one outside-click listener is live");
+    assert.equal(doc.count("keydown"), 1, "exactly one key listener is live");
+  } finally {
+    if (original === undefined) delete globalThis.document;
+    else globalThis.document = original;
+  }
+});
+
+/**
+ * The dismiss logic itself: outside click and Escape close, inside click does not.
+ *
+ * This is the part that touches `document`, optional-chains `rootRef.current`, and
+ * branches on the event type — the most failure-prone code in the panel, and the
+ * only part that had no coverage at all.
+ *
+ * The stub has to be installed before the panel mounts. The effect early-returns
+ * when there is no `document`, and the harness records that dependency pass, so a
+ * stub bolted on afterwards never sees a subscription.
+ */
+test("an outside click or Escape closes the panel, an inside click does not", async () => {
+  const calls = stubFetch();
+  const harness = createHarness();
+  const doc = fakeDocument();
+  const original = globalThis.document;
+  globalThis.document = doc;
+  let panel;
+  try {
+    const { exports } = evaluate(harness.React);
+    exports.apply({
+      slots: {
+        inject: (_name, callback) => { callback(); return () => {}; },
+        register: (seat, component) => { if (seat.name === "main") panel = component; return () => {}; },
+      },
+      effect: () => () => {},
+      get: () => undefined,
+      locale: localeService(),
+    });
+    await harness.start(harness.React.createElement(panel, { api: { selectPanel: () => {} } }));
+    const market = harness.hosts("button").find((node) => node.props.children === "市场");
+    market.props.onClick();
+    await harness.repaint();
+    assert.ok(calls.length > 0, "the market payload was fetched");
+
+    dropdownTrigger(harness, "申请收录 skill").props.onClick();
+    await harness.repaint();
+    const open = harness.hosts("div").find((node) => node.props.className === "skm-submitWrap");
+    assert.ok(open !== undefined, "the panel is open");
+    assert.equal(doc.count("mousedown"), 1, "opening subscribes exactly one outside-click listener");
+    assert.equal(doc.count("keydown"), 1, "and exactly one key listener");
+
+    // The dismissal calls the `onToggle` prop, which flips the parent's own state.
+    // The harness re-reads state on the next paint, so the observable effect of a
+    // real dismissal is the panel leaving the tree. The wrapper that anchors it
+    // renders unconditionally, so it is the panel inside that is tracked.
+    const panelNode = () =>
+      harness.hosts("div").find((node) => node.props.className?.split(" ").includes("skm-submit"));
+    assert.equal(panelNode() !== undefined, true, "the panel starts open");
+
+    // A click inside the panel must survive. The panel holds the copy button and
+    // a real link, so dismissing on those would make both unusable. The handler
+    // calls `.contains` on whatever `rootRef` points at — the wrapper host node —
+    // so the behaviour is set on that node directly.
+    //
+    // It is set through the ref, because that is the object the handler actually
+    // dereferences: the recorded tree is rebuilt every paint pass, and a node
+    // captured from an earlier pass is not the one the effect closed over.
+    const wrapNode = () =>
+      harness.hosts("div").find((node) => node.props.className === "skm-submitWrap");
+    assert.ok(wrapNode() !== undefined, "the panel's wrapper is rendered");
+    const anchored = wrapNode().props.ref.current;
+    assert.equal(typeof anchored.contains, "function", "the node answers contains, as a real one would");
+
+    anchored.contains = () => true;
+    doc.dispatch("mousedown", { target: {} });
+    await harness.repaint();
+    assert.equal(panelNode() !== undefined, true, "a click inside the panel does not close it");
+
+    // A non-Escape key is not a dismissal either.
+    doc.dispatch("keydown", { key: "a" });
+    await harness.repaint();
+    assert.equal(panelNode() !== undefined, true, "an ordinary key does not close it");
+
+    // An outside click is: `contains` now reports the click landed elsewhere.
+    anchored.contains = () => false;
+    doc.dispatch("mousedown", { target: {} });
+    await harness.repaint();
+    assert.equal(panelNode() === undefined, true, "a click outside the panel closes it");
+
+    // Escape closes it too, re-subscribing on the way back open. The trigger is
+    // looked up again because the tree was rebuilt by the paint above.
+    dropdownTrigger(harness, "申请收录 skill").props.onClick();
+    await harness.repaint();
+    assert.equal(panelNode() !== undefined, true, "the panel reopens");
+    doc.dispatch("keydown", { key: "Escape" });
+    await harness.repaint();
+    assert.equal(panelNode() === undefined, true, "Escape closes it");
+
+    // Closing removes the listeners; otherwise every open/close cycle would stack
+    // another pair on the document.
+    assert.equal(doc.count("mousedown"), 0, "no outside-click listener leaks after close");
+    assert.equal(doc.count("keydown"), 0, "no key listener leaks after close");
+  } finally {
+    if (original === undefined) delete globalThis.document;
+    else globalThis.document = original;
+  }
 });
 
 test("opening the panel reveals the template and a real submission link", async () => {
