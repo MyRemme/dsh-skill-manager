@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: "Reverse engineer Android APKs from the command line: unpack an APK, decompile the Java, edit smali, repackage, and attach a Frida hook for dynamic analysis, switching to so/native work when the task calls for it. Prefers the jadx, apktool, frida, adb, ida-reverse and radare2 tools already installed on the machine."
-  zh: "在命令行环境下做 Android APK 逆向时使用。适用于 APK 解包、Java 反编译、smali 修改、重打包、Frida 动态 Hook，以及按需切换到 so／native 分析。优先调用本机已装的 jadx、apktool、frida、adb、ida-reverse、radare2。"
+  zh: "在命令行环境下做 Android APK 逆向时使用。适用于 APK 解包、Java 反编译、smali 修改、重打包、Frida 动态 Hook，以及按需切换到 so/native 分析。优先使用本机已安装的 jadx、apktool、frida、adb、ida-reverse、radare2。"

@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Orchestrates end-to-end autonomous AI research projects using a two-loop architecture. The inner loop runs rapid experiment iterations with clear optimization targets. The outer loop synthesizes results, identifies patterns, and steers research direction. Routes to domain-specific skills for execution, supports continuous agent operation via Claude Code /loop and OpenClaw heartbeat, and produces research presentations and papers. Use when starting a research project, running autonomous experiments, or managing a multi-hypothesis research effort.
-  zh: "用双层循环架构编排端到端的自主 AI 研究项目：内层按明确的优化目标快速迭代实验，外层汇总结果、识别规律并决定研究方向。可路由到各领域专用技能执行，支持通过 Claude Code 的 /loop 与 OpenClaw 心跳让智能体持续运行，并产出研究报告与论文。启动研究项目、跑自主实验或管理多假设研究时使用。"
+  zh: "用双循环架构编排端到端的自主 AI 研究项目。内循环围绕明确的优化目标快速迭代实验，外循环综合结果、识别规律并调整研究方向。按需路由到各领域专项技能执行，支持通过 Claude Code /loop 与 OpenClaw 心跳持续运行，产出研究报告与论文。适用于启动研究项目、运行自主实验或管理多假设研究工作时。"

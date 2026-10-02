@@ -7,4 +7,4 @@ license: Apache-2.0
 added: 2026-10-02
 description:
   en: Review AI agent skills before installation using NVIDIA SkillSpector and source-aware semantic review. Use when asked whether a skill or downloaded skill folder is safe, trustworthy, installable, over-permissioned, or malicious.
-  zh: "安装前先审查 AI 智能体技能：使用 NVIDIA SkillSpector 结合源码感知的语义审查，判断某个技能或下载来的技能目录是否安全、可信、可安装，是否存在权限过大或恶意行为。"
+  zh: "安装前用 NVIDIA SkillSpector 加上面向源码的语义审查来检查 AI 智能体技能。适用于被问及某个技能或下载来的技能目录是否安全、可信、可安装、权限过大或带有恶意时。"

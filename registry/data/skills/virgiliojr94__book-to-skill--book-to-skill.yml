@@ -1,10 +1,10 @@
 repo: virgiliojr94/book-to-skill
 name: book-to-skill
 path: SKILL.md
-ref: main
+ref: master
 category: writing
 license: MIT
 added: 2026-10-02
 description:
-  en: Turn any technical book PDF into a Claude Code skill — ready to study, reference, and use while you work.
-  zh: "把任意技术书籍 PDF 转换成 Claude Code 技能，方便边工作边查阅和学习。"
+  en: Converts books and documents (PDF, EPUB, DOCX, HTML, Markdown, plain text, RTF, MOBI/AZW with Calibre) into structured agent skills, extracting frameworks, mental models, principles, techniques, and anti-patterns. Use when the user wants to study a document through GitHub Copilot CLI, Amp, Claude Code, Hermes Agent, OpenCode, or OpenClaw, apply an author's frameworks while working, or build a reusable knowledge base from a file.
+  zh: "把书籍与文档（PDF、EPUB、DOCX、HTML、Markdown、纯文本、RTF，以及经 Calibre 转换的 MOBI/AZW）转成结构化的智能体技能，提取其中的框架、心智模型、原则、技巧与反模式。适用于用户想通过 GitHub Copilot CLI、Amp、Claude Code、Hermes Agent、OpenCode 或 OpenClaw 研读某份文档，在实际工作中套用某位作者的方法论，或从文件搭建可复用的知识库。"

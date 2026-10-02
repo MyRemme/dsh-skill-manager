@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Brand mention and authority scanner for AI visibility. Analyzes brand presence across platforms that AI models rely on for entity recognition and citation decisions. Produces a Brand Authority Score (0-100) with platform-specific recommendations.
-  zh: "面向 AI 可见度的品牌提及与权威度扫描：分析品牌在各大模型赖以做实体识别与引用决策的平台上的表现，给出 0–100 的品牌权威度评分及分平台建议。"
+  zh: "面向 AI 可见性的品牌提及与权威度扫描器。分析品牌在 AI 模型进行实体识别与引用决策时所依赖的各平台上的存在情况，产出 0-100 的品牌权威度评分与分平台建议。"

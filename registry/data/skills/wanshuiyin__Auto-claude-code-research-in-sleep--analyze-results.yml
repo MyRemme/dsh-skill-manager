@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Analyze ML experiment results, compute statistics, generate comparison tables and insights. Use when user says "analyze results", "compare", or needs to interpret experimental data.
-  zh: "分析机器学习实验结果：计算统计量、生成对比表格并提炼结论。用户说「分析结果」「对比一下」，或需要解读实验数据时使用。"
+  zh: "分析机器学习实验结果，计算统计量，生成对比表格与结论。适用于用户说「分析结果」「对比一下」，或需要解读实验数据时。"

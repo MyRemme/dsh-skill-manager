@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: "One of the AI skills open-sourced by the creator 数字生命卡兹克, in a collection that also includes leader (helps you define a goal), neat-freak, and khazix-writer. Usable from Claude Code, Codex and 40-plus other agents."
-  zh: "数字生命卡兹克开源的 AI Skills 合集之一（合集另含 leader 目标定义、neat-freak 洁癖、khazix-writer 等），可用于 Claude Code、Codex 及 40 多个智能体。"
+  zh: "数字生命卡兹克开源的 AI 技能合集之一，同系列还有 leader（帮你定义目标）、neat-freak 洁癖与 khazix-writer。可在 Claude Code、Codex 等 40 多个智能体中使用。"

@@ -163,22 +163,28 @@ function rootRank(path) {
 /**
  * Determine what a repository offers.
  *
+ * The branch is whatever the repository declares as its default, not `main`:
+ * `virgiliojr94/book-to-skill` and `alchaincyf/huashu-design` both use `master`,
+ * and `yusufkaraaslan/Skill_Seekers` uses `development`. Guessing between `main`
+ * and `master` silently produced entries pointing at paths that do not exist.
+ *
  * @returns `{ skills, reason }` — `skills` is populated only when all of them
  *   are verifiable.
  */
 async function inspectRepo(candidate, token, perRepo) {
   const repo = candidate.fullName;
-  const tree = await api(`/repos/${repo}/git/trees/main?recursive=1`, token);
-  if (!tree.ok) {
-    const fallback = tree.status === 404 ? await api(`/repos/${repo}/git/trees/master?recursive=1`, token) : null;
-    if (fallback === null || !fallback.ok) return { skills: [], reason: `tree unreadable (HTTP ${tree.status})` };
-    return collect(repo, fallback.body, token, perRepo);
-  }
-  return collect(repo, tree.body, token, perRepo);
+  const meta = await api(`/repos/${repo}`, token);
+  if (!meta.ok) return { skills: [], ref: null, reason: `metadata unreadable (HTTP ${meta.status})` };
+  const ref = typeof meta.body?.default_branch === "string" ? meta.body.default_branch : null;
+  if (ref === null) return { skills: [], ref: null, reason: "no default branch reported" };
+
+  const tree = await api(`/repos/${repo}/git/trees/${ref}?recursive=1`, token);
+  if (!tree.ok) return { skills: [], ref, reason: `tree unreadable (HTTP ${tree.status})` };
+  return collect(repo, ref, tree.body, token, perRepo);
 }
 
 /** Turn a tree listing into verified skill records. */
-async function collect(repo, treePayload, token, perRepo) {
+async function collect(repo, ref, treePayload, token, perRepo) {
   const entries = Array.isArray(treePayload?.tree) ? treePayload.tree : [];
   if (treePayload?.truncated === true) return { skills: [], reason: "tree too large to verify" };
 
@@ -208,6 +214,7 @@ async function collect(repo, treePayload, token, perRepo) {
   const repoRootHasLicense = ownLicenses.has("");
 
   const skills = [];
+  const rejected = [];
   // Two directories can declare the same frontmatter name. An entry is keyed by
   // that name, so the second one would collide — keep the first and drop the rest.
   const taken = new Set();
@@ -215,10 +222,19 @@ async function collect(repo, treePayload, token, perRepo) {
     if (ownLicenses.has(directoryOf(path)) && directoryOf(path) !== "") {
       continue; // Nested license of unknown terms — out of scope, dropped below.
     }
-    const blob = await api(`/repos/${repo}/contents/${path}?ref=main`, token);
+    const blob = await api(`/repos/${repo}/contents/${path}?ref=${ref}`, token);
     const text = blob.ok ? decodeContent(blob.body) : null;
     const declared = readFrontmatterName(text);
-    const name = declared ?? guessedName;
+    // A SKILL.md without a declared name is not a skill: `NanmiCoder/cc-haha`
+    // keeps generated stubs in its skills directory, and `Skill_Seekers` has
+    // plain documentation files named `*SKILL.md`. Falling back to the directory
+    // name published those under a name the upstream file never claimed — and
+    // the build later rejects the entry because the name does not match.
+    if (declared === null) {
+      rejected.push(`${path} (no \`name\` in frontmatter)`);
+      continue;
+    }
+    const name = declared;
     if (!SKILL_NAME.test(name) || taken.has(name)) continue;
     taken.add(name);
     skills.push({ name, path, declared, summary: readFrontmatterDescription(text) });
@@ -230,14 +246,25 @@ async function collect(repo, treePayload, token, perRepo) {
   ).length;
 
   if (skills.length === 0) {
-    return { skills: [], reason: droppedForNestedLicense > 0 ? "every skill directory carries its own LICENSE" : "no verifiable skill" };
+    return {
+      skills: [],
+      ref,
+      reason:
+        droppedForNestedLicense > 0
+          ? "every skill directory carries its own LICENSE"
+          : rejected.length > 0
+            ? `no verifiable skill (${rejected[0]})`
+            : "no verifiable skill",
+    };
   }
   return {
     skills,
+    ref,
     reason: null,
     note: repoRootHasLicense ? null : "no LICENSE at the repository root",
     replicated: skillFiles.length - chosen.size,
     skipped,
+    rejected,
   };
 }
 
@@ -301,7 +328,7 @@ async function main() {
           repo: candidate.fullName,
           name: skill.name,
           path: skill.path,
-          ref: "main",
+          ref: result.ref,
           license: candidate.normalized,
           stars: candidate.stars,
           summary: skill.summary,
@@ -311,7 +338,12 @@ async function main() {
       }
       const names = result.skills.map((skill) => skill.name).join(", ");
       const extra = result.skipped > 0 ? ` (${result.skipped} more not taken)` : "";
-      process.stdout.write(`  + ${candidate.fullName.padEnd(48)} ${result.skills.length}: ${names}${extra}\n`);
+      const notes = [];
+      if (result.skipped > 0) notes.push(`${result.skipped} more not taken`);
+      if (result.rejected.length > 0) notes.push(`${result.rejected.length} unverifiable`);
+      if (result.ref !== "main") notes.push(`ref ${result.ref}`);
+      const suffix = notes.length > 0 ? ` (${notes.join(", ")})` : "";
+      process.stdout.write(`  + ${candidate.fullName.padEnd(48)} ${result.skills.length}: ${names}${suffix}\n`);
     }
     if (args.sleep) await sleep(token === null ? 700 : 150);
   }

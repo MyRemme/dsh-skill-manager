@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Anti-AI-slop design skill for greenfield pages, audits, redesigns, and design extraction from URLs or screenshots. Use when the user asks to build a new app or landing page, wants to redesign something, invokes Hallmark by name, or uses audit/redesign/study.
-  zh: "反 AI 味的设计技能，适用于从零建站、设计审计、改版，以及从链接或截图反向提取设计。用户要求做新应用或落地页、想改版、点名 Hallmark，或使用 audit / redesign / study 指令时启用。"
+  zh: "反 AI 味的设计技能，适用于从零做新页面、做审计、改版，以及从 URL 或截图提取设计。适用于用户要求构建新应用或落地页、想做改版、点名 Hallmark，或使用 audit/redesign/study 时。"

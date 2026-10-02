@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Audit cross-platform attribution, conversion definitions, reporting windows, GA4, AdServices and AdAttributionKit, MMPs, browser and server events, offline conversions, and platform reconciliation. Use for attribution audit, attribution models, conversion windows, requests to add or total Meta and Google conversions, incompatible reporting-window aggregation, GA4 attribution, MMP review, AppsFlyer, Adjust, Branch, Singular, or cross-platform discrepancies.
-  zh: "审计跨平台归因：转化定义、归因窗口、GA4、AdServices 与 AdAttributionKit、MMP、浏览器与服务器事件、线下转化以及各平台之间的对账。适用于归因模型梳理、转化窗口设定、GA4 归因、AppsFlyer / Adjust / Branch / Singular 等 MMP 复核，以及跨平台数据对不上的排查。"
+  zh: "审计跨平台归因、转化定义、归因窗口、GA4、AdServices 与 AdAttributionKit、MMP、浏览器与服务器事件、离线转化以及平台间对账。适用于归因审计、归因模型、转化窗口、Meta 与 Google 转化数相加的诉求、归因窗口不兼容导致的汇总错误、GA4 归因、MMP 复核、AppsFlyer、Adjust、Branch、Singular 或跨平台数据不一致。"

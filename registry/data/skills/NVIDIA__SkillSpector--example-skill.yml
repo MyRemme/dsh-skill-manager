@@ -7,4 +7,4 @@ license: Apache-2.0
 added: 2026-10-02
 description:
   en: Documents manifest locations for an example skill.
-  zh: "示例技能，用于说明技能清单文件应放在哪些位置。"
+  zh: "说明示例技能的 manifest 放在哪些位置。"

@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Add Sentry v8 error tracking and performance monitoring to your services. Use this skill when adding error handling, creating new controllers, instrumenting cron jobs, or tracking database performance. ALL ERRORS MUST BE CAPTURED TO SENTRY - no exceptions.
-  zh: "为服务接入 Sentry v8 错误追踪与性能监控。新增错误处理、编写控制器、给定时任务埋点或追踪数据库性能时使用。要求所有错误一律上报 Sentry，不做例外。"
+  zh: "为你的服务接入 Sentry v8 错误追踪与性能监控。适用于添加错误处理、编写新的控制器、给定时任务埋点或追踪数据库性能时。所有错误都必须上报到 Sentry，没有例外。"

@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: When the user wants to plan, design, or implement an A/B test or experiment, or build a growth experimentation program. Also use when the user mentions "A/B test," "split test," "experiment," "test this change," "variant copy," "multivariate test," "hypothesis," "should I test this," "which version is better," "test two versions," "statistical significance," "how long should I run this test," "growth experiments," "experiment velocity," "experiment backlog," "ICE score," "experimentation program," or "experiment playbook." Use this whenever someone is comparing two approaches and wants to measure which performs better, or when they want to build a systematic experimentation practice. For tracking implementation, see analytics. For page-level conversion optimization, see cro.
-  zh: "规划、设计并落地 A/B 测试，或从零搭建一套增长实验体系。涉及分流测试、多变量测试、假设、变体对比、统计显著性、试验时长、ICE 评分、实验排期与实验手册时使用。凡是需要比较两种方案优劣并量化结果，或想把实验沉淀为固定流程的场合都适用；埋点实现见 analytics，页面级转化优化见 cro。"
+  zh: "当用户想规划、设计或落地 A/B 测试或实验，或搭建增长实验体系时使用。用户提到「A/B 测试」「分流测试」「实验」「测一下这个改动」「变体文案」「多变量测试」「假设」「该不该测」「哪个版本更好」「跑多久才有结论」「统计显著性」「增长实验」「实验速度」「实验待办」「ICE 评分」「实验手册」时也适用。只要有人在比较两种方案并想要可衡量的结论，就用它。"

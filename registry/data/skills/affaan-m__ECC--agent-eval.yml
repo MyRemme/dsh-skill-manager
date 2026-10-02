@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Head-to-head comparison of coding agents (Claude Code, Aider, Codex, etc.) on custom tasks with pass rate, cost, time, and consistency metrics. Use when choosing between coding agents, or when a change to an agent setup needs measured pass rate, cost, and time rather than an impression.
-  zh: "让多个编码智能体（Claude Code、Aider、Codex 等）在同一批自定义任务上正面比拼，输出通过率、成本、耗时和稳定性四项指标。在几个编码智能体之间做选择，或需要用量化数据而非印象判断某次配置改动的效果时使用。"
+  zh: "在自定义任务上对比编码智能体（Claude Code、Aider、Codex 等），给出通过率、成本、耗时与稳定性指标。用于在多个编码智能体之间做选择，或在改动智能体配置后需要实测的通过率、成本与耗时，而不是凭印象判断时。"

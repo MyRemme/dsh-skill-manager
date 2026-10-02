@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Implements and trains LLMs using Lightning AI's LitGPT with 20+ pretrained architectures (Llama, Gemma, Phi, Qwen, Mistral). Use when need clean model implementations, educational understanding of architectures, or production fine-tuning with LoRA/QLoRA. Single-file implementations, no abstraction layers.
-  zh: "基于 Lightning AI 的 LitGPT 实现并训练 LLM，覆盖 Llama、Gemma、Phi、Qwen、Mistral 等 20 多种预训练架构。需要干净的模型实现、想通过阅读代码理解架构，或用 LoRA / QLoRA 做生产级微调时使用。单文件实现，没有多余的抽象层。"
+  zh: "用 Lightning AI 的 LitGPT 实现并训练 LLM，支持 20 多种预训练架构（Llama、Gemma、Phi、Qwen、Mistral）。当你需要干净易懂的模型实现、想从原理上理解这些架构，或用 LoRA/QLoRA 做生产级微调时使用。单文件实现，没有抽象层。"

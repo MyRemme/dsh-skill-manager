@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Install, authenticate, troubleshoot, and operate Gemini Notebook through the notebooklm-py CLI or typed async Python API. Use for notebook and source management, grounded chat and research, and artifact generation or download when the user mentions Gemini Notebook, notebooklm-py, the notebooklm CLI, or its Python API. Do not use for the generic Gemini API or unrelated content creation.
-  zh: "通过 notebooklm-py 命令行或带类型的异步 Python API 安装、登录、排障并操作 Gemini Notebook。适用于笔记本与来源管理、基于资料的对谈与研究、以及产物生成或下载。用户提到 Gemini Notebook、notebooklm-py、notebooklm CLI 或其 Python API 时使用；不适用于通用 Gemini API 或无关的内容创作。"
+  zh: "通过 notebooklm-py 命令行工具或带类型的异步 Python API 安装、登录、排障并操作 Gemini Notebook。适用于笔记本与资料管理、基于资料源的问答与研究，以及在用户提到 Gemini Notebook、notebooklm-py、notebooklm 命令行或其 Python API 时生成或下载产物。不适用于通用的 Gemini API 或无关的内容创作。"

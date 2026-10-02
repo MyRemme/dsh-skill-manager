@@ -7,4 +7,4 @@ license: MIT
 added: 2026-10-02
 description:
   en: Use for authorized security assessment of REST, GraphQL, WebSocket, or SOAP APIs, including discovery, authentication, authorization, rate-limit, and CI/CD testing.
-  zh: "对 REST、GraphQL、WebSocket 或 SOAP 接口做授权范围内的安全评估，包括接口发现、认证、授权、速率限制以及 CI/CD 环节的测试。"
+  zh: "用于对 REST、GraphQL、WebSocket 或 SOAP API 做已授权的安全评估，包括接口发现、认证、授权、限流与 CI/CD 测试。"

@@ -7,6 +7,7 @@ const VALID = [
   "repo: acme/widget-skills",
   "name: widget-helper",
   "path: skills/widget-helper/SKILL.md",
+  "ref: main",
   "category: docs",
   "license: MIT",
   'tags: [writing, "design-tokens"]',
@@ -22,6 +23,7 @@ test("parseEntry reads every supported field", () => {
   assert.equal(parsed.fields.repo, "acme/widget-skills");
   assert.equal(parsed.fields.name, "widget-helper");
   assert.equal(parsed.fields.path, "skills/widget-helper/SKILL.md");
+  assert.equal(parsed.fields.ref, "main");
   assert.equal(parsed.fields.category, "docs");
   assert.deepEqual(parsed.fields.tags, ["writing", "design-tokens"]);
   assert.equal(parsed.fields.description.en, "Helps with widgets: sizes and counts.");
@@ -88,12 +90,12 @@ test("validateEntry requires a description", () => {
 });
 
 test("validateEntry enforces the file-name convention", () => {
-  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", description: { en: "D." } }, "wrong-name.yml");
+  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", ref: "main", description: { en: "D." } }, "wrong-name.yml");
   assert.ok(problems.some((problem) => problem.includes("file name must be")));
 });
 
 test("validateEntry admits the repo-only file name", () => {
-  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", category: "dev", license: "MIT", description: { en: "D." } }, "acme__tools.yml");
+  const problems = validateEntry({ repo: "acme/tools", name: "demo", path: "SKILL.md", ref: "main", category: "dev", license: "MIT", description: { en: "D." } }, "acme__tools.yml");
   assert.deepEqual(problems, []);
 });
 
@@ -101,13 +103,35 @@ test("validateEntry admits the repo-only file name", () => {
 const FIXTURE_FILE = "a__b--demo.yml";
 
 /** A fixture that satisfies every rule, so each test can vary exactly one field. */
-const OK = { repo: "a/b", name: "demo", path: "SKILL.md", category: "ui", license: "MIT", description: { en: "D." } };
+const OK = { repo: "a/b", name: "demo", path: "SKILL.md", ref: "main", category: "ui", license: "MIT", description: { en: "D." } };
 
 test("validateEntry requires a category, and one from the closed list", () => {
-  const base = { repo: "a/b", name: "demo", path: "SKILL.md", description: { en: "D." } };
+  const base = { repo: "a/b", name: "demo", path: "SKILL.md", ref: "main", description: { en: "D." } };
   assert.ok(validateEntry(base, FIXTURE_FILE).some((problem) => problem.includes("category is required")));
   assert.ok(validateEntry({ ...base, category: "not-a-category" }, FIXTURE_FILE).some((problem) => problem.includes("is not one of")));
   assert.deepEqual(validateEntry({ ...base, category: "ui", license: "MIT" }, FIXTURE_FILE), []);
+});
+
+test("validateEntry requires a ref instead of defaulting to main", () => {
+  // `main` is not a safe default: two repositories in this catalog use `master`
+  // and one uses `development`. An entry with no `ref` used to inherit `main`
+  // silently, so it pointed at a path that does not exist, and only the
+  // `--verify` pass — which probes upstream — ever noticed.
+  const { ref, ...noRef } = OK;
+  assert.equal(ref, "main", "the fixture pins main; the test below proves the default is gone");
+  assert.ok(
+    validateEntry(noRef, FIXTURE_FILE).some((problem) => problem.includes("ref is required")),
+    "an entry that never recorded a branch is rejected",
+  );
+  assert.ok(
+    validateEntry({ ...OK, ref: "" }, FIXTURE_FILE).some((problem) => problem.includes("ref must be")),
+    "a blank ref is rejected",
+  );
+  assert.ok(
+    validateEntry({ ...OK, ref: "feature/../main" }, FIXTURE_FILE).some((problem) => problem.includes("ref must be")),
+    "a ref that walks the tree is rejected",
+  );
+  assert.deepEqual(validateEntry({ ...OK, ref: "development" }, FIXTURE_FILE), [], "a non-main branch is a legal ref");
 });
 
 test("validateEntry requires a license that permits redistribution", () => {
@@ -230,6 +254,27 @@ test("the English description is English and the Chinese one is Chinese", async 
       languageShare(skill.description.zh) > 0.25,
       `${skill.name}: description.zh is not written in Chinese (${Math.round(languageShare(skill.description.zh) * 100)}% CJK)`,
     );
+  }
+});
+
+/**
+ * Guard the class of bug that shipped once: every entry must name a real branch,
+ * and every entry must record a ref at all.
+ *
+ * `build-registry.mjs` defaults a missing `ref` to `main`, and `inspect.mjs` used
+ * to hardcode `main` outright. Two repositories in the catalog use `master` and
+ * one uses `development`, so those entries pointed at paths that do not exist —
+ * `--check` passed and only `--check --verify`, which probes upstream, caught it.
+ * The `ref` field is required here so the silent fallback can never apply.
+ */
+test("every entry pins the branch it was verified against", async () => {
+  const catalog = JSON.parse(await readFile(new URL("../registry/skills.json", import.meta.url), "utf8"));
+  for (const skill of catalog.skills) {
+    assert.equal(typeof skill.ref, "string", `${skill.name}: ref must be recorded, not left to default to main`);
+    assert.notEqual(skill.ref, "", `${skill.name}: ref must not be empty`);
+    assert.ok(!skill.ref.includes(".."), `${skill.name}: ref must be a plain branch, tag or commit`);
+    assert.equal(typeof skill.path, "string", `${skill.name}: path must be recorded`);
+    assert.ok(skill.path.endsWith("SKILL.md"), `${skill.name}: path must name the SKILL.md the entry claims`);
   }
 });
 

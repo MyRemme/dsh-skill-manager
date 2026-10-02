@@ -152,8 +152,13 @@ export function validateEntry(fields, file) {
     if (fields.path.split("/").includes("..")) fail("path must not contain `..`");
     if (!fields.path.endsWith(".md")) fail("path must point at a Markdown file, normally SKILL.md");
   }
-  const ref = fields.ref ?? "main";
-  if (typeof ref !== "string" || ref === "" || ref.includes("..") || !REF.test(ref)) fail("ref must be a plain branch, tag or commit");
+  // Required, not defaulted to `main`. Two repositories in this catalog use
+  // `master` and one uses `development`; a silent default pointed those entries
+  // at paths that do not exist, and only the `--verify` pass noticed.
+  if (fields.ref === undefined) fail("ref is required; name the branch the entry was verified against (main, master, development, ...)");
+  else if (typeof fields.ref !== "string" || fields.ref === "" || fields.ref.includes("..") || !REF.test(fields.ref)) {
+    fail("ref must be a plain branch, tag or commit");
+  }
 
   // A closed set: a free-text category produces a filter with one bucket per
   // entry, which is worse than no filter.
@@ -269,7 +274,7 @@ function catalogOf(entries) {
         name: fields.name,
         repo: fields.repo,
         path: fields.path,
-        ref: fields.ref ?? "main",
+        ref: fields.ref,
         category: fields.category,
         description: { en: fields.description.en, ...(fields.description.zh === undefined ? {} : { zh: fields.description.zh }) },
       };
@@ -320,7 +325,7 @@ async function verify(entries) {
   const problems = [];
   const warnings = [];
   for (const { file, fields } of entries) {
-    const ref = fields.ref ?? "main";
+    const ref = fields.ref;
     try {
       const text = await fetchText(fields.repo, ref, fields.path);
       const name = /^name[ \t]*:[ \t]*(.*)$/mu.exec(text);
