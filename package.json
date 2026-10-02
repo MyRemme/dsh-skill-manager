@@ -43,6 +43,7 @@
   ],
   "scripts": {
     "test": "node --test \"test/**/*.test.mjs\"",
+    "docs:check": "node scripts/check-docs.mjs",
     "registry:build": "node registry/scripts/build-registry.mjs",
     "registry:check": "node registry/scripts/build-registry.mjs --check --verify"
   },

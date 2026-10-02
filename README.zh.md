@@ -3,7 +3,7 @@
 DeepSeek Harness 的技能管理：批量与单项启用/禁用、文件夹与压缩包导入、自己写技能，
 外加一个可以用 PR 投稿的技能市场——全部在一个 Web GUI 面板里。
 
-[English](README.md) · [贡献指南](contributing.md) · [目录格式](registry/README.md)
+[English](README.md) · [贡献指南](contributing.zh.md) · [目录格式](registry/README.zh.md)
 
 ## 有什么
 
@@ -117,7 +117,7 @@ desktop profile 由 Electron 应用独占管理；请装进 `web` 或其他 prof
   目录，写进你选的根。
 - `registryUrl` 可以指向任何同构的目录。
 - 投稿方式是对 `registry/data/skills/` 提 PR。格式与要求见
-  [`registry/README.md`](registry/README.md)。
+  [`registry/README.zh.md`](registry/README.zh.md)。
 
 **被收录不是安全审查。** 安装一个技能就是下载别人的文件，并把它们的正文放进你的模型
 上下文。装之前自己看一眼。

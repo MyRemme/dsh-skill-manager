@@ -4,7 +4,10 @@ Skill management for DeepSeek Harness: batch and per-skill enable/disable,
 folder and archive import, authoring, and a PR-fed skill market you can browse
 and install from — all in one Web GUI panel.
 
-[中文说明](README.zh.md) · [Contributing](contributing.md) · [Registry format](registry/README.md)
+[中文](README.zh.md) · [Contributing](contributing.md) · [Registry format](registry/README.md)
+
+> Interface labels are quoted in their original Chinese — the shipped UI is in
+> Chinese, so `已安装` is the actual tab text, not a translation of it.
 
 ## What it does
 
