@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-soulslike
+path: .claude/skills/genre-soulslike/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for soulslike games in Blender with monumental melancholy spaces, fog gates, bonfire landmarks, and lethal readability.
+  zh: Blender 魂系游戏美术指导：纪念性的忧郁空间、雾门、篝火地标与致命可读性。

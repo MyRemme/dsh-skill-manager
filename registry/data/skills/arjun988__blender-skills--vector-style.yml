@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: vector-style
+path: .claude/skills/vector-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Vector-clean art direction for Blender with flat fills, sharp silhouettes, and UI-like graphic clarity.
+  zh: Blender 矢量风格美术指导：平涂、锐利轮廓与界面式的图形清晰度。

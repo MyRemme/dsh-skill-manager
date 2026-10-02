@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: rigging
+path: .claude/skills/rigging/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Production rigging in Blender with armatures, IK/FK, constraints, weight painting, mechanical rigs, facial rigs, and drivers. Use before animation on deforming assets via MCP.
+  zh: Blender 生产级绑定：骨架、正向反向运动学、约束、权重绘制、机械绑定、面部绑定与驱动器。适用于变形资产动画之前。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: frutiger-aero-style
+path: .claude/skills/frutiger-aero-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Frutiger Aero art direction for Blender with glossy skeuomorphism, aqua UI cues, nature-tech optimism, and mid-2000s futurism.
+  zh: Blender Frutiger Aero 美术指导：光泽拟物、水蓝界面暗示、自然科技乐观与千禧年前后的未来感。

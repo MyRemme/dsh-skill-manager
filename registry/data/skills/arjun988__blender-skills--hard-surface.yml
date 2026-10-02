@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: hard-surface
+path: .claude/skills/hard-surface/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: AAA hard surface modeling for sci-fi, industrial, military, vehicles, weapons, robotics, and mechanical props. Use for boolean/bevel workflows, panel lines, greebles, chamfers, and manufacturing-accurate surfaces in Blender via MCP.
+  zh: Blender AAA 硬表面建模：科幻、工业、军事、载具、武器、机器人与机械道具。适用于布尔与倒角工作流、分模线、greeble、倒角与符合制造逻辑的表面。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: unreal-export
+path: .claude/skills/unreal-export/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Unreal Engine-specific Blender export for FBX scale, LODs, UCX collision, sockets, materials, and skeletal mesh workflows via MCP.
+  zh: Blender 面向虚幻引擎的导出：FBX 比例、LOD、UCX 碰撞、插槽、材质与骨骼网格工作流。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: uv-workflow
+path: .claude/skills/uv-workflow/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Production UV unwrapping for seam placement, UV packing, texel density, UDIM, lightmap UVs, and modular UV layouts. Use when preparing meshes for texturing and engine export in Blender via MCP.
+  zh: Blender 生产级 UV 展开：接缝位置、UV 排布、像素密度、UDIM、lightmap UV 与模块化 UV 布局。适用于为贴图与引擎导出准备网格。

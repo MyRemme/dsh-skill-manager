@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: archviz
+path: .claude/skills/archviz/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Architectural visualization in Blender for interiors/exteriors with real-world scale, camera composition, PBR materials, and still/animation delivery via MCP.
+  zh: Blender 建筑可视化：室内外真实尺度、相机构图、PBR 材质，以及静帧与动画交付。

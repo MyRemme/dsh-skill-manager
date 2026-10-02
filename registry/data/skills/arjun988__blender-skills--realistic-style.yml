@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: realistic-style
+path: .claude/skills/realistic-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Photorealistic AAA art direction for Blender including photogrammetry cleanup, real-world scale, high-poly workflows, PBR accuracy, and scan optimization. Use for cinematic and AAA game realism.
+  zh: Blender 照片级 AAA 美术指导：摄影测量清理、真实尺度、高模工作流、PBR 精度与扫描优化。适用于电影级与 AAA 游戏的真实感。

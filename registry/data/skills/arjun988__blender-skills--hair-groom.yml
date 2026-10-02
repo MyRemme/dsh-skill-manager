@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: hair-groom
+path: .claude/skills/hair-groom/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Hair and fur grooming in Blender using curves, particle hair, geometry nodes, and game hair-card workflows. Use for characters, creatures, and real-time hair cards via MCP.
+  zh: Blender 头发与毛发梳理：曲线、粒子毛发、几何节点与游戏用发片工作流。适用于角色、生物与实时发片。

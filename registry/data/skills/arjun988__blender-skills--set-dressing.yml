@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: set-dressing
+path: .claude/skills/set-dressing/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Set dressing and environmental storytelling placement for interiors and exteriors using prop density, narrative clusters, and readability rules via MCP.
+  zh: Blender 场景陈设与环境叙事摆放：通过道具密度、叙事聚类与可读性规则布置室内外。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: godot-export
+path: .claude/skills/godot-export/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Godot-specific Blender export favoring GLTF/GLB with correct scale, materials, animation clips, and collision shapes via MCP.
+  zh: Blender 面向 Godot 的导出：优先 GLTF/GLB，并保证正确的比例、材质、动画片段与碰撞形状。

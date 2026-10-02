@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-action-combat
+path: .claude/skills/genre-action-combat/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for action, hack-and-slash, beat 'em up, and fighting-game readable combat spaces and prop language in Blender.
+  zh: Blender 动作、砍杀、格斗与对战游戏的可读战斗空间与道具语言美术指导。

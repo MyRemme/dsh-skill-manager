@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: rendering
+path: .claude/skills/rendering/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Blender rendering with Cycles and Eevee including sampling, denoising, camera setup, render passes, color management, and render optimization. Use for final output and look validation via MCP.
+  zh: Blender 使用 Cycles 与 Eevee 渲染：采样、降噪、相机设置、渲染通道、色彩管理与渲染优化。适用于最终输出与外观校验。

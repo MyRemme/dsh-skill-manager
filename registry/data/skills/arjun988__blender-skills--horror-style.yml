@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: horror-style
+path: .claude/skills/horror-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Psychological horror art direction for Blender assets inspired by Silent Hill, Resident Evil, Chilla's Art, Fear to Fathom, and Iron Lung. Use for sparse industrial environments, analog aesthetics, and tension-driven lighting.
+  zh: Blender 心理恐怖美术指导，参考寂静岭、生化危机、Chilla 的 Art、Fear to Fathom 与 Iron Lung。适用于稀疏的工业环境、模拟质感与张力驱动的布光。

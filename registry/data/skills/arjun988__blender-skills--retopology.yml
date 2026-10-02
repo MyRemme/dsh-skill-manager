@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: retopology
+path: .claude/skills/retopology/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Production retopology for animation-ready, low-poly, quad-dominant meshes with proper edge loops and efficient polygon flow. Use after sculpting or high-poly modeling before rigging and UV work in Blender via MCP.
+  zh: Blender 生产级重拓扑：可动画、低多边形、以四边面为主的网格，正确的边循环与高效的多边形走向。适用于雕刻或高模之后、绑定与 UV 之前。

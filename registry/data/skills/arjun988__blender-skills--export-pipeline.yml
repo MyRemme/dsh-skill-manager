@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: export-pipeline
+path: .claude/skills/export-pipeline/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Production export from Blender to FBX, GLTF, OBJ, USD, and Alembic with scale, pivot, rotation, normals, materials, animation, and collision verification via MCP.
+  zh: Blender 生产级导出到 FBX、GLTF、OBJ、USD 与 Alembic，含比例、轴心、旋转、法线、材质、动画与碰撞校验。

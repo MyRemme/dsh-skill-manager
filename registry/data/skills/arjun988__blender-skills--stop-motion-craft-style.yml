@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: stop-motion-craft-style
+path: .claude/skills/stop-motion-craft-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Stop-motion and craft aesthetics for Blender including claymation, paper craft, and handmade physical-material cues.
+  zh: Blender 定格动画与手工质感美学：黏土定格、纸艺与手工材质的暗示。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: pixel-art-style
+path: .claude/skills/pixel-art-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Pixel-art and texel-constrained art direction for Blender assets destined for pixel rendering, low-res textures, or HD-2D-adjacent pixel reads.
+  zh: Blender 像素画与受像素格约束的美术指导，面向像素渲染、低分辨率贴图或 HD-2D 邻接的像素观感。

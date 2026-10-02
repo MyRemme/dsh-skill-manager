@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: compositing
+path: .claude/skills/compositing/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Blender compositor workflows for beauty stacks, render passes, color grade, glare, and delivery outputs via MCP.
+  zh: Blender 合成工作流：beauty 叠加、渲染通道、调色、辉光与交付输出。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: geometry-nodes
+path: .claude/skills/geometry-nodes/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Blender Geometry Nodes for procedural modeling, scatter systems, vegetation, buildings, pipes, cables, and reusable node groups. Use for procedural asset generation and instancing pipelines via MCP.
+  zh: Blender 几何节点：程序化建模、散布系统、植被、建筑、管道、线缆与可复用节点组。适用于程序化资产生成与实例化管线。

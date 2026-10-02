@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-narrative-vn
+path: .claude/skills/genre-narrative-vn/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for visual novel, interactive movie, walking simulator, and story-driven presentation spaces in Blender.
+  zh: Blender 视觉小说、互动电影、步行模拟与叙事驱动游戏的表现空间美术指导。

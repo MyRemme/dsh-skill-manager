@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: character-archetypes
+path: .claude/skills/character-archetypes/SKILL.md
+ref: main
+category: research
+license: MIT
+added: 2026-10-02
+description:
+  en: Character archetype art direction for Blender covering fantasy races, horror creatures, roles (knight, assassin, detective), and body types (mecha, android, chibi, etc.).
+  zh: Blender 角色原型美术指导：奇幻种族、恐怖生物、身份角色（骑士、刺客、侦探）与体型（机甲、机器人、Q 版等）。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: lod-pipeline
+path: .claude/skills/lod-pipeline/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Dedicated LOD generation, naming, screen-size targets, and validation for game meshes in Blender via MCP.
+  zh: Blender 专用的 LOD 生成、命名、屏幕尺寸目标与校验，面向游戏网格。

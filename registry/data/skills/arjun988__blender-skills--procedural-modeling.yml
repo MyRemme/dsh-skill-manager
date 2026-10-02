@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: procedural-modeling
+path: .claude/skills/procedural-modeling/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Procedural asset creation for rocks, buildings, vegetation, roads, terrain, pipes, cables, and sci-fi panels using Geometry Nodes and modifier-based workflows in Blender via MCP.
+  zh: Blender 程序化资产制作：岩石、建筑、植被、道路、地形、管道、线缆与科幻面板，使用几何节点与基于修改器的工作流。

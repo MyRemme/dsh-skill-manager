@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: animation
+path: .claude/skills/animation/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Game-ready animation in Blender including walk/run/idle cycles, combat, mechanical animation, camera animation, constraints, Graph Editor, and NLA workflows via MCP.
+  zh: Blender 游戏级动画：走跑待机循环、战斗、机械动画、相机动画、约束、曲线编辑器与非线性动画工作流。

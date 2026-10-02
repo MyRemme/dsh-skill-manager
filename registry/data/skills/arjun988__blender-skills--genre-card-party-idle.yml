@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-card-party-idle
+path: .claude/skills/genre-card-party-idle/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for card games, deck builders, party games, idle/incremental, educational, and rhythm game presentational spaces in Blender.
+  zh: Blender 卡牌、构筑卡牌、派对、放置增量、教育与音游的表现层空间美术指导。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: physics-sim
+path: .claude/skills/physics-sim/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Rigid body, soft body, and destruction setups in Blender including constraints, cell fracture debris, and baked caches via MCP.
+  zh: Blender 刚体、柔体与破坏设置：约束、单元破碎碎片与烘焙缓存。

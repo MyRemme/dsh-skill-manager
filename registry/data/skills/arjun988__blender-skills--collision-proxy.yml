@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: collision-proxy
+path: .claude/skills/collision-proxy/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Collision proxy authoring for games including UCX/UHX naming, convex hulls, capsules, and simple collider meshes in Blender via MCP.
+  zh: Blender 游戏碰撞代理制作：UCX/UHX 命名、凸包、胶囊与简化碰撞网格。

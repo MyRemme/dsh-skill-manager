@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: comic-book-style
+path: .claude/skills/comic-book-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Comic book and graphic-novel art direction for Blender with ink-line emphasis, halftone cues, and high-contrast framing.
+  zh: Blender 漫画与图像小说美术指导：墨线强调、网点暗示与高对比构图。

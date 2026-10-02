@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: scene-assembly
+path: .claude/skills/scene-assembly/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Large scene layout in Blender with collections, linking, overrides, streaming-friendly organization, and set assembly via MCP.
+  zh: Blender 大场景布局：集合、链接、覆盖、流式友好的组织方式与场景组装。

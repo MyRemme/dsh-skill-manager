@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: stylized-style
+path: .claude/skills/stylized-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Stylized art direction for Blender with shape language, exaggeration, color harmony, NPR rendering, and hand-painted asset workflows. Use for non-photorealistic game and animation projects.
+  zh: Blender 风格化美术指导：形状语言、夸张、色彩和谐、非真实感渲染与手绘资产工作流。适用于非照片级项目。

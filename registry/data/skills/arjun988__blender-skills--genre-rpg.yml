@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-rpg
+path: .claude/skills/genre-rpg/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for RPG, JRPG, CRPG, ARPG, and MMORPG worlds in Blender including loot rarity reads and region identity.
+  zh: Blender RPG、JRPG、CRPG、ARPG 与 MMORPG 世界美术指导，含战利品稀有度辨识与地域身份。

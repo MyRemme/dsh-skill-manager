@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: cloth-sim
+path: .claude/skills/cloth-sim/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Garment blockout, cloth simulation, pin groups, and bake to shape keys or caches for characters and props in Blender via MCP.
+  zh: Blender 服装打版、布料模拟、钉组，以及烘焙到形态键或缓存，适用角色与道具。

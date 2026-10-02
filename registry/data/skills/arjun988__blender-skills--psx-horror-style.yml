@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: psx-horror-style
+path: .claude/skills/psx-horror-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: PS1/PSX-era horror art direction combining low-poly affine textures, limited color depth, fog, and psychological horror staging for Blender assets.
+  zh: Blender PS1 与 PSX 时代恐怖美术指导：低多边形仿射贴图、有限色彩深度、雾气与心理恐怖调度。

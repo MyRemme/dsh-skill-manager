@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: hand-painted-style
+path: .claude/skills/hand-painted-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Hand-painted texture art direction for Blender with brushwork albedo, soft value transitions, and stylized PBR restraint.
+  zh: Blender 手绘贴图美术指导：笔触反照率、柔和的明度过渡与克制的风格化 PBR。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: vegetation-artist
+path: .claude/skills/vegetation-artist/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Vegetation and foliage authoring for Blender including trees, plants, grass cards, canopy LODs, and game-friendly leaf atlases via MCP.
+  zh: Blender 植被与枝叶制作：树木、植物、草片、树冠 LOD 与适合游戏的叶片图集。

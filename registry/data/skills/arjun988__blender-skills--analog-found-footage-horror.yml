@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: analog-found-footage-horror
+path: .claude/skills/analog-found-footage-horror/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Analog, VHS, CRT, and found-footage horror aesthetics for Blender shots including camera imperfections and documentary framing.
+  zh: Blender 模拟恐怖与伪纪录片美学：模拟胶片、VHS、CRT 质感、相机瑕疵与纪录片式取景。

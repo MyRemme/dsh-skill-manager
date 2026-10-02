@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: creature-artist
+path: .claude/skills/creature-artist/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: AAA creature modeling for fantasy, aliens, monsters, and organic creature design with believable anatomy and movement. Use for creature blockouts, muscle flow, bone structure, and animation-ready creature assets in Blender via MCP.
+  zh: Blender AAA 生物建模：奇幻、外星、怪物与有机生物设计，可信的解剖与运动。适用于生物灰盒、肌肉走向、骨骼结构与可动画生物资产。

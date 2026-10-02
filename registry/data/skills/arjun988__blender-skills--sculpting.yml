@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: sculpting
+path: .claude/skills/sculpting/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Blender sculpting for organic and hard surface detail using Dyntopo, multiresolution, brushes, alpha workflow, wrinkles, and damage. Use when high-frequency surface detail is needed before retopology in Blender via MCP.
+  zh: Blender 雕刻：用 Dyntopo、多分辨率、笔刷、alpha 工作流、褶皱与损伤处理有机与硬表面细节。适用于重拓扑之前需要高频表面细节时。

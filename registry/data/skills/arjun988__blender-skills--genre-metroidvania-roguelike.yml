@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-metroidvania-roguelike
+path: .claude/skills/genre-metroidvania-roguelike/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for metroidvania, roguelike, and roguelite games in Blender with biome gates, room modules, and run-readable props.
+  zh: Blender 银河城、随机肉鸽与 roguelite 美术指导：群系门禁、房间模块与单局可读道具。

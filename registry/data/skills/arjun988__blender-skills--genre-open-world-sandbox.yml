@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-open-world-sandbox
+path: .claude/skills/genre-open-world-sandbox/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for open world and sandbox games in Blender with biome landmarks, traversable scale, and discovery props.
+  zh: Blender 开放世界与沙盒游戏美术指导：群系地标、可通行的尺度与探索道具。

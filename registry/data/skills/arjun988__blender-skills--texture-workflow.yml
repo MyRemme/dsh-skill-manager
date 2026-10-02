@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: texture-workflow
+path: .claude/skills/texture-workflow/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Production texture workflow for atlases, baking AO/curvature/normal/roughness maps, decals, and texture memory optimization. Use for game-ready texture pipelines in Blender via MCP.
+  zh: Blender 生产级贴图工作流：图集、烘焙环境光遮蔽与曲率法线粗糙度贴图、贴花贴图与贴图内存优化。

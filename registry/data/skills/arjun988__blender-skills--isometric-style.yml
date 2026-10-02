@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: isometric-style
+path: .claude/skills/isometric-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Isometric and strategy-game art direction for Blender including diorama framing, true-iso camera setup, readable silhouettes, and tile asset rules.
+  zh: Blender 等距视角与策略游戏美术指导：立体模型式取景、真正的等距相机、可读轮廓与地块资产规则。

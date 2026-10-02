@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: visual-console-eras
+path: .claude/skills/visual-console-eras/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Visual era art direction for Blender covering PS1–PS5 stylistic cues, retro arcade, DOS, CRT, VHS, and film-grain presentation.
+  zh: Blender 各世代主机视觉美术指导：PS1 到 PS5 的风格线索、复古街机、DOS、CRT、VHS 与胶片颗粒表现。

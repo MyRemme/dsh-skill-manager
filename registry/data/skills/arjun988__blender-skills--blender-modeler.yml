@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: blender-modeler
+path: .claude/skills/blender-modeler/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Core Blender modeling specialist for Edit Mode, modifiers, collections, precision modeling, and scene organization. Use for general 3D modeling, blockouts, cleanup, non-destructive workflows, and scene structure in Blender via MCP.
+  zh: Blender 建模核心专长：编辑模式、修改器、集合、精确建模与场景组织。适用于通用三维建模、灰盒、整理、非破坏性工作流与场景结构。

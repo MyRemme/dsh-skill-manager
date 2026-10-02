@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-puzzle-platformer
+path: .claude/skills/genre-puzzle-platformer/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for puzzle and platformer games in Blender with readable interactables, jump volumes, and clear hazard language.
+  zh: Blender 解谜与平台跳跃游戏美术指导：可读的交互物、跳跃体积与清晰的危险语言。

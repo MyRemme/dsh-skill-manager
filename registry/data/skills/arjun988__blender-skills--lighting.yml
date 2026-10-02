@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: lighting
+path: .claude/skills/lighting/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Cinematic and game lighting in Blender including three-point lighting, HDRI, horror lighting, volumetrics, rim lighting, and mood-driven illumination. Use for look development and scene atmosphere via MCP.
+  zh: Blender 电影化与游戏布光：三点布光、HDRI、恐怖布光、体积光、轮廓光与情绪驱动的照明。适用于外观开发与场景氛围。

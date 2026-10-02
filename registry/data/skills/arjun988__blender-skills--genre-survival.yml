@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-survival
+path: .claude/skills/genre-survival/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for survival and survival-horror gameplay spaces in Blender emphasizing resource props, crafting readability, and tension routes.
+  zh: Blender 生存与生存恐怖玩法空间美术指导：强调资源道具、合成可读性与张力路线。

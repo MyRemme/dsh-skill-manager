@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: asset-optimization
+path: .claude/skills/asset-optimization/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Validates and optimizes Blender assets for polycount, topology, UV efficiency, material count, naming, collections, and game-ready performance. Use before export on all production assets via MCP.
+  zh: Blender 资产校验与优化：面数、拓扑、UV 效率、材质数量、命名、集合与游戏级性能。所有生产资产导出前都应过一遍。

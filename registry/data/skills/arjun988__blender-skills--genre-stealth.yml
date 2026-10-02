@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-stealth
+path: .claude/skills/genre-stealth/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for stealth-game spaces in Blender with shadow volumes, patrol-friendly layouts, and concealment materials.
+  zh: Blender 潜行游戏空间美术指导：阴影体积、便于巡逻的布局与隐蔽材质。

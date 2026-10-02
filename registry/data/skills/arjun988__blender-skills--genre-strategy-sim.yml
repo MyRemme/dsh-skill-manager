@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-strategy-sim
+path: .claude/skills/genre-strategy-sim/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for strategy, RTS, turn-based strategy, tower defense, MOBA, city builder, colony sim, and simulation games in Blender.
+  zh: Blender 策略、即时战略、回合制、塔防、MOBA、城市建造、殖民模拟与模拟经营游戏美术指导。

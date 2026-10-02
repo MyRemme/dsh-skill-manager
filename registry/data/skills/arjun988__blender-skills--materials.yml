@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: materials
+path: .claude/skills/materials/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Blender PBR and stylized material creation for metal, wood, concrete, fabric, glass, dirt, rust, and procedural shaders. Use for look development, material reuse, and production shading in Blender via MCP.
+  zh: Blender PBR 与风格化材质制作：金属、木材、混凝土、织物、玻璃、泥土、锈迹与程序化着色器。适用于外观开发、材质复用与生产着色。

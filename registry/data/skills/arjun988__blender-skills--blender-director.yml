@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: blender-director
+path: .claude/skills/blender-director/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Use when starting any Blender asset task, planning a production pipeline, coordinating multiple disciplines, or matching a reference photo/concept art. Invoke for game-ready assets, hard surface, environment, character, creature, export, or any multi-skill Blender workflow.
+  zh: Blender 总导演：任何资产任务的起点，负责规划生产流程、统筹多学科、对齐参考照片或概念图。适用于游戏级资产、硬表面、环境、角色、生物、导出等任何需要多技能的 Blender 工作流。

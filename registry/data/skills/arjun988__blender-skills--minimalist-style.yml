@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: minimalist-style
+path: .claude/skills/minimalist-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Minimalist and abstract-leaning art direction for Blender with reduced forms, limited palettes, and negative space.
+  zh: Blender 极简与抽象倾向的美术指导：削减形体、有限色板与留白。

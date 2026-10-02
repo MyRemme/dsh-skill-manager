@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: vfx-fx
+path: .claude/skills/vfx-fx/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Cinematic and game VFX in Blender including smoke, fire, particles, trails, and Geometry Nodes FX setups via MCP.
+  zh: Blender 电影级与游戏特效：烟雾、火焰、粒子、拖尾与几何节点特效设置。

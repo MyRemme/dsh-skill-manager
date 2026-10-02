@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: prop-artist
+path: .claude/skills/prop-artist/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Everyday and hero prop modeling for furniture, tools, household objects, kitbash parts, and readable game props. Use when hard-surface is too sci-fi/mechanical and the asset is a grounded prop.
+  zh: Blender 日常与主角道具建模：家具、工具、家居物件、套件拼装部件与可读的游戏道具。适用于硬表面过于科幻或机械、而资产是写实日常物件时。

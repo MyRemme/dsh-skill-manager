@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: chibi-style
+path: .claude/skills/chibi-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Chibi and SD proportion art direction for Blender characters with oversized heads, simplified anatomy, and cute silhouette rules.
+  zh: Blender Q 版与 SD 比例美术指导：夸张头部、简化解剖与可爱轮廓规则。

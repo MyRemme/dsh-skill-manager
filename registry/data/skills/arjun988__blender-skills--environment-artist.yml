@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: environment-artist
+path: .claude/skills/environment-artist/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: AAA environment art for modular kits, buildings, terrain, vegetation, architecture, and scene composition. Use for game-optimized environments, storytelling through space, and modular asset pipelines in Blender via MCP.
+  zh: Blender AAA 环境美术：模块化套件、建筑、地形、植被、建筑结构与场景构图。适用于游戏优化环境、以空间讲故事与模块化资产管线。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: camera-cinematography
+path: .claude/skills/camera-cinematography/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Cinematic camera work in Blender including framing, lenses, composition, camera animation, and shot language beyond basic rendering setup via MCP.
+  zh: Blender 电影化摄影：构图、镜头选择、机位、相机动画与镜头语言，不止于基础渲染设置。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: anime-style
+path: .claude/skills/anime-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Anime and cel-shaded art direction for Blender with hard color breaks, toon shaders, clean silhouettes, and anime proportion language.
+  zh: Blender 动漫与赛璐璐美术指导：硬边色块、卡通着色、干净轮廓与动漫比例语言。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: lookdev
+path: .claude/skills/lookdev/SKILL.md
+ref: main
+category: ui
+license: MIT
+added: 2026-10-02
+description:
+  en: Look development loop for Blender assets combining materials, lighting, camera, and screenshot comparison until shading reads correctly via MCP.
+  zh: Blender 资产的外观开发循环：结合材质、灯光、相机与截图对比，直到着色读起来正确。

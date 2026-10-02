@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: qa-review
+path: .claude/skills/qa-review/SKILL.md
+ref: main
+category: media
+license: MIT
+added: 2026-10-02
+description:
+  en: Production QA gate for Blender assets using viewport screenshots, validation checklists, naming audits, and ship/no-ship verdicts via MCP.
+  zh: Blender 资产生产质检关卡：视口截图、校验清单、命名审计与放行或不放行的判定。

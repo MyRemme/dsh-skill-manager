@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: vehicle-artist
+path: .claude/skills/vehicle-artist/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: Dedicated vehicle modeling for cars, trucks, aircraft, ships, boats, mechs, and transit assets with proportion, panel flow, and game LOD awareness in Blender via MCP.
+  zh: Blender 载具建模：汽车、卡车、飞机、舰船、小艇、机甲与交通工具资产，兼顾比例、面板走向与游戏 LOD 意识。

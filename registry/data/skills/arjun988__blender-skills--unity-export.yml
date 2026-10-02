@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: unity-export
+path: .claude/skills/unity-export/SKILL.md
+ref: main
+category: infra
+license: MIT
+added: 2026-10-02
+description:
+  en: Unity-specific Blender export for scale, axis, materials, humanoid/generic rigs, LODs, and collision import via MCP.
+  zh: Blender 面向 Unity 的导出：比例、轴向、材质、人形与通用绑定、LOD 与碰撞导入。

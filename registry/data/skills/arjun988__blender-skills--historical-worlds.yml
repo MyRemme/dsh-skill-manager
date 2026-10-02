@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: historical-worlds
+path: .claude/skills/historical-worlds/SKILL.md
+ref: main
+category: research
+license: MIT
+added: 2026-10-02
+description:
+  en: Historical and period world art direction for Blender including Western, pirate, samurai/ninja, Viking, ancient Egypt/Greece/Rome, Victorian, modern, and military eras.
+  zh: Blender 历史与年代世界美术指导：西方、海盗、武士与忍者、维京、古埃及、古希腊、古罗马、维多利亚、现代与军事年代。

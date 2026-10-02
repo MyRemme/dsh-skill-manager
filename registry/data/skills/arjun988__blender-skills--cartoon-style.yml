@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: cartoon-style
+path: .claude/skills/cartoon-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Cartoon art direction for Blender with squash-stretch readable shapes, bold colors, and graphic silhouettes for games and animation.
+  zh: Blender 卡通美术指导：拉伸挤压的可读形状、鲜明配色与图形化轮廓，适用于游戏与动画。

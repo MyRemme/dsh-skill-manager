@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: lowpoly-style
+path: .claude/skills/lowpoly-style/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Low-poly art direction for Blender inspired by PS1/PS2, Lethal Company, Mouthwashing, and Fear to Fathom. Use for readable silhouettes, minimal polygons, simple materials, and strong atmosphere.
+  zh: Blender 低多边形美术指导，参考 PS1 与 PS2、Lethal Company、Mouthwashing 与 Fear to Fathom。适用于可读轮廓、极简多边形、简单材质与强烈氛围。

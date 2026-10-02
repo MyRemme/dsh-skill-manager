@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: character-artist
+path: .claude/skills/character-artist/SKILL.md
+ref: main
+category: design
+license: MIT
+added: 2026-10-02
+description:
+  en: AAA character modeling for human anatomy, stylization, facial topology, clothing, hair, and animation-ready meshes. Use for game characters, facial expressions, and production character assets in Blender via MCP.
+  zh: Blender AAA 角色建模：人体解剖、风格化、面部拓扑、服装、头发与可动画网格。适用于游戏角色、面部表情与生产级角色资产。

@@ -1,0 +1,10 @@
+repo: arjun988/blender-skills
+name: genre-shooter
+path: .claude/skills/genre-shooter/SKILL.md
+ref: main
+category: other
+license: MIT
+added: 2026-10-02
+description:
+  en: Art direction for FPS, TPS, shooter, battle royale, and extraction-shooter maps and props in Blender with sightline and cover language.
+  zh: Blender 第一人称、第三人称、射击、大逃杀与撤离类游戏的地图与道具美术指导，含视线与掩体语言。
