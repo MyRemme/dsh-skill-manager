@@ -109,10 +109,10 @@ desktop profile 由 Electron 应用独占管理；请装进 `web` 或其他 prof
 目录是一份 JSON，由「一个技能一个 YAML 文件」构建，所以两个投稿人永远不会撞到同一个
 文件。
 
-- 默认来源：本仓库的 [`registry/skills.json`](registry/skills.json)。收录要过四道闸门：
+- 默认来源：本仓库的 [`registry/skills.json`](registry/skills.json)。收录要过五道闸门：
   **有明确许可证且允许再分发**（没声明、`NOASSERTION`、非商业、copyleft 一律不收）；**仓库
-  归档不超过安装器的 32 MiB 下载上限**；**条目属实**（路径存在、frontmatter 里的 `name`
-  对得上）；**分类取自封闭列表**。详见
+  归档不超过安装器的 32 MiB 下载上限**；**`SKILL.md` 不是软链**（软链能过核验但装不出来）；
+  **条目属实**（路径存在、frontmatter 里的 `name` 对得上）；**分类取自封闭列表**。详见
   [`registry/README.zh.md`](registry/README.zh.md) 的「收录闸门」。
 - **筛选与排序**照插件市场的做法：按 Star 数／收录时间／名称排，可选升序降序，并可把
   列表限制在最近 7／30／90 天或一年内收录的条目。

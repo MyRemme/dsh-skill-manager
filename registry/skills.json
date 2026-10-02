@@ -2,36 +2,6 @@
   "version": 2,
   "skills": [
     {
-      "id": "alirezarezvani/claude-skills#.gemini/skills/a11y-audit/SKILL.md",
-      "name": "a11y-audit",
-      "repo": "alirezarezvani/claude-skills",
-      "path": ".gemini/skills/a11y-audit/SKILL.md",
-      "ref": "main",
-      "category": "testing",
-      "description": {
-        "en": "Accessibility audit skill for scanning, fixing, and verifying WCAG 2.2 Level A and AA compliance across React, Next.js, Vue, Angular, Svelte, and plain HTML codebases. Use when auditing accessibility, fixing a11y violations, checking color contrast, generating compliance reports, or integrating accessibility checks into CI/CD pipelines.",
-        "zh": "无障碍审计技能：扫描、修复并验证 React、Next.js、Vue、Angular、Svelte 与原生 HTML 代码库是否符合 WCAG 2.2 A 级与 AA 级。适用于无障碍审计、修复 a11y 问题、检查色彩对比度、生成合规报告，或把无障碍检查接入 CI/CD 流水线。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "alirezarezvani"
-    },
-    {
-      "id": "alirezarezvani/claude-skills#.gemini/skills/ab-test-setup/SKILL.md",
-      "name": "ab-test-setup",
-      "repo": "alirezarezvani/claude-skills",
-      "path": ".gemini/skills/ab-test-setup/SKILL.md",
-      "ref": "main",
-      "category": "testing",
-      "description": {
-        "en": "When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions \"A/B test,\" \"split test,\" \"experiment,\" \"test this change,\" \"variant copy,\" \"multivariate test,\" \"hypothesis,\" \"conversion experiment,\" \"statistical significance,\" or \"test this.\" For tracking implementation, see analytics-tracking.",
-        "zh": "当用户想规划、设计或落地 A/B 测试或实验时使用。用户提到「A/B 测试」「分流测试」「实验」「测一下这个改动」「变体文案」「多变量测试」「假设」「转化实验」「统计显著性」时也适用。追踪实现部分见 analytics-tracking。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "alirezarezvani"
-    },
-    {
       "id": "coreyhaines31/marketingskills#skills/ab-testing/SKILL.md",
       "name": "ab-testing",
       "repo": "coreyhaines31/marketingskills",
@@ -722,5 +692,5 @@
       "author": "nextlevelbuilder"
     }
   ],
-  "generatedAt": "2026-10-02T10:43:12.862Z"
+  "generatedAt": "2026-10-02T13:18:55.047Z"
 }

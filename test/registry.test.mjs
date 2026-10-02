@@ -312,3 +312,35 @@ test("the admission cap matches the installer's download cap", async () => {
   );
 });
 
+/**
+ * A symlinked `SKILL.md` must never be published, and the gate must be real code.
+ *
+ * `readTarGz` keeps only regular files (type `0` and `7`) and drops symlinks
+ * (type `2`), so an entry pointing at one installs into a directory that arrives
+ * empty. Verification cannot see this: the GitHub contents API dereferences a
+ * symlink and returns the real file, so frontmatter and `name` both check out.
+ * Two entries were published that way and both failed to install.
+ *
+ * This asserts the filter is present rather than re-deriving it, so removing the
+ * symlink exclusion shows up as a failure rather than as a silently
+ * reinstallable-wrongly catalog.
+ */
+test("a symlinked SKILL.md is refused at admission", async () => {
+  const inspect = await readFile(new URL("../registry/scripts/inspect.mjs", import.meta.url), "utf8");
+  const tree = await readFile(new URL("../lib/archive.js", import.meta.url), "utf8");
+
+  assert.match(inspect, /entry\.mode\s*!==\s*"120000"/u, "inspect.mjs must exclude symlinks from the skill files");
+  // Tar type '2' is a symlink; the reader must not be treating it as a file.
+  assert.match(
+    tree,
+    /type\s*!==\s*"0"\s*&&\s*type\s*!==\s*"7"/u,
+    "lib/archive.js must keep reading only regular files, which is why symlinked skills cannot install",
+  );
+
+  // And no shipped entry may point at one.
+  const catalog = JSON.parse(await readFile(new URL("../registry/skills.json", import.meta.url), "utf8"));
+  for (const skill of catalog.skills) {
+    assert.ok(!skill.path.includes(".gemini/"), `${skill.name}: .gemini skills in that repository are symlinks`);
+  }
+});
+

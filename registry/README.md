@@ -92,23 +92,26 @@ The limit lives in two files and a test holds them together
 installer's `maxBytes`, raise `ARCHIVE_LIMIT_BYTES` in `inspect.mjs` in the same
 change or the test fails.
 
-### 3. The verification gate
+### 3. The symlink gate
 
-Every entry has to be true:
+A `SKILL.md` that is itself a symlink is refused. This one came from a real
+failure: the entry verified, and installing it reported that the repository did
+not contain the path.
 
-- `path` must exist on `ref`, and the `name` in that file's frontmatter must equal
-  the entry's `name`. CI reads the file and checks.
-- `ref` is required and recorded. There is no default. Two repositories in the
-  catalog use `master` and one uses `development`; a silent fallback to `main`
-  pointed those entries at paths that do not exist, and only `--check --verify`,
-  which probes upstream, caught it.
-- A `SKILL.md` with no `name` in its frontmatter is not a skill and is refused.
-  Documentation files named `*SKILL.md` and generated stubs were once admitted
-  under a name upstream never claimed.
-- One skill name may be declared only once across the catalog — the name is the
-  install directory name.
+The two sides disagreed about symlinks. The GitHub contents API dereferences a
+symlink and hands back the real file, so frontmatter, `name` and description all
+read correctly and verification passes — but the installer downloads the tarball,
+and the tar reader keeps only regular files (type 0 and 7) and drops every
+symlink (type 2). The directory arrives empty.
+`alirezarezvani/claude-skills` publishes 1574 symlinks; two entries were built on
+one and neither installed.
 
-### 4. The category gate
+Refusing them at admission, rather than teaching the reader to follow links, is
+the honest call: a symlinked skill would also install as a dangling link, so the
+catalog should not be publishing it. To use a skill from that repository, point
+the entry at the real path it targets.
+
+### 5. The category gate
 
 `category` must be one of the closed list given under "Finding candidates". An
 entry whose category has not been settled goes to `other`; it is not guessed into

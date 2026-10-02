@@ -127,10 +127,11 @@ The catalog is a JSON document built from one YAML file per skill, so two
 contributors never touch the same file.
 
 - Default source: this repository's
-  [`registry/skills.json`](registry/skills.json). An entry passes four gates:
+  [`registry/skills.json`](registry/skills.json). An entry passes five gates:
   **a license that permits redistribution** (no declared license, `NOASSERTION`,
   a non-commercial term or a copyleft term is turned away); **a repository
-  archive within the installer's 32 MiB download cap**; **a true entry** (the
+  archive within the installer's 32 MiB download cap**; **a `SKILL.md` that is
+  not a symlink** (one verifies but cannot be installed); **a true entry** (the
   path exists and the frontmatter `name` matches); **a category from the closed
   list**. See [`registry/README.md`](registry/README.md).
 - **Filter and sort** the way the plugin market does: sort by stars, date added

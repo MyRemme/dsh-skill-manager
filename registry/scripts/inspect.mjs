@@ -138,10 +138,11 @@ async function archiveSize(repo, ref, token) {
   try {
     for await (const chunk of response.body) {
       bytes += chunk.length;
-      if (bytes > ARCHIVE_LIMIT_BYTES) {
-        await response.body.cancel?.();
-        return { bytes, over: true };
-      }
+      // Returning here rather than cancelling the stream is deliberate: the
+      // `for await` holds the reader, so `cancel()` raises ERR_INVALID_STATE.
+      // Returning closes it through the iterator, which is what halts the
+      // transfer.
+      if (bytes > ARCHIVE_LIMIT_BYTES) return { bytes, over: true };
     }
   } catch {
     // A truncated read still tells us the archive passed the cap.
@@ -261,9 +262,24 @@ async function collect(repo, ref, treePayload, token, perRepo) {
   const skillFiles = entries.filter((entry) => entry.type === "blob" && entry.path.endsWith("SKILL.md"));
   if (skillFiles.length === 0) return { skills: [], reason: "no SKILL.md" };
 
+  // A symlinked SKILL.md verifies here but cannot be installed. The contents API
+  // dereferences a symlink and returns the real file, so frontmatter, name and
+  // description all read correctly — but the installer downloads the tarball,
+  // and the tar reader keeps only regular files (type 0 and 7) and drops every
+  // symlink (type 2). The directory then arrives empty and the install reports
+  // that the repository does not contain the entry's path. `alirezarezvani/claude-skills`
+  // publishes 1574 symlinks; two entries were built on one and neither installed.
+  //
+  // Refusing them at admission is the honest outcome: a symlinked skill would
+  // also install as a dangling link, so making the reader follow links would be
+  // support for something the catalog should not publish.
+  const symlinked = skillFiles.filter((entry) => entry.mode === "120000");
+  const realSkillFiles = skillFiles.filter((entry) => entry.mode !== "120000");
+  if (realSkillFiles.length === 0) return { skills: [], reason: "every SKILL.md is a symlink" };
+
   // Prefer conventional locations when the same skill is mirrored elsewhere.
   const chosen = new Map();
-  for (const file of skillFiles.sort((a, b) => rootRank(a.path) - rootRank(b.path) || a.path.localeCompare(b.path))) {
+  for (const file of realSkillFiles.sort((a, b) => rootRank(a.path) - rootRank(b.path) || a.path.localeCompare(b.path))) {
     const dir = directoryOf(file.path);
     const name = dir === "" ? repo.split("/")[1].toLowerCase() : dir.split("/").pop().toLowerCase();
     if (!chosen.has(name)) chosen.set(name, file.path);
@@ -332,9 +348,12 @@ async function collect(repo, ref, treePayload, token, perRepo) {
     ref,
     reason: null,
     note: repoRootHasLicense ? null : "no LICENSE at the repository root",
-    replicated: skillFiles.length - chosen.size,
+    replicated: realSkillFiles.length - chosen.size,
     skipped,
     rejected,
+    // Reported rather than silently dropped, so a repository whose skills are
+    // all symlinks produces a stated reason instead of a quiet zero.
+    symlinked: symlinked.map((entry) => entry.path),
   };
 }
 
@@ -407,10 +426,10 @@ async function main() {
         });
       }
       const names = result.skills.map((skill) => skill.name).join(", ");
-      const extra = result.skipped > 0 ? ` (${result.skipped} more not taken)` : "";
       const notes = [];
       if (result.skipped > 0) notes.push(`${result.skipped} more not taken`);
       if (result.rejected.length > 0) notes.push(`${result.rejected.length} unverifiable`);
+      if (result.symlinked.length > 0) notes.push(`${result.symlinked.length} symlinked (not installable)`);
       if (result.ref !== "main") notes.push(`ref ${result.ref}`);
       const suffix = notes.length > 0 ? ` (${notes.join(", ")})` : "";
       process.stdout.write(`  + ${candidate.fullName.padEnd(48)} ${result.skills.length}: ${names}${suffix}\n`);

@@ -12,6 +12,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer, request as httpRequest } from "node:http";
+import { randomBytes } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
@@ -81,6 +82,24 @@ async function call(base, route, options = {}) {
     payload = { raw: text };
   }
   return { status: response.status, payload };
+}
+
+/**
+ * Poll a market install job until it stops running.
+ *
+ * The job exists so the client can watch a download instead of blocking on it,
+ * and so a failure arrives attached to the entry that caused it. Tests read the
+ * same route the client polls rather than reaching into the internals, which is
+ * what keeps the 202-plus-poll contract honest.
+ */
+async function waitForJob(base, jobId, attempts = 200) {
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const poll = await call(base, "market-job", { query: { id: jobId } });
+    assert.equal(poll.status, 200, "a job that was just created must be pollable");
+    if (poll.payload.status !== "running") return poll.payload;
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  throw new Error(`job ${jobId} never settled`);
 }
 
 /** A temporary harness home with a project and a couple of installed skills. */
@@ -521,8 +540,15 @@ test("the market browses a catalog and installs an entry from a repository tarba
       method: "POST",
       body: { id: catalog.skills[0].id, target: "user", overwrite: "skip", cwd: scene.project },
     });
-    assert.equal(install.status, 200);
-    assert.deepEqual(install.payload.results.map((result) => result.status), ["installed"]);
+    // The download happens after the response, so the POST hands back a job id
+    // and the outcome is read from the job. Blocking the response until the
+    // archive is in would mean minutes of silence on a large repository, which
+    // is the reason the job exists.
+    assert.equal(install.status, 202);
+    assert.equal(typeof install.payload.job, "string");
+    const settled = await waitForJob(server.base, install.payload.job);
+    assert.equal(settled.status, "done");
+    assert.deepEqual(settled.result.results.map((result) => result.status), ["installed"]);
     assert.match(await readFile(join(scene.dshHome, "skills", "market-skill", "SKILL.md"), "utf8"), /name: market-skill/u);
     assert.equal(await readFile(join(scene.dshHome, "skills", "market-skill", "data", "table.csv"), "utf8"), "a,b\n");
     assert.equal(existsSync(join(scene.dshHome, "skills", "market-skill", "README.md")), false, "files outside the skill directory are not installed");
@@ -532,8 +558,71 @@ test("the market browses a catalog and installs an entry from a repository tarba
 
     const unknown = await call(server.base, "market-install", { method: "POST", body: { id: "not-in-the-catalog", cwd: scene.project } });
     assert.equal(unknown.status, 404);
+
+    const noJob = await call(server.base, "market-job", { query: { id: "job-does-not-exist" } });
+    assert.equal(noJob.status, 404);
   } finally {
     await server.close();
+    globalThis.fetch = originalFetch;
+    await new Promise((resolve) => registry.close(resolve));
+    await scene.cleanup();
+  }
+});
+
+test("an oversized repository fails the job with the archive message instead of the response", async () => {
+  const catalog = {
+    version: 1,
+    skills: [
+      { id: "acme/big#skills/huge/SKILL.md", name: "huge", repo: "acme/big", path: "skills/huge/SKILL.md", ref: "main", description: { en: "Too big." } },
+    ],
+  };
+
+  // The cap has to be crossed after compression, not before: a body of one
+  // repeated byte gzips to almost nothing, so a fixture sized in uncompressed
+  // bytes would pass the gate and the test would prove nothing.
+  const cap = 512 * 1024;
+  const entropy = randomBytes(cap + 64 * 1024);
+  const tarball = makeTarGz([
+    { path: "big-main/skills/huge/SKILL.md", data: skill("huge") },
+    { path: "big-main/skills/huge/blob.bin", data: entropy },
+  ]);
+
+  // Everything that acquires something happens inside the try, so a failure
+  // while building the fixture still tears the harness down. A leaked server or
+  // a patched global fetch makes the whole run hang instead of failing.
+  const originalFetch = globalThis.fetch;
+  const scene = await scaffold();
+  const registry = createServer((_request, response) => {
+    response.writeHead(200, { "content-type": "application/json" });
+    response.end(JSON.stringify(catalog));
+  });
+  let server;
+  try {
+    await new Promise((resolve) => registry.listen(0, "127.0.0.1", resolve));
+    const registryUrl = `http://127.0.0.1:${registry.address().port}/skills.json`;
+    assert.ok(tarball.length > cap, `the fixture must exceed the cap: ${tarball.length} <= ${cap}`);
+    globalThis.fetch = async (url, init) => {
+      if (String(url).startsWith("https://codeload.github.com/")) return new Response(tarball, { status: 200 });
+      return await originalFetch(url, init);
+    };
+
+    server = await boot({ config: { ...scene.config, registryUrl, maxArchiveBytes: cap }, cwd: scene.project });
+    const install = await call(server.base, "market-install", {
+      method: "POST",
+      body: { id: catalog.skills[0].id, target: "user", cwd: scene.project },
+    });
+    assert.equal(install.status, 202, "the response is sent before the download is judged");
+
+    const settled = await waitForJob(server.base, install.payload.job);
+    assert.equal(settled.status, "failed");
+    assert.match(settled.error, /archive exceeds the \d+ byte limit/u);
+    assert.equal(settled.result, null);
+    assert.equal(existsSync(join(scene.dshHome, "skills", "huge")), false, "nothing is written when the archive is refused");
+  } finally {
+    // Every step that acquires something is inside the try, so a failure while
+    // building the fixture still tears the harness down. A leaked server or a
+    // patched global fetch makes the whole run hang instead of failing.
+    if (server !== undefined) await server.close();
     globalThis.fetch = originalFetch;
     await new Promise((resolve) => registry.close(resolve));
     await scene.cleanup();

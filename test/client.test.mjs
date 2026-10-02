@@ -483,9 +483,19 @@ function stubFetch(overrides = {}) {
     for (const [suffix, payload] of Object.entries(overrides)) {
       if (String(url).includes(suffix)) return new Response(JSON.stringify(payload), { status: 200, headers: { "content-type": "application/json" } });
     }
-    if (String(url).includes("dsh-skill-manager/list")) return new Response(JSON.stringify(listPayload), { status: 200 });
-    if (String(url).includes("dsh-skill-manager/trash")) return new Response(JSON.stringify({ trashRoot: listPayload.trashRoot, items: [] }), { status: 200 });
-    if (String(url).includes("dsh-skill-manager/market")) return new Response(JSON.stringify(marketPayload), { status: 200 });
+    // Route names are matched as whole path segments, not as substrings:
+    // `market` is a prefix of both `market-install` and `market-job`, so a plain
+    // `includes` would serve the catalog to the install route — and then the
+    // panel would read `payload.job` off a catalog entry and fail with something
+    // that looks nothing like a routing mistake.
+    const route = String(url).split("/").pop().split("?")[0];
+    if (route === "list") return new Response(JSON.stringify(listPayload), { status: 200 });
+    if (route === "trash") return new Response(JSON.stringify({ trashRoot: listPayload.trashRoot, items: [] }), { status: 200 });
+    if (route === "market-job") {
+      return new Response(JSON.stringify({ job: "job-1", status: "done", phase: "done", received: 1, total: 1, indeterminate: false, error: null, result: { id: "x", name: "n", source: "s", results: [{ name: "n", status: "installed", path: "p" }] } }), { status: 200 });
+    }
+    if (route === "market-install") return new Response(JSON.stringify({ job: "job-1", id: "a/b#s", name: "n" }), { status: 202 });
+    if (route === "market") return new Response(JSON.stringify(marketPayload), { status: 200 });
     return new Response(JSON.stringify({ error: `unstubbed ${url}` }), { status: 404 });
   };
   return calls;
@@ -611,8 +621,8 @@ test("batching runs against the selection and reports the changed count", async 
 });
 
 /** Open the market tab and return the repainted state. */
-async function openMarket() {
-  const started = await startPanel();
+async function openMarket(overrides) {
+  const started = await startPanel(overrides);
   const market = started.harness.hosts("button").find((node) => node.props.children === "市场");
   market.props.onClick();
   const text = await started.harness.repaint();
@@ -625,6 +635,75 @@ test("the market tab lists registry entries and marks installed ones", async () 
   assert.ok(text.includes("写文档。"), "the Chinese description is preferred");
   assert.ok(text.includes("★ 12"), "stars render when the registry provides them");
   assert.equal(harness.components("MarketCard").length, 2);
+});
+
+/**
+ * An install has to be visible while it runs.
+ *
+ * A market install pulls a whole repository before it can report anything, so
+ * without a progress indicator the panel shows a disabled button and silence,
+ * which reads as a hang. The bar renders at the right end of the toolbar, names
+ * the skill, and — when the archive size is unknown, which is the common case
+ * because codeload uses chunked transfer — says so with a moving stripe instead
+ * of a bar claiming a percentage it cannot know.
+ */
+test("an installed entry cannot be installed again", async () => {
+  // Re-downloading is not free: the market fetches the whole repository to
+  // install one skill directory, so a click on an already-installed entry would
+  // pull the archive a second time only to be told "already installed".
+  const { harness } = await openMarket();
+  const names = harness.components("MarketCard").map((node) => node.props.entry.name);
+  assert.deepEqual(names, ["alpha-skill", "delta-skill"], "both cards are rendered");
+
+  const installButtons = harness
+    .hosts("button")
+    .filter((node) => node.props.className === "skm-button" && textOf(node) === "安装");
+  assert.equal(installButtons.length, 2, "both cards carry an install button");
+  // alpha-skill is installed in the fixture, delta-skill is not, so exactly one
+  // of the two must be actionable.
+  assert.deepEqual(
+    installButtons.map((node) => node.props.disabled),
+    [true, false],
+    "the installed entry's install button is disabled and the uninstalled one's is not",
+  );
+});
+
+test("installing a skill shows a progress bar instead of silence", async () => {
+  const { harness, calls } = await openMarket();
+  assert.equal(harness.components("DownloadProgress").length, 0, "nothing is shown before an install starts");
+
+  // Driven through the button, the way a person would: `onInstall` takes no
+  // argument and the card closes over its own entry.
+  const card = harness.components("MarketCard").find((node) => node.props.entry.name === "delta-skill");
+  const installButton = harness
+    .hosts("button")
+    .find((node) => node.props.className === "skm-button" && textOf(node) === "安装" && node.props.disabled === false);
+  assert.ok(installButton !== undefined, "the uninstalled entry offers an install button");
+  assert.ok(card !== undefined, "the delta-skill card is present");
+  void installButton.props.onClick();
+  // The POST hands back a job id and the client then polls at a 250 ms
+  // interval. Microtask flushing alone cannot reach that timer, so the bar is
+  // asserted in the state the panel enters the moment the click is handled.
+  await harness.repaint();
+
+  const bars = harness.components("DownloadProgress");
+  assert.equal(bars.length, 1, "a progress bar appears the moment the install starts");
+  assert.equal(bars[0].props.progress.label, "delta-skill", "the bar names the skill being installed");
+
+  const node = harness.hosts("div").find((host) => host.props.className?.startsWith("skm-progress"));
+  assert.ok(node !== undefined, "the bar is in the rendered tree");
+  assert.equal(node.props.role, "status", "it announces itself to assistive technology");
+  // Before the server has reported a byte total there is no honest percentage
+  // to show, so the bar must not claim one.
+  assert.match(node.props.className, /skm-progressFlow/u, "an unknown total renders as a moving stripe, not a fake percentage");
+  const rendered = await harness.repaint();
+  assert.ok(rendered.includes("delta-skill"), "the skill being installed is named");
+  assert.ok(rendered.includes("准备中"), "the phase is shown, in Chinese by default");
+
+  // The install must have been started rather than silently swallowed.
+  const posted = calls.find((call) => String(call.url).includes("market-install"));
+  assert.ok(posted !== undefined, "the install route is called");
+  assert.equal(JSON.parse(posted.init.body).id, card.props.entry.id, "the right entry is requested");
 });
 
 test("every market card links to the repository it came from", async () => {
