@@ -1,0 +1,10 @@
+repo: amElnagdy/guard-skills
+name: docs-guard
+path: skills/docs-guard/SKILL.md
+ref: master
+category: writing
+license: MIT
+added: 2026-10-02
+description:
+  en: "Review generated or changed documentation before it ships — READMEs, API references, docstrings, PHPDoc/JSDoc, changelogs, tutorials, and doc sites. Best used reactively after an agent writes or edits docs, after code changes documented behavior, or before publishing. Use when the user says 'review the docs', 'is this documentation accurate', 'update the docs', 'write a README', 'document this API', or 'add a changelog entry'. Core job: verify every referenced function, flag, endpoint, config key, and code sample against the source; catch docs-vs-code drift; strip filler and unverifiable claims. DO NOT USE for production code review (use clean-code-guard), test review (use test-guard), marketing copy, prose style editing, or translation."
+  zh: 文档质量闸门：在文档交付前审查新增或改动的文档，包括 README、API 参考、docstring、PHPDoc/JSDoc、changelog、教程与文档站。核心是逐条核对文档里引用的函数、参数、接口、配置项和示例代码是否与源码一致，抓出「文档与代码脱节」，并删掉填充话和无法验证的说法。覆盖「审一下文档」「这文档准不准」「更新文档」「写个 README」等场景。不管生产代码审查、测试审查、营销文案和翻译。

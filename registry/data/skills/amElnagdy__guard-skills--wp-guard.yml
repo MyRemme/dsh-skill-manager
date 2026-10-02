@@ -1,0 +1,10 @@
+repo: amElnagdy/guard-skills
+name: wp-guard
+path: skills/wp-guard/SKILL.md
+ref: master
+category: dev
+license: MIT
+added: 2026-10-02
+description:
+  en: "Review generated or changed WordPress code — plugins, themes, and blocks — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WordPress APIs: add_action/add_filter, shortcodes, meta boxes, AJAX handlers, REST routes, WP_Query or $wpdb, widgets, or WP-CLI commands. Use on 'review this plugin', 'is this safe to ship', 'make this translatable', or 'speed up this query'. Enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-API-first development, translation-ready strings, and query/caching discipline. DO NOT USE for WooCommerce order, product, or checkout logic (use woo-guard) or generic code quality review (use clean-code-guard)."
+  zh: WordPress 代码审查：在交付前审查新增或改动的插件、主题与区块代码。强制转义与过滤、nonce 加权限校验、预处理数据库查询、优先用核心 API、字符串可翻译、查询与缓存规范。适合「审一下这个插件」「这样能上线吗」「让它支持翻译」「优化这个查询」以及写插件、加接口/短代码/meta box 等场景。WooCommerce 的订单商品结算逻辑用 woo-guard。

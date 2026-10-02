@@ -1,0 +1,10 @@
+repo: amElnagdy/guard-skills
+name: test-guard
+path: skills/test-guard/SKILL.md
+ref: master
+category: testing
+license: MIT
+added: 2026-10-02
+description:
+  en: Review generated or changed test code against universal testing rules before it ships. Best used reactively after an agent writes, edits, generates, or refactors tests, before presenting, committing, or merging them. Use for pytest (test_*.py, *_test.py), PHPUnit/Pest (*Test.php), Jest/Vitest (*.test.ts, *.spec.js), Go (*_test.go), files under tests/, __tests__/, or spec/, and review requests like 'write tests for X', 'add tests', 'test this', or 'review these tests'. This skill is the quality gate that prevents AI-generated test bloat. DO NOT USE for production code review (use clean-code-guard), CI or test-runner configuration, running or debugging tests, or architecture review.
+  zh: 测试质量闸门：在测试代码交付前，按通用测试规则审查新增或改动的测试，专治大模型生成测试时的注水与冗余。支持 pytest、PHPUnit/Pest、Jest/Vitest、Go 等常见框架，覆盖「给 X 写测试」「加测试」「测一下这个」「审一下这些测试」以及含测试的 PR。不负责生产代码审查、CI 配置、跑测试或调试。

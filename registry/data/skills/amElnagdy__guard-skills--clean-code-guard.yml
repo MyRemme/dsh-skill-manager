@@ -1,0 +1,10 @@
+repo: amElnagdy/guard-skills
+name: clean-code-guard
+path: skills/clean-code-guard/SKILL.md
+ref: master
+category: dev
+license: MIT
+added: 2026-10-02
+description:
+  en: Review generated or changed production code before it ships, using Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks in any language. Best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging it. Use when the user asks "review this PR", "is this safe to merge?", "make this cleaner", "audit this code", "refactor this", or "fix this bug". Invoke it on your own initiative the moment you finish non-trivial production code, before presenting or committing — don't wait to be asked. DO NOT USE for factual questions, CI/tooling configuration, test review (use test-guard), or documentation review (use docs-guard).
+  zh: 代码质量闸门：用 Clean Code、SOLID、DRY、KISS、YAGNI 以及针对大模型特有失效模式的检查，在代码交付前审查新增或改动的生产代码，不限语言。适合智能体写完、改完、重构完代码之后，提交或合并之前主动跑一遍。覆盖「审一下这个 PR」「这个能合吗」「帮我清理一下」「重构这段」「修这个 bug」等场景。CI 配置、测试审查、文档审查不归它管。

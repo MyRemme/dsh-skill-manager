@@ -1,0 +1,10 @@
+repo: amElnagdy/guard-skills
+name: woo-guard
+path: skills/woo-guard/SKILL.md
+ref: master
+category: dev
+license: MIT
+added: 2026-10-02
+description:
+  en: "Review generated or changed WooCommerce code — extensions, payment and shipping integrations, checkout customizations, and order/product logic — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WooCommerce APIs: wc_get_order, wc_get_product, WC() cart or session, woocommerce_* hooks, Store API endpoints, payment gateways, order meta, HPOS, or subscriptions. Use on 'review this Woo plugin', 'is this HPOS compatible', or after tasks like 'write a WooCommerce extension', 'add a checkout field', or 'update stock'. Enforces HPOS-safe order access, CRUD over direct meta, feature-compatibility declarations, server-side checkout validation, money-handling discipline, and hooks over template overrides. DO NOT USE for generic WordPress code (use wp-guard)."
+  zh: WooCommerce 代码审查：在交付前审查新增或改动的 WooCommerce 代码，覆盖扩展、支付与配送集成、结算页定制、订单与商品逻辑。强制 HPOS 安全的订单读取、用 CRUD 而非直接操作 meta、声明功能兼容性、结算校验放在服务端、金额处理规范、优先用钩子而非覆盖模板。适合「审一下这个 Woo 插件」「这个兼容 HPOS 吗」以及写扩展、加结算字段、改订单流程、更新库存等场景。通用 WordPress 代码用 wp-guard。

@@ -617,6 +617,21 @@
       "author": "arjun988"
     },
     {
+      "id": "amElnagdy/guard-skills#skills/clean-code-guard/SKILL.md",
+      "name": "clean-code-guard",
+      "repo": "amElnagdy/guard-skills",
+      "path": "skills/clean-code-guard/SKILL.md",
+      "ref": "master",
+      "category": "dev",
+      "description": {
+        "en": "Review generated or changed production code before it ships, using Clean Code, SOLID, DRY, KISS, YAGNI, and LLM-specific failure-mode checks in any language. Best used reactively after an agent writes, edits, refactors, or fixes code, before presenting, committing, or merging it. Use when the user asks \"review this PR\", \"is this safe to merge?\", \"make this cleaner\", \"audit this code\", \"refactor this\", or \"fix this bug\". Invoke it on your own initiative the moment you finish non-trivial production code, before presenting or committing — don't wait to be asked. DO NOT USE for factual questions, CI/tooling configuration, test review (use test-guard), or documentation review (use docs-guard).",
+        "zh": "代码质量闸门：用 Clean Code、SOLID、DRY、KISS、YAGNI 以及针对大模型特有失效模式的检查，在代码交付前审查新增或改动的生产代码，不限语言。适合智能体写完、改完、重构完代码之后，提交或合并之前主动跑一遍。覆盖「审一下这个 PR」「这个能合吗」「帮我清理一下」「重构这段」「修这个 bug」等场景。CI 配置、测试审查、文档审查不归它管。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "amElnagdy"
+    },
+    {
       "id": "arjun988/blender-skills#.claude/skills/cloth-sim/SKILL.md",
       "name": "cloth-sim",
       "repo": "arjun988/blender-skills",
@@ -754,6 +769,21 @@
       "version": "2.15.0",
       "added": "2026-10-02",
       "author": "nextlevelbuilder"
+    },
+    {
+      "id": "amElnagdy/guard-skills#skills/docs-guard/SKILL.md",
+      "name": "docs-guard",
+      "repo": "amElnagdy/guard-skills",
+      "path": "skills/docs-guard/SKILL.md",
+      "ref": "master",
+      "category": "writing",
+      "description": {
+        "en": "Review generated or changed documentation before it ships — READMEs, API references, docstrings, PHPDoc/JSDoc, changelogs, tutorials, and doc sites. Best used reactively after an agent writes or edits docs, after code changes documented behavior, or before publishing. Use when the user says 'review the docs', 'is this documentation accurate', 'update the docs', 'write a README', 'document this API', or 'add a changelog entry'. Core job: verify every referenced function, flag, endpoint, config key, and code sample against the source; catch docs-vs-code drift; strip filler and unverifiable claims. DO NOT USE for production code review (use clean-code-guard), test review (use test-guard), marketing copy, prose style editing, or translation.",
+        "zh": "文档质量闸门：在文档交付前审查新增或改动的文档，包括 README、API 参考、docstring、PHPDoc/JSDoc、changelog、教程与文档站。核心是逐条核对文档里引用的函数、参数、接口、配置项和示例代码是否与源码一致，抓出「文档与代码脱节」，并删掉填充话和无法验证的说法。覆盖「审一下文档」「这文档准不准」「更新文档」「写个 README」等场景。不管生产代码审查、测试审查、营销文案和翻译。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "amElnagdy"
     },
     {
       "id": "arjun988/blender-skills#.claude/skills/dream-surreal-mood/SKILL.md",
@@ -1911,6 +1941,21 @@
       "author": "arjun988"
     },
     {
+      "id": "amElnagdy/guard-skills#skills/test-guard/SKILL.md",
+      "name": "test-guard",
+      "repo": "amElnagdy/guard-skills",
+      "path": "skills/test-guard/SKILL.md",
+      "ref": "master",
+      "category": "testing",
+      "description": {
+        "en": "Review generated or changed test code against universal testing rules before it ships. Best used reactively after an agent writes, edits, generates, or refactors tests, before presenting, committing, or merging them. Use for pytest (test_*.py, *_test.py), PHPUnit/Pest (*Test.php), Jest/Vitest (*.test.ts, *.spec.js), Go (*_test.go), files under tests/, __tests__/, or spec/, and review requests like 'write tests for X', 'add tests', 'test this', or 'review these tests'. This skill is the quality gate that prevents AI-generated test bloat. DO NOT USE for production code review (use clean-code-guard), CI or test-runner configuration, running or debugging tests, or architecture review.",
+        "zh": "测试质量闸门：在测试代码交付前，按通用测试规则审查新增或改动的测试，专治大模型生成测试时的注水与冗余。支持 pytest、PHPUnit/Pest、Jest/Vitest、Go 等常见框架，覆盖「给 X 写测试」「加测试」「测一下这个」「审一下这些测试」以及含测试的 PR。不负责生产代码审查、CI 配置、跑测试或调试。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "amElnagdy"
+    },
+    {
       "id": "arjun988/blender-skills#.claude/skills/texture-workflow/SKILL.md",
       "name": "texture-workflow",
       "repo": "arjun988/blender-skills",
@@ -2100,7 +2145,37 @@
       "license": "MIT",
       "added": "2026-10-02",
       "author": "arjun988"
+    },
+    {
+      "id": "amElnagdy/guard-skills#skills/woo-guard/SKILL.md",
+      "name": "woo-guard",
+      "repo": "amElnagdy/guard-skills",
+      "path": "skills/woo-guard/SKILL.md",
+      "ref": "master",
+      "category": "dev",
+      "description": {
+        "en": "Review generated or changed WooCommerce code — extensions, payment and shipping integrations, checkout customizations, and order/product logic — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WooCommerce APIs: wc_get_order, wc_get_product, WC() cart or session, woocommerce_* hooks, Store API endpoints, payment gateways, order meta, HPOS, or subscriptions. Use on 'review this Woo plugin', 'is this HPOS compatible', or after tasks like 'write a WooCommerce extension', 'add a checkout field', or 'update stock'. Enforces HPOS-safe order access, CRUD over direct meta, feature-compatibility declarations, server-side checkout validation, money-handling discipline, and hooks over template overrides. DO NOT USE for generic WordPress code (use wp-guard).",
+        "zh": "WooCommerce 代码审查：在交付前审查新增或改动的 WooCommerce 代码，覆盖扩展、支付与配送集成、结算页定制、订单与商品逻辑。强制 HPOS 安全的订单读取、用 CRUD 而非直接操作 meta、声明功能兼容性、结算校验放在服务端、金额处理规范、优先用钩子而非覆盖模板。适合「审一下这个 Woo 插件」「这个兼容 HPOS 吗」以及写扩展、加结算字段、改订单流程、更新库存等场景。通用 WordPress 代码用 wp-guard。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "amElnagdy"
+    },
+    {
+      "id": "amElnagdy/guard-skills#skills/wp-guard/SKILL.md",
+      "name": "wp-guard",
+      "repo": "amElnagdy/guard-skills",
+      "path": "skills/wp-guard/SKILL.md",
+      "ref": "master",
+      "category": "dev",
+      "description": {
+        "en": "Review generated or changed WordPress code — plugins, themes, and blocks — before it ships. Best used reactively after an agent writes, edits, or reviews code touching WordPress APIs: add_action/add_filter, shortcodes, meta boxes, AJAX handlers, REST routes, WP_Query or $wpdb, widgets, or WP-CLI commands. Use on 'review this plugin', 'is this safe to ship', 'make this translatable', or 'speed up this query'. Enforces escaping and sanitization, nonces plus capability checks, prepared database queries, core-API-first development, translation-ready strings, and query/caching discipline. DO NOT USE for WooCommerce order, product, or checkout logic (use woo-guard) or generic code quality review (use clean-code-guard).",
+        "zh": "WordPress 代码审查：在交付前审查新增或改动的插件、主题与区块代码。强制转义与过滤、nonce 加权限校验、预处理数据库查询、优先用核心 API、字符串可翻译、查询与缓存规范。适合「审一下这个插件」「这样能上线吗」「让它支持翻译」「优化这个查询」以及写插件、加接口/短代码/meta box 等场景。WooCommerce 的订单商品结算逻辑用 woo-guard。"
+      },
+      "license": "MIT",
+      "added": "2026-10-02",
+      "author": "amElnagdy"
     }
   ],
-  "generatedAt": "2026-10-02T13:47:13.397Z"
+  "generatedAt": "2026-10-02T14:51:41.791Z"
 }
