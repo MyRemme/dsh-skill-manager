@@ -127,6 +127,10 @@ export const SUBMIT_TEMPLATE = [
   "name: ",
   "repo: ",
   "path: ",
+  // Required, not defaulted: two catalogued repositories use `master` and one
+  // uses `development`, and an entry that guesses `main` points at a path that
+  // does not exist. Asking for it here is cheaper than rejecting the PR later.
+  "ref: ",
   "category: ",
   "license: ",
   "description: ",

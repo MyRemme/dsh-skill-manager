@@ -278,3 +278,37 @@ test("every entry pins the branch it was verified against", async () => {
   }
 });
 
+/**
+ * The archive cap is written down twice and the two copies must agree.
+ *
+ * `lib/market.js` enforces the cap when it downloads a repository tarball, and
+ * `registry/scripts/inspect.mjs` refuses candidates above it because the
+ * installer fetches the whole repository before narrowing to one skill
+ * directory. Twelve of the first fifty-nine published entries were
+ * uninstallable for exactly this reason — the largest `K-Dense-AI` archive is
+ * 233 MB against a 32 MiB cap — and nothing in the catalog build noticed,
+ * because reachability was never checked at admission time.
+ *
+ * Raising the installer cap without raising the admission cap would silently
+ * keep refusing repositories that had become installable, so this test reads
+ * both files and compares the numbers rather than trusting them to stay in
+ * step by hand.
+ */
+test("the admission cap matches the installer's download cap", async () => {
+  const market = await readFile(new URL("../lib/market.js", import.meta.url), "utf8");
+  const inspect = await readFile(new URL("../registry/scripts/inspect.mjs", import.meta.url), "utf8");
+
+  // `options.maxBytes ?? 32 * 1024 * 1024` in fetchRepoTarball.
+  const marketCap = /options\.maxBytes\s*\?\?\s*(\d+)\s*\*\s*1024\s*\*\s*1024/u.exec(market);
+  assert.ok(marketCap, "lib/market.js must still declare its archive cap as a literal MiB expression");
+
+  const inspectCap = /ARCHIVE_LIMIT_BYTES\s*=\s*(\d+)\s*\*\s*1024\s*\*\s*1024/u.exec(inspect);
+  assert.ok(inspectCap, "inspect.mjs must declare ARCHIVE_LIMIT_BYTES");
+
+  assert.equal(
+    inspectCap[1],
+    marketCap[1],
+    `inspect.mjs refuses archives above ${inspectCap[1]} MiB but the installer allows ${marketCap[1]} MiB`,
+  );
+});
+

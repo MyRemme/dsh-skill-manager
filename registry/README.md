@@ -25,7 +25,7 @@ repo: acme/widget-skills            # required — owner/name of the repository
 name: widget-helper                 # required — must equal the SKILL.md frontmatter `name`
 path: skills/widget-helper/SKILL.md # required — where the SKILL.md sits in that repo
 category: writing                   # required — one key from the list below
-ref: main                           # optional — branch, tag or commit; defaults to main
+ref: main                           # required — branch, tag or commit; there is no default
 version: 2.15.0                     # optional — only if upstream publishes releases
 commit: 063bee9                     # optional — the revision the entry was checked against
 added: 2026-10-02                   # optional — YYYY-MM-DD the entry entered the catalog
@@ -36,10 +36,15 @@ description:
   zh: 按风格指南审阅文案。适用于「审一下文档」「把措辞收紧」这类请求。  # optional
 ```
 
-`repo`, `name`, `path`, `category`, `license` and `description.en` are required. A
-missing Chinese line is our problem, not a reason to reject the entry.
+`repo`, `name`, `path`, `category`, `ref`, `license` and `description.en` are
+required. A missing Chinese line is our problem, not a reason to reject the entry.
 
-## The license gate
+## The admission gates
+
+An entry makes a promise the market then has to keep: press install and the skill
+lands on disk. Four gates check that promise before an entry ships.
+
+### 1. The license gate
 
 Listing an entry republishes a repository's coordinates and lets the market
 install its files, so an entry carries a license or it does not ship. A missing
@@ -63,6 +68,52 @@ quiet exception.
 repository root normally covers what is beneath it, but a skill directory that
 carries its own `LICENSE` overrides that. Check before submitting; the build
 cannot see it.
+
+### 2. The download-size gate
+
+The installer fetches the **whole repository tarball** and narrows it to one
+skill directory only after the download completes (`lib/market.js`,
+`fetchRepoTarball`). An archive above the 32 MiB cap therefore fails at the last
+step, after transferring everything.
+
+This was not hypothetical. Twelve of the first fifty-nine published entries could
+not be installed by anyone — `K-Dense-AI/scientific-agent-skills` is 233 MB,
+`NanmiCoder/cc-haha` 125 MB, `wasp-lang/open-saas` 91 MB. "Install" downloaded
+tens to hundreds of megabytes and then reported an error, and the catalog build
+never noticed, because admission checked quality without checking reachability.
+
+So `inspect.mjs` measures the archive and refuses the whole repository when it
+exceeds the cap. A repository over the limit is not admitted with a note; it is
+not admitted at all. An entry that cannot be installed is worse than a missing
+entry, because it looks like it works.
+
+The limit lives in two files and a test holds them together
+(`the admission cap matches the installer's download cap`). If you raise the
+installer's `maxBytes`, raise `ARCHIVE_LIMIT_BYTES` in `inspect.mjs` in the same
+change or the test fails.
+
+### 3. The verification gate
+
+Every entry has to be true:
+
+- `path` must exist on `ref`, and the `name` in that file's frontmatter must equal
+  the entry's `name`. CI reads the file and checks.
+- `ref` is required and recorded. There is no default. Two repositories in the
+  catalog use `master` and one uses `development`; a silent fallback to `main`
+  pointed those entries at paths that do not exist, and only `--check --verify`,
+  which probes upstream, caught it.
+- A `SKILL.md` with no `name` in its frontmatter is not a skill and is refused.
+  Documentation files named `*SKILL.md` and generated stubs were once admitted
+  under a name upstream never claimed.
+- One skill name may be declared only once across the catalog — the name is the
+  install directory name.
+
+### 4. The category gate
+
+`category` must be one of the closed list given under "Finding candidates". An
+entry whose category has not been settled goes to `other`; it is not guessed into
+a bucket it does not belong to, because a misplaced entry corrupts the filter for
+every real member of that bucket.
 
 Run the build after editing entries:
 
@@ -91,11 +142,27 @@ and never written anywhere. Requests are paced to the search endpoint's limit of
 **It writes nothing.** A candidate still has to be turned into an entry by hand,
 because a repository-level license does not prove the skill file is covered.
 
+`inspect.mjs` is the next step and applies the remaining gates. It reads a
+repository's git tree, measures the archive, and verifies every skill file it would
+publish:
+
+```
+node registry/scripts/inspect.mjs --in _candidates.json                  # report only
+node registry/scripts/inspect.mjs --in _candidates.json --write          # create entries
+node registry/scripts/inspect.mjs --in _candidates.json --top 30 --per-repo 3 --write
+```
+
+`--per-repo` (default 3) is a real ceiling, not a hint: one repository should not
+be able to fill the catalog on its own. `--top` (default 30) caps how many
+candidates are considered at all.
+
 `category` is a closed list, because a free-text category produces a filter with
 one bucket per entry — worse than no filter:
 
 `ui` `dev` `docs` `data` `office` `design` `media` `testing` `security`
-`infra` `research` `writing` `agent` `fun`
+`infra` `research` `writing` `agent` `fun` `other`
+
+`other` is a deliberate catch-all, for entries whose category is not yet settled.
 
 The market renders `category` as a filter, `version` or `commit` as a provenance
 badge, and `added` as the window for its time filter. Set `version` only when

@@ -2,21 +2,6 @@
   "version": 2,
   "skills": [
     {
-      "id": "K-Dense-AI/scientific-agent-skills#skills/13c-metabolic-flux/SKILL.md",
-      "name": "13c-metabolic-flux",
-      "repo": "K-Dense-AI/scientific-agent-skills",
-      "path": "skills/13c-metabolic-flux/SKILL.md",
-      "ref": "main",
-      "category": "research",
-      "description": {
-        "en": "Estimates intracellular metabolic fluxes from steady-state carbon-13 isotope-tracing measurements using validated atom maps, mfapy isotope simulation, constrained multistart fitting, and flux-profile diagnostics. Use for 13C-MFA, carbon tracing, mass isotopomer distributions (MDVs/MIDs), positional isotopomers, parallel tracer experiments, and determining whether labeling data constrain a pathway flux. Distinguishes measured-label inference from COBRA flux balance analysis and flags experiments requiring nonstationary MFA.",
-        "zh": "用校验过的原子映射、mfapy 同位素模拟、带约束的多起点拟合和通量谱诊断，从稳态碳-13 同位素示踪数据推算细胞内代谢通量。适用于 13C-MFA、碳示踪、质量同位素分布（MDV/MID）、位置异构体、平行示踪实验，以及判断标记数据能否约束某条通路通量。区分「由标记推断」与 COBRA 通量平衡分析，并标出需要使用非稳态 MFA 的实验。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "K-Dense-AI"
-    },
-    {
       "id": "alirezarezvani/claude-skills#.gemini/skills/a11y-audit/SKILL.md",
       "name": "a11y-audit",
       "repo": "alirezarezvani/claude-skills",
@@ -77,21 +62,6 @@
       "author": "wanshuiyin"
     },
     {
-      "id": "affaan-m/ECC#skills/accessibility/SKILL.md",
-      "name": "accessibility",
-      "repo": "affaan-m/ECC",
-      "path": "skills/accessibility/SKILL.md",
-      "ref": "main",
-      "category": "agent",
-      "description": {
-        "en": "Design, implement, and audit accessible UI to WCAG 2.2 Level AA across Web, iOS, and Android — semantic ARIA roles and labels, accessibility traits and hints, focus management, contrast, target size, and screen-reader support. Use when building or auditing UI for accessibility compliance, keyboard navigation, or screen-reader support.",
-        "zh": "设计、实现并审计符合 WCAG 2.2 AA 级的无障碍界面，覆盖 Web、iOS 与 Android——语义化 ARIA 角色与标签、无障碍特征与提示、焦点管理、对比度、触控目标尺寸与屏幕阅读器支持。适用于为无障碍合规、键盘导航或屏幕阅读器支持而构建或审计界面。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "affaan-m"
-    },
-    {
       "id": "coreyhaines31/marketingskills#skills/ad-creative/SKILL.md",
       "name": "ad-creative",
       "repo": "coreyhaines31/marketingskills",
@@ -105,36 +75,6 @@
       "license": "MIT",
       "added": "2026-10-02",
       "author": "coreyhaines31"
-    },
-    {
-      "id": "K-Dense-AI/scientific-agent-skills#skills/adaptyv/SKILL.md",
-      "name": "adaptyv",
-      "repo": "K-Dense-AI/scientific-agent-skills",
-      "path": "skills/adaptyv/SKILL.md",
-      "ref": "main",
-      "category": "research",
-      "description": {
-        "en": "Uses the Adaptyv Bio Foundry API and Python SDK to design protein characterization experiments, estimate costs, submit sequences, monitor laboratory progress, and retrieve results. Applies to Adaptyv Foundry, its target catalog, binding screening and affinity assays, thermostability, expression, fluorescence, epitope binning, and enzyme activity workflows, including code using adaptyv or FoundryClient.",
-        "zh": "用 Adaptyv Bio Foundry 的 API 与 Python SDK 设计蛋白表征实验、估算成本、提交序列、跟踪实验室进度并取回结果。适用于 Adaptyv Foundry、其靶点目录、结合筛选与亲和力测定、热稳定性、表达、荧光、表位分组与酶活工作流，也适用于使用 adaptyv 或 FoundryClient 的代码。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "K-Dense-AI"
-    },
-    {
-      "id": "wasp-lang/open-saas#template/app/.agents/skills/add-wasp-skills/SKILL.md",
-      "name": "add-wasp-skills",
-      "repo": "wasp-lang/open-saas",
-      "path": "template/app/.agents/skills/add-wasp-skills/SKILL.md",
-      "ref": "main",
-      "category": "dev",
-      "description": {
-        "en": "Install Wasp agent skills (plugins) that add Wasp knowledge and best practices to your AI coding tools.",
-        "zh": "安装 Wasp 智能体技能（插件），为你的 AI 编码工具补上 Wasp 知识与最佳实践。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "wasp-lang"
     },
     {
       "id": "Donchitos/Claude-Code-Game-Studios#.claude/skills/adopt/SKILL.md",
@@ -210,51 +150,6 @@
       "license": "MIT",
       "added": "2026-10-02",
       "author": "AgriciDaniel"
-    },
-    {
-      "id": "K-Dense-AI/scientific-agent-skills#skills/aeon/SKILL.md",
-      "name": "aeon",
-      "repo": "K-Dense-AI/scientific-agent-skills",
-      "path": "skills/aeon/SKILL.md",
-      "ref": "main",
-      "category": "research",
-      "description": {
-        "en": "This skill should be used for time series machine learning tasks including classification, regression, clustering, forecasting, anomaly detection, segmentation, and similarity search. Use when working with temporal data, sequential patterns, or time-indexed observations requiring specialized algorithms beyond standard ML approaches. Particularly suited for univariate and multivariate time series analysis with scikit-learn compatible APIs.",
-        "zh": "用于时间序列机器学习任务，包括分类、回归、聚类、预测、异常检测、分段与相似性检索。适用于时序数据、序列模式或按时间索引的观测，需要超出标准机器学习方法的专门算法时。尤其适合单变量与多变量时间序列分析，提供与 scikit-learn 兼容的 API。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "K-Dense-AI"
-    },
-    {
-      "id": "affaan-m/ECC#skills/agent-architecture-audit/SKILL.md",
-      "name": "agent-architecture-audit",
-      "repo": "affaan-m/ECC",
-      "path": "skills/agent-architecture-audit/SKILL.md",
-      "ref": "main",
-      "category": "agent",
-      "description": {
-        "en": "Full-stack diagnostic for agent and LLM applications. Audits the 12-layer agent stack for wrapper regression, memory pollution, tool discipline failures, hidden repair loops, and rendering corruption. Produces severity-ranked findings with code-first fixes. Essential for developers building agent applications, autonomous loops, or any LLM-powered feature. Use when an agent or LLM feature misbehaves and the failing layer is unknown, or before shipping an agent stack.",
-        "zh": "面向智能体与 LLM 应用的全栈诊断。审计智能体 12 层技术栈中的包装层回归、记忆污染、工具调用失范、隐藏修复循环与渲染错乱，输出按严重度排序的结论并给出代码级修复方案。适合构建智能体应用、自主循环或任何 LLM 功能的开发者。当智能体或 LLM 功能行为异常而不知道是哪一层的问题，或上线前做整体体检时使用。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "affaan-m"
-    },
-    {
-      "id": "affaan-m/ECC#skills/agent-eval/SKILL.md",
-      "name": "agent-eval",
-      "repo": "affaan-m/ECC",
-      "path": "skills/agent-eval/SKILL.md",
-      "ref": "main",
-      "category": "agent",
-      "description": {
-        "en": "Head-to-head comparison of coding agents (Claude Code, Aider, Codex, etc.) on custom tasks with pass rate, cost, time, and consistency metrics. Use when choosing between coding agents, or when a change to an agent setup needs measured pass rate, cost, and time rather than an impression.",
-        "zh": "在自定义任务上对比编码智能体（Claude Code、Aider、Codex 等），给出通过率、成本、耗时与稳定性指标。用于在多个编码智能体之间做选择，或在改动智能体配置后需要实测的通过率、成本与耗时，而不是凭印象判断时。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "affaan-m"
     },
     {
       "id": "wanshuiyin/Auto-claude-code-research-in-sleep#skills/alphaxiv/SKILL.md",
@@ -621,36 +516,6 @@
       "author": "zubair-trabzada"
     },
     {
-      "id": "wasp-lang/open-saas#template/app/.agents/skills/getting-started/SKILL.md",
-      "name": "getting-started",
-      "repo": "wasp-lang/open-saas",
-      "path": "template/app/.agents/skills/getting-started/SKILL.md",
-      "ref": "main",
-      "category": "dev",
-      "description": {
-        "en": "Get started with your Open SaaS project — fetches docs, checks Wasp installation, and helps you start your database and app.",
-        "zh": "上手你的 Open SaaS 项目——拉取文档、检查 Wasp 安装情况，帮你把数据库和应用跑起来。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "wasp-lang"
-    },
-    {
-      "id": "wasp-lang/open-saas#template/app/.agents/skills/guided-tour/SKILL.md",
-      "name": "guided-tour",
-      "repo": "wasp-lang/open-saas",
-      "path": "template/app/.agents/skills/guided-tour/SKILL.md",
-      "ref": "main",
-      "category": "dev",
-      "description": {
-        "en": "Take a guided tour of Open SaaS — walks you through step-by-step through the project structure, features, and customization checklist.",
-        "zh": "带你走一遍 Open SaaS——逐步介绍项目结构、功能与自定义清单。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "wasp-lang"
-    },
-    {
       "id": "Nutlope/hallmark#skills/hallmark/SKILL.md",
       "name": "hallmark",
       "repo": "Nutlope/hallmark",
@@ -709,21 +574,6 @@
       "license": "MIT",
       "added": "2026-10-02",
       "author": "KKKKhazix"
-    },
-    {
-      "id": "NanmiCoder/cc-haha#src/skills/bundled/imagegen/SKILL.md",
-      "name": "imagegen",
-      "repo": "NanmiCoder/cc-haha",
-      "path": "src/skills/bundled/imagegen/SKILL.md",
-      "ref": "main",
-      "category": "other",
-      "description": {
-        "en": "Generate original images, artwork, product visuals, diagrams, or other raster assets with the desktop's configured image provider. Use whenever the user asks to create or generate an image.",
-        "zh": "用桌面端已配置的绘图服务生成原创图片、插画、产品图、示意图或其他位图素材。适用于用户要求创建或生成图片时。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "NanmiCoder"
     },
     {
       "id": "Orchestra-Research/AI-Research-SKILLs#01-model-architecture/litgpt/SKILL.md",
@@ -801,21 +651,6 @@
       "author": "nidhinjs"
     },
     {
-      "id": "NanmiCoder/cc-haha#.agents/skills/release-announcement/SKILL.md",
-      "name": "release-announcement",
-      "repo": "NanmiCoder/cc-haha",
-      "path": ".agents/skills/release-announcement/SKILL.md",
-      "ref": "main",
-      "category": "other",
-      "description": {
-        "en": "Turn the project's latest release-notes Markdown into a short announcement for a WeChat group plus a vertical feature image, verifying each contributor's GitHub ID and embedding their real avatar. Use for release publicity; it does not create or publish the GitHub release itself.",
-        "zh": "根据项目最新的 release-notes Markdown 制作微信群发布短文案与竖版长图，核验贡献者 GitHub ID 并嵌入真实头像。用于版本发布宣传，不负责创建或发布 GitHub Release。"
-      },
-      "license": "MIT",
-      "added": "2026-10-02",
-      "author": "NanmiCoder"
-    },
-    {
       "id": "yusufkaraaslan/Skill_Seekers#skills/skill-seekers/SKILL.md",
       "name": "skill-builder",
       "repo": "yusufkaraaslan/Skill_Seekers",
@@ -885,22 +720,7 @@
       "version": "2.15.0",
       "added": "2026-10-02",
       "author": "nextlevelbuilder"
-    },
-    {
-      "id": "Vincentwei1021/video-shotcraft#SKILL.md",
-      "name": "video-shotcraft",
-      "repo": "Vincentwei1021/video-shotcraft",
-      "path": "SKILL.md",
-      "ref": "main",
-      "category": "other",
-      "description": {
-        "en": "Create cinematic product videos from shot recipe cards, a validated template, and code/audio assets (Remotion + real page screenshots + 2.5D camera moves + beat-synced cuts + sound design). Use when the user asks to turn a frontend project or webpage into a product video, says \"use video-shotcraft to make a video/promo\", names the Ink Press template or asks to reproduce its effect, or wants a single shot card's motion.",
-        "zh": "用镜头配方卡、已验收模板与代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。适用于用户要求把前端项目或网页做成产品视频、说「用 video-shotcraft 做视频/宣传片」、点名 Ink Press 模板或要求复刻模板片效果，或要用镜头卡做单个动效镜头时。"
-      },
-      "license": "Apache-2.0",
-      "added": "2026-10-02",
-      "author": "Vincentwei1021"
     }
   ],
-  "generatedAt": "2026-10-02T08:49:20.991Z"
+  "generatedAt": "2026-10-02T10:43:12.862Z"
 }

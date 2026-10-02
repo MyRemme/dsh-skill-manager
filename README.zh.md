@@ -109,22 +109,25 @@ desktop profile 由 Electron 应用独占管理；请装进 `web` 或其他 prof
 目录是一份 JSON，由「一个技能一个 YAML 文件」构建，所以两个投稿人永远不会撞到同一个
 文件。
 
-- 默认来源：本仓库的 [`registry/skills.json`](registry/skills.json)——写这份文档时有 3 条。
-  目录只收**有明确许可证、且该许可证允许再分发**的条目（没声明、`NOASSERTION`、非商业、
-  copyleft 一律不收）；详见 [`registry/README.zh.md`](registry/README.zh.md) 的「许可证闸门」。
+- 默认来源：本仓库的 [`registry/skills.json`](registry/skills.json)。收录要过四道闸门：
+  **有明确许可证且允许再分发**（没声明、`NOASSERTION`、非商业、copyleft 一律不收）；**仓库
+  归档不超过安装器的 32 MiB 下载上限**；**条目属实**（路径存在、frontmatter 里的 `name`
+  对得上）；**分类取自封闭列表**。详见
+  [`registry/README.zh.md`](registry/README.zh.md) 的「收录闸门」。
 - **筛选与排序**照插件市场的做法：按 Star 数／收录时间／名称排，可选升序降序，并可把
   列表限制在最近 7／30／90 天或一年内收录的条目。
 - **每张卡片都能点出去**：跳到来源仓库，以及它实际安装的那个 `SKILL.md`。
 - **来源是显示出来的，不是编的。** 上游发布了 release 的显示 `版本 v2.15.0`，没有的显示
   `提交 063bee9`。目录里没有 Star 数时，星数排序会明说这一点，而不是把列表按另一种顺序
   悄悄返回。
-- **分类是封闭列表**（`ui`、`dev`、`docs`、`infra`、`writing`……），所以筛选出来是几个
-  真实的桶，而不是「一个条目一个分类」。
+- **分类是封闭列表**（`ui`、`dev`、`docs`、`infra`、`writing`……，共 15 项），所以筛选出来是
+  几个真实的桶，而不是「一个条目一个分类」。分类未定的条目归 `other`。
 - 如果 `raw.githubusercontent.com` 不通（有些网络会重置与它的连接，而 `api.github.com`
   照常工作），拉取会自动回退到 GitHub contents 接口并解码同一个文件。给该路径设置
   `GITHUB_TOKEN` 可以解除未认证的限流。
 - 安装一条会下载 `https://codeload.github.com/<仓库>/tar.gz/<ref>`，只解出持有该技能的
-  目录，写进你选的根。
+  目录，写进你选的根。**下载的是整个仓库**，所以归档超过 32 MiB 的仓库无法安装——这类
+  仓库在收录时就被拒收，不会出现在列表里。
 - `registryUrl` 可以指向任何同构的目录。
 
 投稿方式是对 `registry/data/skills/` 提 PR。格式与要求见

@@ -127,11 +127,12 @@ The catalog is a JSON document built from one YAML file per skill, so two
 contributors never touch the same file.
 
 - Default source: this repository's
-  [`registry/skills.json`](registry/skills.json) — 3 entries at the time of
-  writing. The catalog only accepts entries carrying a license that permits
-  redistribution, so entries with no declared license, `NOASSERTION`, a
-  non-commercial term or a copyleft term are turned away; see
-  [`registry/README.md`](registry/README.md).
+  [`registry/skills.json`](registry/skills.json). An entry passes four gates:
+  **a license that permits redistribution** (no declared license, `NOASSERTION`,
+  a non-commercial term or a copyleft term is turned away); **a repository
+  archive within the installer's 32 MiB download cap**; **a true entry** (the
+  path exists and the frontmatter `name` matches); **a category from the closed
+  list**. See [`registry/README.md`](registry/README.md).
 - **Filter and sort** the way the plugin market does: sort by stars, date added
   or name, in either direction, and restrict the list to entries added in the
   last 7 / 30 / 90 days or year.
@@ -141,15 +142,18 @@ contributors never touch the same file.
   upstream repository publishes releases, and `提交 063bee9` when it does not.
   When the catalog has no star counts, the stars sort says so rather than
   silently returning the list in a different order.
-- **Categories are a closed list** (`ui`, `dev`, `docs`, `infra`, `writing`, …),
-  so the filter has a handful of real buckets instead of one per entry.
+- **Categories are a closed list** (`ui`, `dev`, `docs`, `infra`, `writing`, …,
+  15 in all), so the filter has a handful of real buckets instead of one per
+  entry. An entry whose category is not settled belongs in `other`.
 - If `raw.githubusercontent.com` is unreachable (some networks reset connections
   to it while `api.github.com` keeps working), the fetch falls back to the GitHub
   contents API and decodes the same file. Set `GITHUB_TOKEN` to lift the
   unauthenticated rate limit on that route.
 - Installing an entry downloads `https://codeload.github.com/<repo>/tar.gz/<ref>`,
   extracts only the directory holding the skill, and writes it into your chosen
-  root.
+  root. **The whole repository comes down**, so a repository whose archive is
+  over 32 MiB cannot be installed — those repositories are refused at admission
+  time and never reach the list.
 - `registryUrl` points it at any other catalog with the same shape.
 
 Submissions go through a pull request against `registry/data/skills/`. The format

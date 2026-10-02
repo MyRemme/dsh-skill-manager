@@ -15,7 +15,15 @@
  *   - a skill directory carries its own `LICENSE`, because then the repository
  *     license does not speak for that skill;
  *   - the same skill name appears at two paths, which means we cannot tell which
- *     one the author intends.
+ *     one the author intends;
+ *   - the repository archive is larger than the installer's download cap, which
+ *     makes every skill in it uninstallable no matter how good they are.
+ *
+ * That last rule exists because the installer fetches the whole repository
+ * tarball and only then narrows it to one skill directory (`lib/market.js`).
+ * A catalog that does not check the archive size ships entries whose install
+ * button downloads 233 MB and then fails. Twelve of the first fifty-nine
+ * entries were in that state; see `ARCHIVE_LIMIT_BYTES`.
  *
  * Nothing is written unless `--write` is passed. Verification reads a lot of
  * small files, so a run costs roughly two requests per candidate.
@@ -31,6 +39,14 @@ import { fileURLToPath } from "node:url";
 
 const API = "https://api.github.com";
 const USER_AGENT = "dsh-skill-manager/inspect";
+const CODELOAD = "https://codeload.github.com";
+
+/**
+ * The installer's archive cap, mirrored from `lib/market.js` (`maxBytes`,
+ * default 32 MiB). A repository above it can never be installed, so it is not
+ * admitted. Keep the two in step: if `market.js` raises its cap, raise this.
+ */
+const ARCHIVE_LIMIT_BYTES = 32 * 1024 * 1024;
 
 /** The name grammar the skill loader enforces. */
 const SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
@@ -94,6 +110,44 @@ async function api(path, token) {
     }
   }
   return { ok: response.ok, status: response.status, body, remaining: response.headers.get("x-ratelimit-remaining") };
+}
+
+/**
+ * Measure a repository archive without downloading all of it.
+ *
+ * `codeload` sends no `Content-Length` on a HEAD request and uses chunked
+ * transfer for large archives, so the size cannot be read from headers. Reading
+ * the stream and abandoning it once the cap is passed costs one cap-sized
+ * download instead of the full archive — 2.4 s for a 233 MB repository against
+ * 32 MB of transfer.
+ *
+ * @returns `{ bytes, over }` — `over` is true once the archive is known to
+ *   exceed {@link ARCHIVE_LIMIT_BYTES}; `bytes` is then a lower bound.
+ */
+async function archiveSize(repo, ref, token) {
+  const headers = { "User-Agent": USER_AGENT };
+  if (token !== null) headers.Authorization = `Bearer ${token}`;
+  let response;
+  try {
+    response = await fetch(`${CODELOAD}/${repo}/tar.gz/${ref}`, { headers, redirect: "follow" });
+  } catch (error) {
+    return { bytes: null, over: false, reason: `archive unreadable (${String(error)})` };
+  }
+  if (!response.ok) return { bytes: null, over: false, reason: `archive unreadable (HTTP ${response.status})` };
+  let bytes = 0;
+  try {
+    for await (const chunk of response.body) {
+      bytes += chunk.length;
+      if (bytes > ARCHIVE_LIMIT_BYTES) {
+        await response.body.cancel?.();
+        return { bytes, over: true };
+      }
+    }
+  } catch {
+    // A truncated read still tells us the archive passed the cap.
+    return { bytes, over: bytes > ARCHIVE_LIMIT_BYTES };
+  }
+  return { bytes, over: false };
 }
 
 /** Decode the base64 blob body GitHub returns for file contents. */
@@ -177,6 +231,22 @@ async function inspectRepo(candidate, token, perRepo) {
   if (!meta.ok) return { skills: [], ref: null, reason: `metadata unreadable (HTTP ${meta.status})` };
   const ref = typeof meta.body?.default_branch === "string" ? meta.body.default_branch : null;
   if (ref === null) return { skills: [], ref: null, reason: "no default branch reported" };
+
+  // Reachability comes before quality. The installer downloads the whole
+  // repository and only then picks out one skill directory, so an archive over
+  // the cap produces an entry that cannot be installed by anyone. Admitting one
+  // is worse than dropping the repository: it looks installable and is not.
+  const size = await archiveSize(repo, ref, token);
+  if (size.over) {
+    return {
+      skills: [],
+      ref,
+      reason: `archive exceeds the ${ARCHIVE_LIMIT_BYTES / (1024 * 1024)} MiB download cap (>${(size.bytes / (1024 * 1024)).toFixed(1)} MiB)`,
+    };
+  }
+  // Fail closed. An unmeasurable archive is not a small one, and admitting it
+  // unmeasured would reintroduce exactly the defect this gate removes.
+  if (size.bytes === null) return { skills: [], ref, reason: size.reason };
 
   const tree = await api(`/repos/${repo}/git/trees/${ref}?recursive=1`, token);
   if (!tree.ok) return { skills: [], ref, reason: `tree unreadable (HTTP ${tree.status})` };

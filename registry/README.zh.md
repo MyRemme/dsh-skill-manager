@@ -24,7 +24,7 @@ repo: acme/widget-skills            # 必填——仓库的 owner/name
 name: widget-helper                 # 必填——必须等于 SKILL.md frontmatter 里的 `name`
 path: skills/widget-helper/SKILL.md # 必填——SKILL.md 在该仓库中的位置
 category: writing                   # 必填——从下方列表里选一个
-ref: main                           # 可选——分支、标签或提交；默认 main
+ref: main                           # 必填——分支、标签或提交；没有默认值
 version: 2.15.0                     # 可选——仅当上游确实发布 release 时
 commit: 063bee9                     # 可选——条目核验时所处的提交
 added: 2026-10-02                   # 可选——条目进入目录的日期 YYYY-MM-DD
@@ -35,10 +35,15 @@ description:
   zh: 按风格指南审阅文案。适用于「审一下文档」「把措辞收紧」这类请求。  # 可选
 ```
 
-`repo`、`name`、`path`、`category`、`license`、`description.en` 必填。缺中文是我们的活，
+`repo`、`name`、`path`、`category`、`ref`、`license`、`description.en` 必填。缺中文是我们的活，
 不该成为打回的理由。
 
-## 许可证闸门
+## 收录闸门
+
+收录一个条目，市场就得兑现一个承诺：点「安装」，技能落到本地。四道闸门在条目进入目录前
+检查这个承诺。
+
+### 一、许可证闸门
 
 收录一个条目，等于复述了它的仓库坐标、并让市场去装它的文件。所以：**没有许可证就不进目录。**
 
@@ -58,6 +63,38 @@ description:
 
 **闸门查的是仓库，不是 skill 文件本身。** 仓库根目录的宽松许可证通常覆盖它下面的一切，但
 skill 目录若自带 `LICENSE`，则以那个为准。提交前请自己确认——构建脚本看不到这一层。
+
+### 二、下载体积闸门
+
+安装器下载的是**整个仓库的 tarball**，下完了才裁出其中一个技能目录（`lib/market.js` 的
+`fetchRepoTarball`）。所以超过 32 MiB 上限的归档会在最后一步失败——流量已经付完了。
+
+这不是假设。最初发布的五十九条里有十二条**任何人都装不上**：`K-Dense-AI/scientific-agent-skills`
+233 MB、`NanmiCoder/cc-haha` 125 MB、`wasp-lang/open-saas` 91 MB。点「安装」会先下几十到
+几百兆，然后报错；而目录构建从没发现，因为收录时只查了质量，没查可达性。
+
+因此 `inspect.mjs` 会量归档，超限就**整仓库拒收**。超限仓库不是「收录但标注一下」，是根本不收。
+一个装不上的条目比一个缺席的条目更糟——它看起来是能用的。
+
+上限写在两个文件里，由一条测试拴住（`the admission cap matches the installer's download cap`）。
+要抬安装器的 `maxBytes`，就得在同一次改动里抬 `inspect.mjs` 的 `ARCHIVE_LIMIT_BYTES`，否则测试失败。
+
+### 三、属实闸门
+
+每个条目都必须是真的：
+
+- `path` 必须在 `ref` 上存在，且该文件 frontmatter 里的 `name` 必须等于条目的 `name`。
+  CI 会实际读这个文件来核对。
+- `ref` 必填且要记录下来，没有默认值。目录里有两个仓库用 `master`、一个用 `development`；
+  静默回退到 `main` 让那些条目指向了不存在的路径，而且只有会探上游的 `--check --verify` 才发现。
+- frontmatter 里没有 `name` 的 `SKILL.md` 不是技能，一律拒收。名为 `*SKILL.md` 的文档文件和
+  生成的占位文件曾被以「上游从未声明过的名字」收录。
+- 整个目录里同一个技能名只能被声明一次——名字就是安装目录名。
+
+### 四、分类闸门
+
+`category` 必须取自「找候选」一节给出的封闭列表。分类还没定的条目归 `other`，不要硬塞进
+不属于它的桶——一个错位的条目会污染那个桶里所有真实成员的筛选结果。
 
 改完条目跑构建：
 
@@ -83,11 +120,25 @@ node registry/scripts/discover.mjs --query "agent skills" --json
 
 **它什么都不写。** 候选仍要人工变成条目，因为仓库级的许可证不能证明那个 skill 文件也被覆盖。
 
+下一步是 `inspect.mjs`，它套用其余闸门：读仓库的 git tree、量归档体积、核验每个将被发布的
+技能文件。
+
+```
+node registry/scripts/inspect.mjs --in _candidates.json                  # 只报告
+node registry/scripts/inspect.mjs --in _candidates.json --write          # 生成条目
+node registry/scripts/inspect.mjs --in _candidates.json --top 30 --per-repo 3 --write
+```
+
+`--per-repo`（默认 3）是硬上限，不是建议：一个仓库不该靠一己之力填满目录。`--top`（默认 30）
+限制总共考虑多少个候选。
+
 `category` 是封闭列表——放开成自由文本会让筛选器变成「一个条目一个分类」，比没有筛选
 更糟：
 
 `ui` `dev` `docs` `data` `office` `design` `media` `testing` `security`
-`infra` `research` `writing` `agent` `fun`
+`infra` `research` `writing` `agent` `fun` `other`
+
+`other` 是刻意留的兜底项，收容分类尚未定的条目。
 
 市场会把 `category` 渲染成筛选项、把 `version` 或 `commit` 渲染成来源徽标、把 `added`
 当作时间筛选的窗口。**只有上游确实发布 release 时才写 `version`**——编一个版本号比不写
