@@ -852,7 +852,8 @@ const aboutPayload = {
   repo: "MyRemme/dsh-skill-manager",
   repoUrl: "https://github.com/MyRemme/dsh-skill-manager",
   submitUrl: "https://github.com/MyRemme/dsh-skill-manager/issues/new",
-  registryUrl: "https://example.invalid/skills.json",
+  registryUrl: "https://raw.example.invalid/skills.json",
+  entriesUrl: "https://github.com/MyRemme/dsh-skill-manager/tree/main/registry/data/skills",
   access: "paired",
   update: { status: "unchecked" },
 };
@@ -887,6 +888,35 @@ test("the about tab shows the installed version and the project repository", asy
   assert.ok(links.includes("https://github.com/MyRemme/dsh-skill-manager"), "the repository link is present");
   assert.ok(links.includes("https://github.com/MyRemme/dsh-skill-manager/releases"), "so is the releases link");
   assert.ok(text.includes("MyRemme/dsh-skill-manager"), "the repository is named on screen");
+});
+
+test("the about tab links to a browsable page, not to the raw catalog file", async () => {
+  const { harness, text } = await openAbout();
+  const links = harness.hosts("a").map((node) => node.props.href);
+  assert.ok(
+    links.includes("https://github.com/MyRemme/dsh-skill-manager/tree/main/registry/data/skills"),
+    "the entries link points at the browsable directory",
+  );
+  // regression: a link to the JSON blob is unreadable in a browser, and the raw
+  // host is not reachable from every machine.
+  assert.equal(
+    links.some((href) => String(href).endsWith(".json")),
+    false,
+    "no link ends in .json",
+  );
+  assert.ok(text.includes("目录来源"), "the catalog source is shown as text");
+  assert.ok(text.includes("https://raw.example.invalid/skills.json"), "and names the actual source");
+});
+
+test("the about tab offers no entries link for a custom catalog", async () => {
+  const { harness, text } = await openAbout({ about: { ...aboutPayload, entriesUrl: null } });
+  const links = harness.hosts("a").map((node) => node.props.href);
+  assert.equal(
+    links.some((href) => String(href).includes("registry/data/skills")),
+    false,
+    "a foreign registry has no page in this repository to link to",
+  );
+  assert.ok(text.includes("https://raw.example.invalid/skills.json"), "but the source is still named");
 });
 
 test("checking for updates reports all four outcomes", async () => {

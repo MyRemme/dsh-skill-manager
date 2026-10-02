@@ -164,7 +164,12 @@ The **关于** tab reports what is installed and where the project lives.
   of the published version (an unreleased commit), or could not check. It runs
   only when you press the button — a panel that calls a rate-limited API every
   time it is opened is a bad citizen.
-- **Project repository**, **releases** and **registry** links.
+- **Project repository**, **releases**, and a link to the browsable directory of
+  entry files. The last one is offered only when the active catalog is this
+  repository's own, because a foreign `registryUrl` has no page here to link to.
+- The URL the catalog is actually fetched from, shown as text rather than as a
+  link: it is machine-readable JSON, and a link to it would be unreadable in a
+  browser. Shown this way, a custom `registryUrl` is also visible at a glance.
 - The `dsh plugin --profile desktop add github:…` command, ready to copy.
 
 The check is best-effort. Being offline, rate limited, or pointed at a moved

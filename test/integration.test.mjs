@@ -578,7 +578,22 @@ test("about reports the installed version without a network check", async () => 
     assert.equal(response.payload.repo, "MyRemme/dsh-skill-manager");
     assert.equal(response.payload.repoUrl, "https://github.com/MyRemme/dsh-skill-manager");
     assert.equal(response.payload.submitUrl, "https://github.com/MyRemme/dsh-skill-manager/issues/new");
+    assert.equal(response.payload.entriesUrl, "https://github.com/MyRemme/dsh-skill-manager/tree/main/registry/data/skills");
     assert.equal(response.payload.update.status, "unchecked", "no check is made unless asked");
+  } finally {
+    await server.close();
+    await scene.cleanup();
+  }
+});
+
+test("about withholds the entries link when the catalog is not this repository's", async () => {
+  const scene = await scaffold();
+  const server = await boot({ config: { ...scene.config, registryUrl: "https://raw.example.invalid/skills.json" }, cwd: scene.project });
+  try {
+    const response = await call(server.base, "about");
+    assert.equal(response.status, 200);
+    assert.equal(response.payload.entriesUrl, null, "there is no page in this repo for a foreign catalog");
+    assert.equal(response.payload.registryUrl, "https://raw.example.invalid/skills.json", "but the source is reported");
   } finally {
     await server.close();
     await scene.cleanup();
