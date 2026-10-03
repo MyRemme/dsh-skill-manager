@@ -508,7 +508,11 @@ function stubFetch(overrides = {}) {
     }
     if (route === "market-install") return new Response(JSON.stringify({ job: "job-1", id: "a/b#s", name: "n" }), { status: 202 });
     if (route === "market") return new Response(JSON.stringify(marketPayload), { status: 200 });
-    return new Response(JSON.stringify({ error: `unstubbed ${url}` }), { status: 404 });
+    // Anything else is a routing mistake on the client's side, not a fixture the
+    // test forgot. It used to fall through to a 404 whose body the install flow
+    // read as "job finished", which let a request to a URL built from an
+    // undefined route (`undefined?id=...`) look like a successful install.
+    throw new Error(`unstubbed request: ${url}`);
   };
   return calls;
 }
@@ -716,6 +720,66 @@ test("installing a skill shows a progress bar instead of silence", async () => {
   const posted = calls.find((call) => String(call.url).includes("market-install"));
   assert.ok(posted !== undefined, "the install route is called");
   assert.equal(JSON.parse(posted.init.body).id, card.props.entry.id, "the right entry is requested");
+});
+
+/**
+ * The install completes on a poll, and the poll target is assembled from the
+ * client's route table rather than written out at the call site. A missing key
+ * there produces the string "undefined?id=..." instead of a path, which the host
+ * answers with a 404 — and because the flow reads `job.status` off whatever body
+ * comes back, a 404's `{error}` body made the loop exit as though the job had
+ * finished. It reported a dead skill and no files, with nothing in the log.
+ *
+ * The test below is the one that reaches the poll: the panel sleeps 250 ms
+ * between attempts, so time has to be advanced for it to run at all. The
+ * existing progress-bar test stops before the timer and could not see this.
+ */
+test("an install polls the job route, not a URL built from a missing API key", async () => {
+  // Take over the timer for the duration so the 250 ms wait is arithmetic rather
+  // than real time. Only `setTimeout` is needed; `fetch` is already stubbed.
+  const realSetTimeout = globalThis.setTimeout;
+  const queue = [];
+  globalThis.setTimeout = (fn) => {
+    queue.push(fn);
+    return queue.length;
+  };
+  const drain = async () => {
+    // `request` awaits a real `fetch` and `response.text()`, so the promise chain
+    // needs genuine microtask turns between timer callbacks, not just the
+    // synchronous run of the queued function.
+    for (let i = 0; i < 100; i += 1) {
+      await new Promise((resolve) => realSetTimeout(resolve, 0));
+      if (queue.length === 0) continue;
+      const fn = queue.shift();
+      fn();
+      await new Promise((resolve) => realSetTimeout(resolve, 0));
+    }
+  };
+
+  try {
+    const { harness, calls } = await openMarket();
+    const installButton = harness
+      .hosts("button")
+      .find((node) => node.props.className === "skm-button" && textOf(node) === "安装" && node.props.disabled === false);
+    assert.ok(installButton !== undefined, "the uninstalled entry offers an install button");
+
+    installButton.props.onClick();
+    // Let the POST settle, then advance the poll.
+    await drain();
+
+    const polls = calls.filter((call) => String(call.url).includes("market-job"));
+    assert.equal(polls.length > 0, true, "the job route is polled");
+    for (const poll of polls) {
+      const url = String(poll.url);
+      assert.equal(url.includes("undefined"), false, `the poll URL is a real path, not an unresolved key: ${url}`);
+      assert.equal(url.startsWith("undefined"), false, `the poll URL does not start with undefined: ${url}`);
+      // The server registers `/api/dsh-skill-manager/market-job`; the client's
+      // path carries no leading slash and resolves against the app origin.
+      assert.match(url, /(^|\/)api\/dsh-skill-manager\/market-job\?id=/u, `the poll targets the job route: ${url}`);
+    }
+  } finally {
+    globalThis.setTimeout = realSetTimeout;
+  }
 });
 
 test("every market card links to the repository it came from", async () => {
