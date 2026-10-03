@@ -502,7 +502,15 @@ function stubFetch(overrides = {}) {
     // that looks nothing like a routing mistake.
     const route = String(url).split("/").pop().split("?")[0];
     if (route === "list") return new Response(JSON.stringify(listPayload), { status: 200 });
-    if (route === "trash") return new Response(JSON.stringify({ trashRoot: listPayload.trashRoot, items: [] }), { status: 200 });
+    if (route === "trash") {
+      // A test may pin the trash contents through `stubFetch({ trash: {...} })`,
+      // which the override loop above already served; reaching here means it did
+      // not, so the trash is empty.
+      return new Response(JSON.stringify({ trashRoot: listPayload.trashRoot, items: [] }), { status: 200 });
+    }
+    if (route === "trash-purge") return new Response(JSON.stringify({ name: "ad-creative", entry: "e", purged: true }), { status: 200 });
+    if (route === "trash-empty") return new Response(JSON.stringify({ removed: 2, failed: [] }), { status: 200 });
+    if (route === "remove") return new Response(JSON.stringify({ name: "alpha-skill", moved: true }), { status: 200 });
     if (route === "market-job") {
       return new Response(JSON.stringify({ job: "job-1", status: "done", phase: "done", received: 1, total: 1, indeterminate: false, error: null, result: { id: "x", name: "n", source: "s", results: [{ name: "n", status: "installed", path: "p" }] } }), { status: 200 });
     }
@@ -644,6 +652,200 @@ async function openMarket(overrides) {
   const text = await started.harness.repaint();
   return { ...started, text };
 }
+
+/** Trash entries as the host reports them, shaped like `listTrash` output. */
+const trashItems = [
+  { entry: "2026-10-03T06-07-53-449Z__ad-creative", path: "p1", name: "ad-creative", directory: true, removedAt: "2026-10-03T06-07-53-449Z", bytes: 10 },
+  { entry: "2026-10-03T06-07-54-111Z__ab-testing", path: "p2", name: "ab-testing", directory: true, removedAt: "2026-10-03T06-07-54-111Z", bytes: 10 },
+];
+
+/**
+ * Open the installed tab with trash entries present.
+ *
+ * The trash is a group inside the installed view, not a tab of its own, so this
+ * is just `startPanel` with a populated `trash` payload — which `stubFetch`
+ * serves through its override loop.
+ */
+async function openTrash(overrides = {}) {
+  const started = await startPanel(trashOverrides(overrides));
+  const text = await started.harness.repaint();
+  assert.ok(text.includes("ad-creative"), "the trashed skill must be listed");
+  return { ...started, text };
+}
+
+/** Merge the trash fixture into `overrides` without clobbering a caller's own. */
+function trashOverrides(overrides) {
+  return { trash: { trashRoot: "C:\\trash", items: trashItems }, ...overrides };
+}
+
+/** Find a rendered button by its visible label. */
+function buttonByLabel(harness, label) {
+  return harness.hosts("button").find((node) => node.props.children === label);
+}
+
+/**
+ * The confirmation dialog's confirm button.
+ *
+ * Its label — 删除 — is also the label on every installed skill row, so matching
+ * by label alone finds a row button and silently drives the wrong control. The
+ * dialog renders last in the tree, so take the final match.
+ */
+function dialogConfirmButton(harness, label = "删除") {
+  const matches = harness.hosts("button").filter((node) => node.props.children === label);
+  assert.ok(matches.length > 0, `the dialog's ${label} button must render`);
+  return matches[matches.length - 1];
+}
+
+test("the trash offers a permanent delete per entry and one for the whole trash", async () => {
+  const { harness, text } = await openTrash();
+  assert.ok(text.includes("ad-creative"), "the trashed skill is listed");
+
+  const perEntry = harness.hosts("button").filter((node) => node.props.children === "彻底删除");
+  assert.equal(perEntry.length, trashItems.length, "every entry gets its own permanent-delete button");
+
+  const empty = buttonByLabel(harness, "清空回收站");
+  assert.ok(empty !== undefined, "the empty-trash control renders");
+  assert.equal(empty.props.disabled, false, "with entries present it is usable");
+});
+
+test("permanent delete is confirmed in the panel's own dialog, not the browser's", async () => {
+  // The native `confirm` renders as OS chrome and cannot match the panel's
+  // styling. If one is reached, fail loudly rather than opening a real dialog.
+  const realConfirm = globalThis.confirm;
+  globalThis.confirm = () => {
+    throw new Error("the native confirm dialog must not be used");
+  };
+  try {
+    const { harness, calls } = await openTrash();
+    buttonByLabel(harness, "彻底删除").props.onClick();
+    const shown = await harness.repaint();
+
+    assert.ok(shown.includes("请确认"), "the in-panel dialog opens");
+    assert.ok(shown.includes("彻底删除「ad-creative」？"), "the dialog names what is being deleted");
+    assert.ok(shown.includes("此操作不可撤销"), "the dialog warns there is no undo");
+
+    // Nothing may be deleted until the user agrees. `trash` is read on mount, so
+    // only the mutating route matters here.
+    assert.equal(
+      calls.some((call) => String(call.url).includes("trash-purge")),
+      false,
+      "opening the dialog must not delete anything",
+    );
+
+    const confirmButton = dialogConfirmButton(harness);
+    assert.equal(confirmButton.props["data-danger"], "", "the dialog's confirm is a danger button");
+    await confirmButton.props.onClick();
+    const after = await harness.repaint();
+
+    const sent = calls.find((call) => String(call.url).includes("trash-purge"));
+    assert.ok(sent !== undefined, "agreeing actually calls the purge route");
+    assert.equal(JSON.parse(sent.init.body).entry, trashItems[0].entry, "the right entry is purged");
+    assert.ok(after.includes("已彻底删除"), "the result is reported");
+    assert.equal(after.includes("请确认"), false, "the dialog closes once the action runs");
+  } finally {
+    globalThis.confirm = realConfirm;
+  }
+});
+
+test("cancelling the dialog deletes nothing", async () => {
+  const { harness, calls } = await openTrash();
+  buttonByLabel(harness, "彻底删除").props.onClick();
+  await harness.repaint();
+
+  const cancel = harness.hosts("button").find((node) => node.props.children === "取消");
+  assert.ok(cancel !== undefined, "the dialog offers a cancel");
+  cancel.props.onClick();
+  const after = await harness.repaint();
+
+  assert.equal(after.includes("请确认"), false, "the dialog closes");
+  assert.equal(
+    calls.some((call) => String(call.url).includes("trash-purge")),
+    false,
+    "cancelling must not delete anything",
+  );
+  assert.ok(after.includes("ad-creative"), "the entry is still listed");
+});
+
+test("emptying the trash confirms first and reports the count", async () => {
+  const { harness, calls } = await openTrash();
+  buttonByLabel(harness, "清空回收站").props.onClick();
+  const shown = await harness.repaint();
+
+  assert.ok(shown.includes("彻底删除回收站里的 2 个条目？"), "the dialog counts what it will destroy");
+  assert.equal(
+    calls.some((call) => String(call.url).includes("trash-empty")),
+    false,
+    "opening the dialog must not empty anything",
+  );
+
+  await dialogConfirmButton(harness).props.onClick();
+  const after = await harness.repaint();
+
+  assert.ok(calls.some((call) => String(call.url).includes("trash-empty")), "agreeing empties the trash");
+  assert.ok(after.includes("已清空回收站"), "the result is reported");
+});
+
+test("the empty-trash control is disabled when there is nothing to delete", async () => {
+  const started = await startPanel();
+  const text = await started.harness.repaint();
+
+  assert.ok(text.includes("回收站是空的"), "the empty state is shown");
+  assert.equal(buttonByLabel(started.harness, "清空回收站").props.disabled, true, "nothing to empty, so it cannot be pressed");
+});
+
+test("deleting an installed skill is confirmed in the panel's own dialog", async () => {
+  // The row delete is the oldest destructive action in the panel and the one
+  // whose dialog must match the others — it used to be the browser's `confirm`.
+  const realConfirm = globalThis.confirm;
+  globalThis.confirm = () => {
+    throw new Error("the native confirm dialog must not be used");
+  };
+  try {
+    const { harness, calls } = await startPanel();
+    await harness.repaint();
+
+    buttonByLabel(harness, "删除").props.onClick();
+    const shown = await harness.repaint();
+
+    assert.ok(shown.includes("请确认"), "the in-panel dialog opens");
+    assert.ok(shown.includes("把 alpha-skill 移入回收站？"), "the dialog names the skill");
+    assert.ok(shown.includes("可以再恢复"), "a reversible delete says so");
+    assert.equal(
+      calls.some((call) => String(call.url).includes("/remove")),
+      false,
+      "opening the dialog must not delete anything",
+    );
+
+    await dialogConfirmButton(harness).props.onClick();
+    const after = await harness.repaint();
+
+    const sent = calls.find((call) => String(call.url).includes("/remove"));
+    assert.ok(sent !== undefined, "agreeing actually calls the remove route");
+    assert.equal(JSON.parse(sent.init.body).name, "alpha-skill");
+    assert.ok(after.includes("已移入回收站"), "the result is reported");
+    assert.equal(after.includes("请确认"), false, "the dialog closes once the action runs");
+  } finally {
+    globalThis.confirm = realConfirm;
+  }
+});
+
+test("cancelling the installed-skill dialog keeps the skill", async () => {
+  const { harness, calls } = await startPanel();
+  await harness.repaint();
+
+  buttonByLabel(harness, "删除").props.onClick();
+  await harness.repaint();
+  buttonByLabel(harness, "取消").props.onClick();
+  const after = await harness.repaint();
+
+  assert.equal(after.includes("请确认"), false, "the dialog closes");
+  assert.equal(
+    calls.some((call) => String(call.url).includes("/remove")),
+    false,
+    "cancelling must not delete anything",
+  );
+  assert.ok(after.includes("alpha-skill"), "the skill is still listed");
+});
 
 test("the market tab lists registry entries and marks installed ones", async () => {
   const { harness, text } = await openMarket();
